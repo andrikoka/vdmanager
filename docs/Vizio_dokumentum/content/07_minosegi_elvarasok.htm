@@ -1,10 +1,52 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
-		<title>VD Manager - </title>
+		<title>VD Manager - Minőségi elvárások</title>
 	<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
 	<META NAME="AUTHOR" CONTENT="Fiber">
+	<link rel="stylesheet" href="../css/style.css" type="text/css" media="screen">
 	</head>
 <body>
+<p class="title">Minőségi elvárások</p>
+<p class="s_title">Felhasználó által támasztott minőségi elvárások</p>
+<a id="felhasznalo"></a>
+<p>A korábban említett több szálon futó alkalmazás futásakor a grafikus felületet kezelő rutinokat egy a szoftvertől
+elválasztott szálban kell futtatni, lecsökkentve ezzel a felhasználói felület válaszidejét olyan műveletek végzése
+közben, amely terhelheti a rendszert. Minden művelet kezdésekor ugyanannyi ideig kell tartania a tájékoztatásnak, nem
+'lagolhat' (a válaszidő drasztikusan megnő egy másik művelet elkezdéséhez képest) a rendszer. A műveletek különbözősége
+miatt itt nem konkrétan a parancs kiadásától a művelet elkezdéséig eltelt időt értjük, hanem a felhasználó azonnali 
+vagy nagyon rövid idejű értesítését arról, hogy a parancs elfogadásra került és éppen milyen művelet folyik 
+a háttérben.</p>
+<p>Mivel a fájlok kezelésénél a felhasználó hozzáférési jogait is figyelembe kell vennünk, így a felhasználót 
+tájékoztatni kell az adott fájl tulajdonságairól (írható-e, olvasható-e, futtatható-e).<br>
+Ez a funkció operációs rendszerenként
+teljesen eltérhet, ezért egy egységes rendszert kell kidolgozni, amely alapján egyértelműen látható egy fájl 
+tulajdonjoga, attribútumai.</p>
+<p class="s_title">Fejlesztőkkel szemben támasztott elvárások</p>
+<a id="fejleszto"></a>
+<p>Fejlesztéskor folyamatosan szem előtt kell tartani a felhasználók által támasztott minőségi elvárásokat, törekedni
+kell a konzisztens, átlátható megjelenítésre, műveletvégzésre. Mivel a grafikus felhasználói felületen keresztül
+fog az interakció a szoftver és a felhasználó között lezajlani, így létfontosságú annak átgondolt felépítése, szem
+előtt tartva a könnyű és gyors használhatóságot.<br>
+Mivel a felhasználó egyik első tapasztalata a válaszidő, így törekedni kell a lehető legrövidebb időn belüli reakcióra
+egy-egy művelet, parancs végrehajtásakor.</p>
+<p>Az implementációnál a kódot lássuk el megjegyzésekkel, a későbbi hibakeresést jelentősen gyorsíthatja, illetve
+a dokumentáció és súgórendszer készítésekor is jelentős segítséget nyújthat a dokumentáció írójának.</p>
+<p>Mivel a szoftver nyílt forráskódú, így törekedni kell a lehető legjobb tudás szerint implementálni a funkciókat,
+ugyanis egy-egy kihasználható biztonsági hiba nyílt forráskódnál veszélyesebb lehet. Tesztelések során a szoftvert
+a lehetséges hibákra és biztonsági résekre is tesztelni kell. Ezáltal egy-egy távoli rendszer hibás működéséből adódó
+problémák is könnyebben kiszűrhetőek, kezelhetőek lesznek.</p>
+<p>Egy-egy protokoll implementálásakor (FTP, SFTP, stb.) alapnak az adott protokollhoz tartózó RFC az irányadó
+dokumentum. Az RFC által meghatározott alapvető funkciókat kell implementálni. Az RFC-k által lefedett protokollok
+listája az <a href="http://www.ietf.org/download/rfc-index.txt">ietf.org</a> címen megtalálhatóak.</p>
+<div class="bottom_nav">
+	<table>
+	<tr>
+		<td><a href="06_korlatozasok.htm"><< Előző oldal</a></td>
+		<td><a href="../index.html">&nbsp;Tartalomjegyzék&nbsp;</a></td>
+		<td><a href="08_dokumentaciokkal_kapcsolatos_kovetelmenyek.htm">Következő oldal >></a></td>
+	</tr>
+	</table>
+</div>
 </body>
 </html>
