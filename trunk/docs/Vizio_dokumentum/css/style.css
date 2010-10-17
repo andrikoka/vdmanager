@@ -24,7 +24,20 @@ a:hover {
 	text-decoration: underline;
 }
 
+p {
+	text-align: justify;
+}
+div.bottom_nav table {
+	width: 100%;
+}
+
 p.title {
 	padding: 5px;
 	font-size: 18px;
+}
+p.s_title {
+	font-weight: bold;
+}
+a img {
+	border: none;
 }
