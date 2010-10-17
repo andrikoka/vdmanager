@@ -4,15 +4,15 @@
 		<title>VD Manager - Érintettek, felhasználók</title>
 	<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
 	<META NAME="AUTHOR" CONTENT="Fiber">
-	<link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="../css/style.css" type="text/css" media="screen">
 	</head>
 <body>
-<p class="title">Érintettek, felhasználók</p>
-<p class="s_title">Felhasználók</p>
+<p class="title">Felhasználók</p>
+
 <p>A szoftver felhasználóinak szerepköre nem különíthető el, lévén a szoftver használatának célja fájlok kezelése, azonban
-a felhasználókat osztályozhatjuk magán és üzleti felhasználóként, viszont ezeken belül is több csoport lehetséges.
-Számunkra az egyik fontos tulajdonsága a felhasználónál a fájlkezelésben való jártassága, illetve a felhasználás környezete.
-</p>
+a felhasználókat osztályozhatjuk kezdő és haladó felhasználóként. Mivel a szoftver távlati terve egy Üzleti felhasználói
+kör kialakítása, így az ő szerepkörüket is külön választjuk, mint Magán és Üzleti felhasználók.</p>
+
 <table>
 	<tr>
 		<td rowspan="2">Magán felhasználók</td>
@@ -23,11 +23,12 @@ Számunkra az egyik fontos tulajdonsága a felhasználónál a fájlkezelésben 
 		<td>Haladó felhasználók</td>
 		<td>Teljesen tisztában vannak a számítógép lehetőségeivel, korlátaival, a fájlkezelő szoftvereket tökéletesen
 		tudják használni bármilyen külső segítség igénybevétele nélkül. (lehet akár fejlesztő is vagy egyszerű 
-		haladó felhasználó)
+		haladó felhasználó) A számára szükséges extra funkcionalitást képes implementálni vagy konkrétan meghatározni
+		igényét egy teljesen új funkcióra.
 		</td>
 	</tr>
 	<tr>
-		<td rowspan="2">Üzleti felhasználók</td>
+		<td rowspan="2">Üzleti felhasználók*</td>
 		<td>Kezdő felhasználók</td>
 		<td>Minimális fájlkezelési tapasztalattal (vagy annyival sem) rendelkezők, "kezdők", akik igénybe vehetik az 
 		"extra" szolgáltatásokat is (például támogatás, telefonos segítség egy-egy funkcióhoz)</td>
@@ -41,6 +42,47 @@ Számunkra az egyik fontos tulajdonsága a felhasználónál a fájlkezelésben 
 		</td>
 	</tr>
 </table>
-<p>Folyt köv.</p>
+
+<p>A felhasználói körökben átjárás a Kezdő és Haladó felhasználók között könnyen lehetséges. Terveink szerint a szoftver
+alapértelmezetten mindegyik felhasználónak ugyanazon funkcionalitásokat nyújtaná, tehát nem lenne kezdő és haladó
+felhasználói felület, hanem inkább jól elhelyezett helyzetérzékeny súgókkal és a beállítófelületekről elérhető varázslók
+segítségével könnyítenénk meg a felhasználást.</p>
+
+<p class="s_title">Felhasználói környezet</p>
+<a id="felhasznaloi_kornyezet"></a>
+<p>Az alkalmazás Windows, GNU/Linux és Mac OS X rendszerekre készül.</p>
+<p>Operációs rendszerek követelményei:</p>
+<ul>
+	<li>Windows: Windows 2000 vagy újabb (jelenleg Windows 7)</li>
+	<li>GNU/Linux: KDE (3.5 vagy újabb) / Gnome (2.2 vagy újabb) vagy valamilyen modern grafikus felülettel 
+	rendelkező Linux operációs rendszer</li>
+	<li>Mac OS X: jelenleg nincs rendelkezésre álló tesztkörnyezet és eszköz a követelmények meghatározására</li>
+</ul>
+
+<p>Egyszerre egy felhasználó használhatja a szoftvert, viszont a beállításokat – amennyiben az operációs rendszer támogatja 
+– minden felhasználó saját ízlésének megfelelően szabhatja testre, ezek más felhasználóra nem lesznek hatással</p>
+<p>A programot mindennapos használatra tervezzük, használata néhány perctől órákig terjedhet a feladat komplexitásától és 
+mennyiségétől függően. Ebből következik néhány alapvető követelmény a szoftverrel szemben, mint például: hatékony memória 
+és processzorhasználat, gyors indulás és leállás, stb.</p>
+<p>Speciális hardver és szoftver követelmény nincs, viszont a fejlesztés során fokozottan figyelembe kell venni az 
+operációs rendszerek sajátosságait, egy adott hardware sajátosságait (például egy CD-ROM esetében két fájl párhuzamosan 
+futó másolása jelentősen megnövelheti az eszköz válaszidejét, a két fájl másolási ideje akár duplájára is nőhet, mintha 
+azt egymás után, sorosan hajtanánk végre, így a várakozósor felállítása erre egy ésszerű megoldás lehet)</p>
+<p>Integrációja bizonyos szinten szükséges az operációs rendszerrel (Drag & Drop, alapértelmezett fájlasszociációk* 
+megtartása, stb).</p>
+
+<p><b>*Üzleti Felhasználók:</b> távlati terv, csak demonstrációs célból lett meghatározva a későbbi fejlesztés irányvonalának
+meghatározására</p>
+
+
+<div class="bottom_nav">
+	<table>
+	<tr>
+		<td><a href="02_alkalmazas_helye.htm"><< Előző oldal</a></td>
+		<td><a href="../index.html">&nbsp;Tartalomjegyzék&nbsp;</a></td>
+		<td><a href="04_vegtermek_attekintes.htm">Következő oldal >></a></td>
+	</tr>
+	</table>
+</div>
 </body>
 </html>
