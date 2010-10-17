@@ -38,3 +38,6 @@ p.title {
 p.s_title {
 	font-weight: bold;
 }
+a img {
+	border: none;
+}
