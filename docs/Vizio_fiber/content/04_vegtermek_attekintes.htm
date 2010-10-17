@@ -69,7 +69,34 @@ többi részének egy szabványos felületet biztosít az operációs rendszerhe
 		is munkaképes legyen a szoftver felhasználói beavatkozás igénybevétele nélkül</td>
 	</tr>
 </table>
-<p></p>
+
+<p class="s_title">Feltételezések és függőségek</p>
+<a id="feltetelezesek_fuggosegek"></a>
+<p>A szoftver egyetlen, ám jelentős függősége az operációs rendszerek által nyújtott szolgáltatások elérése. Mivel
+a szoftvert jelenlegi megvalósíthatósági tanulmányaink alapján C++ nyelvben Qt használatával fogjuk implementálni,
+így ezen változások kevéssé befolyásolják a szoftver működését.</p>
+
+<p class="s_title">Költségbecslés</p>
+<a id="koltsegbecsles"></a>
+<p>A szoftver első verziói teljesen ingyen elérhetőek lesznek és mivel egy egyetemi projekt keretében kerül 
+megvalósításra, legtöbbször szabadidőnkben történő fejlesztéssel, így konkrét költségekről nem beszélhetünk.</p>
+
+<p class="s_title">Installáció</p>
+<a id="installacio"></a>
+<p>A szoftver cross-platform tulajdonságai miatt minden egyes operációs rendszeren más telepítő mechanizmus
+segítségével lesz elérhető.</p>
+<ul>
+<li>Windows: NSIS Installer segítségével felmásolt/telepített bináris fájlok, opcionálisan választható forráskód
+felmásolással is</li>
+<li>Linux / Unix: cmake rendszerű forráskód-disztribúció, illetve néhány rendszeren annak megfelelő bináris
+csomagok készítésével (.tgz, .deb, stb.), az operációs rendszer telepítőkészletét felhasználva lesz 
+lehetőség a telepítésre.</li>
+<li>Machintos: sajnos a platform ismeretének hiányában további vizsgálatok szükségesek a telepítőrendszerek
+irányába is.</li>
+</ul>
+<p>Minden platformon a már megszokott telepítőkészletek használatát szorgalmazzuk, így a felhasználók számára
+nem fog különbözni a szoftver telepítésének menete, mint egy bármilyen másik szoftver telepítése.</p>
+
 <div class="bottom_nav">
 	<table>
 	<tr>
