@@ -4,9 +4,81 @@
 		<title>VD Manager - A végtermék áttekintése</title>
 	<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
 	<META NAME="AUTHOR" CONTENT="Fiber">
+	<link rel="stylesheet" href="../css/style.css" type="text/css" media="screen">
 	</head>
 <body>
 <p class="title">A végtermék áttekintése</p>
+
+<p>
+Célunk egy olyan szoftver létrehozása, amely: 
+<ul>
+<li>Az alapvető helyi és távoli fájlkezelést teszi lehetővé (másolás, áthelyezés, törlés, átnevezés, stb.) úgy, hogy
+ne legyen szükség külső szoftver igénybevételére ilyen műveleteknél </li>
+<li>Lehetőségekhez képest folyamatosan tájékkoztatja a felhasználót az eseményekről (nem megengedett a felhasználó 
+felület "lefagyása", a felhasználó felé a folyamatos kommunikáció elengedhetetlen)</li>
+<li>Műveleteket külön szálon indítja, megakadályozva ezzel a teljes rendszer "lefagyását" 
+egy-egy művelet / objektum hibája miatt</li>
+
+<li>Mind a kezdő, mind a haladó felhasználó számára kielégítő funkcionalitással bír</li>
+<li>A 3 legnépszerűbb platformon képes működni (Windows / Linux / Mac)</li>
+<li>Figyelembe veszi az operációs rendszerek sajátosságait, lehetőség szerint ki is használja azokat</li>
+</ul>
+<p class="s_title">A termék kapcsolatai</p>
+<a id="termek_kapcsolatai"></a>
+<p>Mivel a termék az operációs rendszer funkcióinak egy részét tervezi átvenni, így a már meglévő funkciókat teljesen
+implementálni kell, illetve bizonyos esetekben vizsgálni kell a további lehetőségeket, hogy az adott funkció 
+kiegészíthető-e, illetve az implementációnál törekedni arra, hogy <b>legalább</b> az operációs rendszer által 
+biztosított szolgáltatásokat tökéletesen tudja nyújtani.</p>
+<p>Ebből kifolyólag az operációs rendszerrel való interoperabilitást teljes mértékben meg kell tartani. Így például
+a Drag & Drop funkciók, az operációs rendszer sajátosságainak figyelembe vétele  - míg Windowson a meghajtók betűjelekkel
+vannak azonosítva a Unix alapú operációs rendszerek csatolási pontokat definiálnak, de a Windows alapú rendszereken is 
+van lehetőség egy meghajtó "mappába" történő felcsatolására -, a fájlasszociációk<a href="10_szotar.htm">*</a> megtartása, lehetőség 
+biztosítása a felhasználó számára, hogy egy-egy műveletet az operációs rendszer által használt szoftverekkel 
+oldjunk meg, amennyiben ez lehetséges.</p>
+<p>Mivel a szoftver az operációs rendszer által biztosított erőforrásokat használja (merevlemez, processzor, 
+optikai meghajtó, hálózati kapcsolat), ezeket figyelembe kell venni a tervezés és implementációs 
+fázisban. A különbségek elfedésére egy vagy több belső API<a href="10_szotar.htm">*</a> szükséges, amely a szoftver 
+többi részének egy szabványos felületet biztosít az operációs rendszerhez és annak erőforrásaihoz.</p>
+
+<p class="s_title">A termék használatainak előnyei</p>
+<a id="termek_hasznalatanak_elonyei"></a>
+<table>
+	<tr>
+		<td>A Felhasználó előnyei</td>
+		<td>Ezt támogató rendszer jellemzői</td>
+	</tr>
+	<tr>
+		<td>Operációs rendszer váltásakor nem szükséges a kezelőfelület teljes újratanulása</td>
+		<td>Ugyanazon kezelőfelület használata mindegyik operációs rendszeren, csak a rendszerspecifikus 
+		elemek megismerésére van szükség</td>
+	</tr>
+	<tr>
+		<td>Nem szükséges több szoftver telepítése, használata alapvető funkciók elérése érdekében</td>
+		<td>Helyi és távoli fájlkezelés megvalósítása a szoftveren belül, így nem szükséges egy-egy (s)FTP kapcsolathoz
+		egy másik szoftver használata, egyazon felületen keresztül elérhető az.</td>
+	</tr>
+	<tr>
+		<td>Kezdő felhasználó számára is önállóan elsajátítható rendszer</td>
+		<td>Tippek, helyzetérzékeny súgók alkalmazása, minden funkció érthető dokumentációja a súgórendszeren belül</td>
+	</tr>
+	<tr>
+		<td>Folyamatos kapcsolattartás a rendszerrel</td>
+		<td>A több szálon futó műveletek lehetővé teszik azt, hogy egy-egy műveletről a felhasználót 
+		folyamatosan lehessen tájékoztatni anélkül, hogy a művelet hibába futása nem felhasználófüggő esemény
+		bekövetkezésekor (várakozás egy távoli fájlrendszerre) ne "fagyassza" meg a rendszert, továbbra
+		is munkaképes legyen a szoftver felhasználói beavatkozás igénybevétele nélkül</td>
+	</tr>
+</table>
+<p></p>
+<div class="bottom_nav">
+	<table>
+	<tr>
+		<td><a href="03_erintettek_felhasznalok.htm"><< Előző oldal</a></td>
+		<td><a href="../index.html">&nbsp;Tartalomjegyzék&nbsp;</a></td>
+		<td><a href="05_vegtermek_jellemzok_biztositott_szolgaltatasok.htm">Következő oldal >></a></td>
+	</tr>
+	</table>
+</div>
 
 </body>
 </html>
