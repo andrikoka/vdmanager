@@ -82,6 +82,7 @@ is, dokumentáció alapján képes hatékonyan kezelni a szoftvert.</P>
 azt</P>
 <p>API - </p>
 <p>protokoll</p>
+<p>Üzemkész állapot - A szoftver a felhasználó parancsaira vár</p>
 
 <H1>2. Áttekintés</H1>
 <div class="ficsor">
@@ -130,7 +131,8 @@ elhanyagolni, úgy az tervezésnél erre kiemelt figyelmet kell fordítani, hogy
 ez ne befolyásolja más rendszeren.</p>
 <h3>2.4 Felhasználói dokumentáció</h3>
 <p>A Felhasználói dokumentációnak elérhetőnek kell lenni a szoftveren belül. Mivel Operációs Rendszerenként teljesen eltérnek a
-segítségnyújtó rendszerek, így saját rendszer megvalósítása indokolt. Ennek részletes követelményeit lásd a <pont>pontban.</p>
+segítségnyújtó rendszerek, így saját rendszer megvalósítása indokolt. Ennek részletes követelményeit lásd az erre 
+vonatkozó pontban.</p>
 
 <H1>3. A rendszer funkciói</H1>
 <div class="ficsor">
@@ -191,9 +193,87 @@ követelmények és/vagy use case diagramok leírásával.</I></P>
 <P><BR><BR>
 </P>
 </div>
-<p class="center"><img src="use_case_main.png"></p>
-<p class="img_bottom">A rendszer alapvető funkciói</p>
 
+<p class="center"><img src="use_case_main.png"></p>
+<p class="img_bottom">A rendszer fő funkciói</p>
+<p>A rendszer üzemkész állapotban a felhasználó szempontjából négy alapvető funkcióval rendelkezik:</p>
+<ul>
+	<li>Másolás:
+	<p class="center"><img src="use_case_copy.png"></p>
+	<p class="img_bottom">Másolás</p>
+	<p>A felhasználó egy adat objektumról (fájl, mappa) másolatot készít.</p>
+	<p><b>Prekondíciók:</b> A szoftver üzemkész állapotban van.</p>
+	<p><b>Poszt-kondíciók:</b> A forrásként megadott objektum duplikációja elkészül a felhasználó által megadott cél helyen (objektumon).</p>
+	<p><b>Szokásos működés (Main Flow):</b> A felhasználó kijelöli a másolni kívánt objektumot (Forrás objektum megadása), majd megadja a célt 
+	(Cél objektum megadása). 
+	A Másolás parancs kiadása után:
+	<ol>
+		<li>Forrás olvashatóságának ellenőrzése</li>
+		<li>Forrás méretének meghatározása</li>
+		<li>Cél objektum írhatóságának ellenőrzése*</li>
+		<li>Cél objektum nevének ellenőrzése</li>
+		<li>Cél objektumon a forrás méretének elegendő hely ellenőrzése</li>
+		<li>Duplikálás megkezdése, amennyiben a fenti ellenőrzések rendben lezajlanak</li>
+	</ol>
+	</p>
+	<p><b>Alternatív esetek:</b>
+	<ol>
+		<li>Forrás olvashatóságának ellenőrzése:
+			<ul>
+				<li><b>Forrás nem olvasható:</b> Felhasználó tájékoztatása, másolás megszakítása</li>
+			</ul>
+		</li>
+		<li>Forrás méretének meghatározása:
+			<ul>
+				<li><b>Méret nem áll rendelkezésre</b> (némely HTTP szerveren könnyen előfordulhat!): <br>
+				Felhasználó figyelmeztetése, megszakítás vagy folytatás felajánlása. 
+				<ul>
+					<li>Felhasználó megszakítást kért: a művelet megszakítása, visszatérés üzemkész állapotba.</li>
+					<li>Felhasználó folytatást kért: 5. pont kihagyása, ellenőrzések folytatása</li>
+				</ul>
+				</li>
+			</ul>
+		</li>
+		<li>Cél objektum írhatóságának ellenőrzése*:
+		<ul>
+			<li><b>Cél objektum nem írható:</b> Felhasználó figyelmeztetése: másik cél objektum bekérése, megszakítás felajánlása.
+			<ul>
+				<li>Felhasználó megszakítást kért: a művelet megszakítása, visszatérés üzemkész állapotba.</li>
+				<li>Felhasználó folytatás kért: Új célobjektum bekérése, folytatás előtt az ellenőrzés (obj. írhatóságának ellenőrzése) 
+				ismétlése.</li>
+			</ul>
+			</li>
+		</ul>
+		</li>
+		<li>Cél objektum nevének ellenőrzése:<br>
+			<ul>
+				<li><b>Fájlnév helytelen:</b> Felhasználó figyelmeztetése:Folytatás, Megszakítás felajánlása
+					<ul>
+						<li>Felhasználó folytatást kért: Új objektumnév bekérése, ellenőrzés (cél objektum nevének ellenőrzése) ismétlése.</li>
+						<li>Felhasználó megszakítást kért: a művelet megszakítása, visszatérés üzemkész állapotba.</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+		<li>Cél objektumon a forrás méretének elegendő hely ellenőrzése
+			<ul>
+				<li><b>Nem áll rendelkezésre a forrás mérete:</b> Ellenőrzés mellőzése, folytatás a következő ponttal</li>
+				<li><b>Nem áll rendelkezésre elegendő hely:</b> Felhasználó figyelmeztetése:Folytatás, Megszakítás felajánlása
+					<ul>
+						<li>Felhasználó folytatást kért: Új objektum bekérése, ellenőrzés (Cél objektumon a forrás méretének elegendő hely ellenőrzése) ismétlése.</li>
+						<li>Felhasználó megszakítást kért: a művelet megszakítása, visszatérés üzemkész állapotba.</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+		<li>Duplikálás megkezdése, amennyiben a fenti ellenőrzések rendben lezajlanak, az esetleges problémák lekezelésre kerültek</li>
+	</ol>
+	</p>
+	</li>
+	<li>Törlés</li>
+	<li>Áthelyezés</li>
+	<li>Átnevezés</li>
+</ul>
 
 
 <H1>4. Használhatóság</H1>
