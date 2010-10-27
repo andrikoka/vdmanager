@@ -1,0 +1,379 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+	<TITLE>SRS</TITLE>
+	<style type="text/css">
+	p {
+		text-align: justify;
+	}
+	p.center {
+		text-align: center;
+	}
+	p.img_bottom {
+		text-align: center;
+		font-size: 12px;
+	}
+	div.ficsor {
+		border: 1px solid red;
+		width: 500px;
+		float: right;
+		margin: 30px;
+		padding: 10px;
+	}
+	</style>
+</HEAD>
+<BODY>
+<p><B>Történet</B></p>
+<table border="1">
+<tr>
+	<td>Dátum</td>
+	<td>Verzió</td>
+	<td>Leírás</td>
+	<td>Szerző</td>
+</tr>
+<tr>
+	<td>2010.10.24.</td>
+	<td>0.1</td>
+	<td>Dokumentum alapjai</td>
+	<td>Fibinger Ádám</td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+</table>
+
+<P><B>Tartalomjegyzék</B></P>
+<p>Ha kész a doksi TODO</p>
+
+<H1>1. Bevezetés</H1>
+<P>Jelen dokumentum célja a VDMan szoftverrel szemben támasztott követelmények definiálása. A megközelítés minimalista, 
+nem definiál minden lehetséges funkciót, mindössze a szoftver legelsõ verziójának minimális képességeit határozza meg.</P>
+<p>A szoftver 0.1-es verziószámú bemutatópéldányának, a jelen dokumentumban meghatározott funkciókat képesnek kell 
+lennie kielégíteni.</p>
+<p>A projekt célkitűzése egy keresztplatformos fájlkezelő alkalmazás megvalósítása, mely a rendszerek által nyújtott 
+fájlkezelési szolgáltatásokat egységesíti, esetleges operációs rendszer migrációnál megkímélve a felhasználót egy 
+újabb fájlkezelő alkalmazás betanulásától.</p>
+<p>A részletes célokért lásd a vízió dokumentáció "A végtermék áttekintése" pontot.</p>
+<p>Jelen dokumentum olvasóközönsége széles, így az alkalmazott szakkifejezések pontos definíciójáért lásd a mellékelt Szótár
+dokumentumot. Mivel az alkalmazott kifejezések esetén, a szótár szerinti definíciót értelmezzük így javasolt a dokumentum
+elolvasása előtt áttekinteni azt, az eltérő értelmezésből eredő félreértések elkerülése végett.</p>
+
+<P>A dokumentumban az alábbi kifejezések jelennek meg:</P>
+<P>Felhasználó -  a szoftvert használó személy.</P>
+<P>Kezdõ Felhasználó - olyan felhasználó, akinek nincsenek meg a kellõ ismeretei egy (bármilyen) fájlkezelõ szoftver hatékony
+használatához, a felhasználói dokumentáció számára nehezen vagy egyáltalán nem értelmezhetõ, problémái vannak az alapvetõ 
+fogalmakkal is.</P>
+<P>Haladó Felhasználó - olyan felhasználó, aki a szoftverhez hasonló szoftverrel már dolgozott, tisztában van a 
+számítástechnikai alapfogalmakkal, képes önállóan, segítség nélkül dolgozni egy számára teljesen új felhasználói környezetben 
+is, dokumentáció alapján képes hatékonyan kezelni a szoftvert.</P>
+<P>Fejlesztõ(k) - a szoftver implementációját végzõ személy, személyek. </P>
+<P>Operációs Rendszer - a számítógépen futó operációs rendszer, mely lehet Windows, Linux és OSX (Macintosh) valamely típusa.</P>
+<P>GUI - Graphical User Interface Grafikus felhasználói felület, melyen keresztül a felhasználóval kommunikálunk, tájékoztatjuk 
+azt</P>
+<p>API - </p>
+<p>protokoll</p>
+
+<H1>2. Áttekintés</H1>
+<div class="ficsor">
+<P>Ennek a fejezetnek a célja a készülõ alkalmazás szempontjából fontos általános körülmények összefoglalása. Ez nem konkrét
+követelményeket tartalmaz, hanem azok hátterét világítja meg, segítve a következõ fejezetekben részletezett információk 
+megértését. Ide tartozhatnak olyan információk, mint például:</P>
+<UL>
+	<LI><P>a termék környezete,</P>
+	<LI><P>legfontosabb funkciók,</P>
+	<LI><P>a felhasználók jellemzõi,</P>
+	<LI><P>korlátozások,</P>
+	<LI><P>feltételezések és függõségek,</P>
+	<LI><P>a követelmények csoportosításának szempontjai.</P>
+</UL>
+</div>
+
+<h3>2.1 Rendszer Környezetének Áttekintése</h3>
+<p class="center"><img src="context_diagram.png"></p>
+<p class="img_bottom">Context Diagram</p>
+<p>A rendszer (<b>VDManager</b>) közvetlenül a <b>GUI</b>-n keresztül tartja a <b>Felhasználóval</b> a kapcsolatot. A felhasználó ezen a felületen
+keresztül éri el a rendszer által biztosított funkciókat.</p>
+<p>Az <b>Operációs Rendszer</b> jelen esetben a klasszikus értelemben vett operációs rendszer. (Windows, Linux, OSX)</p>
+<p>A szoftver (VDManager) az <b>Operációs Rendszer</b> által biztosított API-k segítségével szolgálja ki a felhasználó által igénybe
+kívánt venni funkciókat.</p>
+<p>A <b>Fájlrendszer</b> a kezelni kívánt objektumok halmaza. Mivel eltérő Operációs Rendszerek eltérő Fájlrendszereket használnak,
+így elérésük cél és szükségszerű az Operációs Rendszer által biztosított APIn keresztül.</p>
+<p>A <b>Hálózat (Network)</b> opcionális, a helyi fájlműveletekben nem játszik szerepet. A Hálózat jelentheti az Internetet és az
+adott számítógép helyi hálózatát is. Mivel a Hálózaton használt protokollok az Operációs Rendszertől függetlenek, 
+de az Operációs Rendszer által biztosított Hálózati rétegen keresztül érhetjük el őket.</p>
+<p>A <b>fájlszerver</b> egy olyan munkaállomás, mely elérést biztosít meghatározott protokollon keresztül a Távoli Fájlrendszerhez.</p>
+<p><b>Távoli Fájlrendszerként</b> definiáljuk minden olyan Fájlrendszert, mely Hálózati kapcsolat nélkül nem elérhető. </p>
+<p>A biztosítandó funkciók szempontjából a Távoli és Helyi fájlrendszerek ugyanazon struktúrában épülnek fel, így az
+ezek közötti átjárást a felhasználó fele transzparensen kell biztosítani.</p>
+
+<p>A VDManager a felhasználó utasításainak megfelelően kommunikál a szükséges objektumokkal, műveleteket végez rajtuk, hogy 
+a felhasználó által elvárt eredményt elérje. Ezek elsősorban az alapvető fájlműveletek és azok vonzatai.</p>
+<h3>2.2 Felhasználók, szerepkörök</h3>
+<p>A felhasználók viselkedhetnek Haladó és Kezdő felhasználóként is, átjárás a szerepek között lehetséges. A két szerepkör
+eltérése egymástól a súgórendszer által nyújtott szolgáltatások használatában jelentkezik.</p>
+
+<h3>2.3 Operációs rendszerek sajátosságai</h3>
+<p>Mivel a szoftver eltérő operációs rendszereken fog futni, így figyelembe kell venni az Operációs Rendszerek által nyújtott
+szolgáltatásokat, annak megfelelően implementálni az adott szolgáltatást / funkciót, hogy az lehetőleg mindegyik rendszeren 
+ugyanazt a célt szolgálja, eredményt produkálja. Amennyiben valamely operációs rendszer sajátosságát nem lehet 
+elhanyagolni, úgy az tervezésnél erre kiemelt figyelmet kell fordítani, hogy az alapvető funkció használatát 
+ez ne befolyásolja más rendszeren.</p>
+<h3>2.4 Felhasználói dokumentáció</h3>
+<p>A Felhasználói dokumentációnak elérhetőnek kell lenni a szoftveren belül. Mivel Operációs Rendszerenként teljesen eltérnek a
+segítségnyújtó rendszerek, így saját rendszer megvalósítása indokolt. Ennek részletes követelményeit lásd a <pont>pontban.</p>
+
+<H1>3. A rendszer funkciói</H1>
+<div class="ficsor">
+<P><FONT FACE="Arial, sans-serif">Specific Requirements<br>
+A rendszer funkciói
+</FONT></P>
+<P>Ebben az alpontban kell összefoglalni a a rendszerrel szemben
+támasztott funkcionális követelményeket.</P>
+<P>A leírás történhet természetes nyelven és/vagy user case diagramok
+használatával.</P>
+<P><BR><BR>
+</P>
+<P>Természetes nyelvi leírás esetén az egyes alpontok egymás után
+egy-egy követelmény specifikációját tartalmazzák. Szükség esetén a
+követelmények a rendszer fõ szolgáltatásai, funkcionális moduljai
+mentén csoportosíthatók.</P>
+<P><BR><BR>
+</P>
+<P>Use case diagramok használata esetén a use case modell alapvetõen
+use case csomagok sorozata. A csoportosítás ilyenkor a csomagok
+segítségével történik, és egy-egy alpont egy csomagra vonatkozik. Egy
+alpont ilyenkor az alábbiakat tartalmazza:</P>
+<UL>
+	<LI><P>Egy use case diagram.</P>
+	<LI><P>A diagramon szereplõ valamennyi aktor felsorolása, és pontos
+	definíciója (ha a dokumentumban már korábban elõfordult, akkor a
+	pontos hivatkozás a definícióra).</P>
+	<LI><P>A diagramon szereplõ valamennyi use case felsorolása, és
+	pontos definíciója. Egyszerû esetben ez lehet természetes nyelvi
+	leírás, bonyolultabb esetben egyéb UML eszköz. (pl. szekvencia
+	diagram vagy együttmûködési diagram.) Minden use case leírás az
+	alábbiakat kell hogy tartalmazza, egy &ndash; egy alpontban:</P>
+	<LI><P>A use case neve.</P>
+	<LI><P>Rövid leírás.</P>
+	<LI><P>Prekondíciók (elõfeltételek): azon feltételek felsorolása,
+	amelyeknek teljesülnie kell, mielõtt a use case által jelzett
+	tevékenység elkezdõdik.</P>
+	<LI><P>Post kondíciók : annak leírása, hogy milyen állapot
+	következik be a use case végén.</P>
+	<LI><P>Szokásos mûködés (Main Flow): azok az események / folyamatok,
+	amelyek a use case &bdquo;szokásos&rdquo; körülmények közötti
+	mûködését jellemzik. (Például egy pénzfelvételnél a kártya
+	beolvasása, pin kód beadása stb.)</P>
+	<LI><P>Alternatív esetek (Alternate Flows): azok az események /
+	folyamatok, amelyek elõfordulhatnak, és ezért kezelendõk, de nem a
+	&bdquo;szokásos&rdquo; mûködéshez tartoznak. (Például a
+	pénzfelvételnél a kuncsaft helytelen pin kódot ad meg.)</P>
+	<LI><P>Kivételes esetek (Exception Flows): azok a lehetséges
+	forgatókönyvek, amelyek váratlanul bekövetkezhetnek. (Például a
+	pénzfelvételnél egy olvashatatlan kártya, vagy áramszünet stb.)</P>
+	<LI><P>A diagramon szereplõ use case-ek kapcsolatainak leírása.</P>
+</UL>
+<P><BR><BR>
+</P>
+<P><I>És akkor itt jönnek a 3.1, 3.2 stb. alpontok az egyes
+követelmények és/vagy use case diagramok leírásával.</I></P>
+<H2 CLASS="western">3.1. Elsõ követelmény</H2>
+<P><BR><BR>
+</P>
+</div>
+<p class="center"><img src="use_case_main.png"></p>
+<p class="img_bottom">A rendszer alapvető funkciói</p>
+
+
+
+<H1>4. Használhatóság</H1>
+<div class="ficsor">
+<P><FONT FACE="Arial, sans-serif">Usability</FONT></P>
+<P>Itt kell összefoglalni azokat a nem funkcionális követelményeket
+(mindegyiket egy-egy alpontban), amelyek a rendszer használhatóságát
+befolyásolják. Ilyenek lehetnek például:</P>
+<UL>
+	<LI><P>Mennyi betanulási idõre lesz majd szüksége a rendszer
+	hatékony használatához egy kezdõ és egy gyakorlott felhasználónak.</P>
+	<LI><P>Mennyi idõ alatt tud egy adott tevékenységet végrehajtani egy
+	átlagos felhasználó a jelenlegi módszerrel, meglévõ más rendszerek,
+	illetve a fejlesztendõ rendszer segítségével.</P>
+	<LI><P>Melyek azok a rendszer tulajdonságok, amelyek segíthetik a
+	kezdõ felhasználót a gyors betanulásban?</P>
+	<LI><P>Milyen egyéb lehetõségek állnak rendelkezésre (vagy kérhetõk
+	a fejlesztõktõl ingyen vagy külön díjazás fejében) a betanulás
+	elõsegítésére (tréningek, dokumentációk, könyvek, demonstrációs
+	prototípus stb.)</P>
+	<LI><P>Mennyire hasonló vagy eltérõ a felhasználói felület, annak
+	használati módja a felhasználók által már korábban is használt
+	alkalmazásokkal összehasonlítva?</P>
+	<LI><P>Ha a leendõ alkalmazással párhuzamosan más alkalmazásokat is
+	fognak használni a felhasználók a munkájuk során, összhangban
+	vannak-e ezek programok a használat (elsõsorban a felhasználói
+	felület szempontjából)?</P>
+</UL>
+</div>
+
+
+
+<H1 CLASS="western">5. Megbízhatóság</H1>
+<div class="ficsor">
+<P><FONT FACE="Arial, sans-serif">Reliability</FONT></P>
+<P>A rendszerrel szemben támasztott megbízhatósági követelmények.
+(Minden követelmény egy alpontban.) Ilyenek lehetnek például:</P>
+<UL>
+	<LI><P>rendelkezésre állás (pl. %-ban): teljes használhatóság,
+	karbantartási idõ, korlátozott használhatóság,</P>
+	<LI><P>MTBF: (Mean Time Between Failures): hibák között eltelt
+	átlagos idõ,</P>
+	<LI><P>MTTR: (Man Time To Repair): egy hiba utáni javítás átlagos
+	ideje,</P>
+	<LI><P>A rendszer eredményeinek pontossága, felbontása (ha
+	értelmezhetõ).</P>
+</UL>
+<P><BR><BR>
+</P>
+<H1 CLASS="western">6. Teljesítmény</H1>
+<P><FONT FACE="Arial, sans-serif">Performance</FONT></P>
+<P>Itt kell leírni a rendszertõl elvárt teljesítmény mutatókat,
+mindegyiket egy külön alpontban. Ilyenek lehetnek például:</P>
+<UL>
+	<LI><P>válaszidõk (legalább a leggyakrabban használt funkciók
+	esetén),</P>
+	<LI><P>áteresztõképesség (például tranzakció/mp),</P>
+	<LI><P>kapacitás (például a kezelt adatbázis max. mérete,
+	feldolgozandó tranzakciók száma, egyidejûleg kiszolgálandó
+	felhasználók száma stb.),</P>
+	<LI><P>a korlátozott használhatóság idején elvárható / teljesítendõ
+	mutatók,</P>
+	<LI><P>erõforrás igények (processzor sebesség, memória igény, diszk
+	kapacitás, sávszélesség stb.).</P>
+</UL>
+</div>
+<H1 CLASS="western">7. Támogatottság</H1>
+<P><FONT FACE="Arial, sans-serif">Supportability</FONT></P>
+<P>A rendszer üzembe helyezése után szükséges karbantartási feladatok
+megkönnyítésére szolgáló követelmények, egy-egy alpontban. Ezek a
+követelmények vonatkozhatnak mind a termékre, mind a fejlesztés
+folyamatára. Ilyenek lehetnek például:</P>
+<UL>
+	<LI><P>a használandó kódolási szabványok, elnevezési konvenciók,</P>
+	<LI><P>csak a karbantartóknak, illetve üzemeltetõknek szükséges
+	funkciók,</P>
+	<LI><P>a mûködés során keletkezõ naplók (a késõbbi hibakeresés vagy
+	finomhangolás elõsegítésére),</P>
+	<LI><P>a karbantartók munkáját segítõ segédalkalmazások (például a
+	naplók kiértékelésére).</P>
+</UL>
+<P><BR><BR>
+</P>
+<H1 CLASS="western">8. Tervezési korlátozások</H1>
+<P><FONT FACE="Arial, sans-serif">Design Constrainst</FONT></P>
+<P>Itt kell felsorolni egy-egy alpontban minden olyan korlátozást,
+amely a tervezési, esetleg az implementációs munkát befolyásolja.
+Ilyenek lehetnek például:</P>
+<UL>
+	<LI><P>a kívánatos architektúrára vonatkozó elõírások (például
+	milyen részekbõl [&bdquo;tier&rdquo;] kell felépíteni az
+	alkalmazást),</P>
+	<LI><P>milyen programozási nyelv(ek)et kell használni,</P>
+	<LI><P>milyen fejlesztõeszközt kell használni,</P>
+	<LI><P>milyen újra felhasználható elemek építhetõk be az
+	alkalmazásba (komponens- és/vagy osztálykönyvtárak, kész kódok
+	stb.),</P>
+	<LI><P>milyen fejlesztési módszertant, hogyan kell használni.</P>
+</UL>
+<P><BR><BR>
+</P>
+<H1 CLASS="western">9. On-line dokumentáció és Help rendszer</H1>
+<P><FONT FACE="Arial, sans-serif">Online User Documentation and Help
+System Requirements</FONT></P>
+<P>Kellenek-e ilyenek, ha igen, a vonatkozó információk.</P>
+<P><BR><BR>
+</P>
+<H1 CLASS="western">10. Felhasznált kész komponensek</H1>
+<P><FONT FACE="Arial, sans-serif">Third-party Components</FONT></P>
+<P>Egy-egy alpontban kell felsorolni az alkalmazásba építendõ
+vásárolt vagy szabad felhasználású elemeket. Vásárlás esetén a
+részletezni kell a beszerzés körülményeit, a költségeket, a
+betartandó liceszelési és egyéb szabályokat. Szabad felhasználású
+elem esetén is fontos a forrás pontos megjelölése, a felhasználás
+szabályai, az alkalmazásra ebbõl adódó esetleges következmények,
+kötelezettségek.</P>
+<P><BR><BR>
+</P>
+<H1 CLASS="western">11. Interfészek</H1>
+<P><FONT FACE="Arial, sans-serif">Interfaces</FONT></P>
+<P>Ebben a fejezetben kell specifikálni a rendszer valamennyi külsõ
+kapcsolatát, az ezt biztosító interfészeket.</P>
+<P><BR><BR>
+</P>
+<H2 CLASS="western">11.1. Felhasználói interfészek</H2>
+<P><FONT FACE="Arial, sans-serif">User Interfaces</FONT></P>
+<P>Ebben az alpontban kell leírni a felhasználói interfészre
+vonatkozó követelményeket. Ilyenek lehetnek például:</P>
+<UL>
+	<LI><P>használandó szabvány vagy kvázi-szabvány, stílus,</P>
+	<LI><P>a különbözõ felhasználói csoportok (munkakör, gyakorlottság
+	stb. szerint) elvárásai,</P>
+	<LI><P>a leglényegesebb user interface elemek tervei.</P>
+</UL>
+<P><BR><BR>
+</P>
+<H2 CLASS="western">11.2. Hardware interfészek</H2>
+<P><FONT FACE="Arial, sans-serif">Hardware Interfaces</FONT></P>
+<P>Ha vannak a rendszerben speciális kezelendõ hardware elemek.</P>
+<P><BR><BR>
+</P>
+<H2 CLASS="western">11.3. Software interfészek</H2>
+<P><FONT FACE="Arial, sans-serif">Software Interfaces</FONT></P>
+<P>Ha a rendszernek más rendszerekkel az üzembe helyezés után, vagy
+belátható idõn belül majd a kapcsolatot kell tartania más
+rendszerekkel, itt kell megadni a kapcsolat kiépítéséhez szükséges
+részletességû információkat.</P>
+<P><BR><BR>
+</P>
+<H2 CLASS="western">11.3. Kommunikációs interfészek</H2>
+<P><FONT FACE="Arial, sans-serif">Communications Interfaces</FONT></P>
+<P>Ha a rendszernek valamilyen kommunikációs csatorna vagy csatornák
+segítségével kell kapcsolatot tartania a felhasználókkal vagy más
+rendszerekkel. (Például internetes, mobiltelefonos kliens stb.)</P>
+<P><BR><BR>
+</P>
+<H1 CLASS="western">12. Alkalmazott szabványok</H1>
+<P><FONT FACE="Arial, sans-serif">Applicable Standards</FONT></P>
+<P>A fejlesztés során vagy az alkalmazás készítése és üzemeltetése,
+használata során betartandó elõírások (technikai vagy szakterületi
+szabványok, törvények stb.) Célszerû lehet az alábbi csoportosítás.</P>
+<H2 CLASS="western">12.1. Kötelezõen alkalmazandó szabványok</H2>
+<P><A NAME="DDE_LINK2"></A><FONT FACE="Arial, sans-serif">Mandatory
+Standards</FONT></P>
+<P>Valamilyen szintû elõírás miatt. (Például törvényi elõírás stb.)</P>
+<P><BR><BR>
+</P>
+<H2 CLASS="western">12.2. Választás alapján alkalmazott szabványok</H2>
+<P><FONT FACE="Arial, sans-serif">Optional Standars</FONT></P>
+<P>A fejlesztõk vagy a felhasználók által valamilyen okból önként
+vállalt elõírások.</P>
+<P><BR><BR>
+</P>
+<H1 CLASS="western">13. Mellékletek</H1>
+<P><FONT FACE="Arial, sans-serif">Appendix</FONT></P>
+<P>Fõleg hosszabb dokumentumok esetén ide kerülhet minden olyan
+információ, ami a dokumentum áttekinthetõségét segíti (pl.
+tárgymutató, irodalomjegyzék, egyéb források megjelölése), illetve a
+fejlesztés egyéb, kapcsolódó dokumentumaira való hivatkozás.</P>
+<P><BR><BR>
+</P>
+</BODY>
+</HTML>
