@@ -13,13 +13,40 @@
 	p.img_bottom {
 		text-align: center;
 		font-size: 12px;
+		margin: 15px;
+		border: 1px solid black;
 	}
+	img {
+		float: right;
+		border: 1px solid black;
+		padding: 5px;
+		margin: 15px;
+		margin-right: 0px;
+	}
+	
 	div.ficsor {
 		border: 1px solid red;
 		width: 500px;
 		float: right;
 		margin: 30px;
 		padding: 10px;
+	}
+	
+	b.main_functions {
+		font-size: 20px;
+		font-weight: bolder;
+		color: #038;
+	}
+	
+	ul {
+		list-style-type: square;
+	}
+
+	ul ul {
+		list-style-type: disc;
+	}
+	ul ul ul {
+		list-style-type: circle;
 	}
 	</style>
 </HEAD>
@@ -63,6 +90,24 @@
 	<td>Fibinger Ádám</td>
 </tr>
 
+<tr>
+	<td>2010.10.28.</td>
+	<td>0.3.3</td>
+	<td>Átnevezés, Áthelyezés, Törlés szöveges és Use-Case kidolgozása, Másolás kiegészítése</td>
+	<td>Komjáthy Gábor</td>
+</tr>
+<tr>
+	<td>2010.10.28.</td>
+	<td>0.3.3</td>
+	<td>Átnevezés, Áthelyezés, Törlés Use-Case-ek argoUML-kompatibilis átdolgozása</td>
+	<td>Kovács Balázs</td>
+</tr>
+<tr>
+	<td>2010.10.28.</td>
+	<td>0.3.3</td>
+	<td>Használhatósági követelmények kidolgozása</td>
+	<td>Fibinger Ádám</td>
+</tr>
 </table>
 
 <P><B>Tartalomjegyzék</B></P>
@@ -98,23 +143,9 @@ azt</P>
 <p>Üzemkész állapot - A szoftver a felhasználó parancsaira vár</p>
 
 <H1>2. Áttekintés</H1>
-<div class="ficsor">
-<P>Ennek a fejezetnek a célja a készülõ alkalmazás szempontjából fontos általános körülmények összefoglalása. Ez nem konkrét
-követelményeket tartalmaz, hanem azok hátterét világítja meg, segítve a következõ fejezetekben részletezett információk 
-megértését. Ide tartozhatnak olyan információk, mint például:</P>
-<UL>
-	<LI><P>a termék környezete,</P>
-	<LI><P>legfontosabb funkciók,</P>
-	<LI><P>a felhasználók jellemzõi,</P>
-	<LI><P>korlátozások,</P>
-	<LI><P>feltételezések és függõségek,</P>
-	<LI><P>a követelmények csoportosításának szempontjai.</P>
-</UL>
-</div>
-
 <h3>2.1 Rendszer Környezetének Áttekintése</h3>
-<p class="center"><img src="context_diagram.png"></p>
 <p class="img_bottom">Context Diagram</p>
+<img src="context_diagram.png" alt="Környezeti Diagram">
 <p>A rendszer (<b>VDManager</b>) közvetlenül a <b>GUI</b>-n keresztül tartja a <b>Felhasználóval</b> a kapcsolatot. A felhasználó ezen a felületen
 keresztül éri el a rendszer által biztosított funkciókat.</p>
 <p>Az <b>Operációs Rendszer</b> jelen esetben a klasszikus értelemben vett operációs rendszer. (Windows, Linux, OSX)</p>
@@ -132,6 +163,7 @@ ezek közötti átjárást a felhasználó fele transzparensen kell biztosítani
 
 <p>A VDManager a felhasználó utasításainak megfelelően kommunikál a szükséges objektumokkal, műveleteket végez rajtuk, hogy 
 a felhasználó által elvárt eredményt elérje. Ezek elsősorban az alapvető fájlműveletek és azok vonzatai.</p>
+
 <h3>2.2 Felhasználók, szerepkörök</h3>
 <p>A felhasználók viselkedhetnek Haladó és Kezdő felhasználóként is, átjárás a szerepek között lehetséges. A két szerepkör
 eltérése egymástól a súgórendszer által nyújtott szolgáltatások használatában jelentkezik.</p>
@@ -148,78 +180,22 @@ segítségnyújtó rendszerek, így saját rendszer megvalósítása indokolt. E
 vonatkozó pontban.</p>
 
 <H1>3. A rendszer funkciói</H1>
-<div class="ficsor">
-<P><FONT FACE="Arial, sans-serif">Specific Requirements<br>
-A rendszer funkciói
-</FONT></P>
-<P>Ebben az alpontban kell összefoglalni a a rendszerrel szemben
-támasztott funkcionális követelményeket.</P>
-<P>A leírás történhet természetes nyelven és/vagy user case diagramok
-használatával.</P>
-<P><BR><BR>
-</P>
-<P>Természetes nyelvi leírás esetén az egyes alpontok egymás után
-egy-egy követelmény specifikációját tartalmazzák. Szükség esetén a
-követelmények a rendszer fõ szolgáltatásai, funkcionális moduljai
-mentén csoportosíthatók.</P>
-<P><BR><BR>
-</P>
-<P>Use case diagramok használata esetén a use case modell alapvetõen
-use case csomagok sorozata. A csoportosítás ilyenkor a csomagok
-segítségével történik, és egy-egy alpont egy csomagra vonatkozik. Egy
-alpont ilyenkor az alábbiakat tartalmazza:</P>
-<UL>
-	<LI><P>Egy use case diagram.</P>
-	<LI><P>A diagramon szereplõ valamennyi aktor felsorolása, és pontos
-	definíciója (ha a dokumentumban már korábban elõfordult, akkor a
-	pontos hivatkozás a definícióra).</P>
-	<LI><P>A diagramon szereplõ valamennyi use case felsorolása, és
-	pontos definíciója. Egyszerû esetben ez lehet természetes nyelvi
-	leírás, bonyolultabb esetben egyéb UML eszköz. (pl. szekvencia
-	diagram vagy együttmûködési diagram.) Minden use case leírás az
-	alábbiakat kell hogy tartalmazza, egy &ndash; egy alpontban:</P>
-	<LI><P>A use case neve.</P>
-	<LI><P>Rövid leírás.</P>
-	<LI><P>Prekondíciók (elõfeltételek): azon feltételek felsorolása,
-	amelyeknek teljesülnie kell, mielõtt a use case által jelzett
-	tevékenység elkezdõdik.</P>
-	<LI><P>Post kondíciók : annak leírása, hogy milyen állapot
-	következik be a use case végén.</P>
-	<LI><P>Szokásos mûködés (Main Flow): azok az események / folyamatok,
-	amelyek a use case &bdquo;szokásos&rdquo; körülmények közötti
-	mûködését jellemzik. (Például egy pénzfelvételnél a kártya
-	beolvasása, pin kód beadása stb.)</P>
-	<LI><P>Alternatív esetek (Alternate Flows): azok az események /
-	folyamatok, amelyek elõfordulhatnak, és ezért kezelendõk, de nem a
-	&bdquo;szokásos&rdquo; mûködéshez tartoznak. (Például a
-	pénzfelvételnél a kuncsaft helytelen pin kódot ad meg.)</P>
-	<LI><P>Kivételes esetek (Exception Flows): azok a lehetséges
-	forgatókönyvek, amelyek váratlanul bekövetkezhetnek. (Például a
-	pénzfelvételnél egy olvashatatlan kártya, vagy áramszünet stb.)</P>
-	<LI><P>A diagramon szereplõ use case-ek kapcsolatainak leírása.</P>
-</UL>
-<P><BR><BR>
-</P>
-<P><I>És akkor itt jönnek a 3.1, 3.2 stb. alpontok az egyes
-követelmények és/vagy use case diagramok leírásával.</I></P>
-<H2 CLASS="western">3.1. Elsõ követelmény</H2>
-<P><BR><BR>
-</P>
-</div>
-
-<p class="center"><img src="use_case_main.png"></p>
+<p class="center"><img src="use_case_main.png" alt="A rendszer fő funkciói"></p>
 <p class="img_bottom">A rendszer fő funkciói</p>
 <p>A rendszer üzemkész állapotban a felhasználó szempontjából négy alapvető funkcióval rendelkezik:</p>
 <ul>
-	<li>Másolás:
-	<p class="center"><img src="use_case_copy.png"></p>
+	<li>	
+	<p class="center">
+		<img src="use_case_copy.png" alt="Másolás funkció">
+	</p>
 	<p class="img_bottom">Másolás</p>
+	<b class="main_functions">Másolás</b>:
 	<p>A felhasználó egy adat objektumról (fájl, mappa) másolatot készít.</p>
 	<p><b>Prekondíciók:</b> A szoftver üzemkész állapotban van.</p>
 	<p><b>Poszt-kondíciók:</b> A forrásként megadott objektum duplikációja elkészül a felhasználó által megadott cél helyen (objektumon).</p>
 	<p><b>Szokásos működés (Main Flow):</b> A felhasználó kijelöli a másolni kívánt objektumot (Forrás objektum megadása), majd megadja a célt 
 	(Cél objektum megadása). 
-	A Másolás parancs kiadása után:
+	A Másolás parancs kiadása után:</p>
 	<ol>
 		<li>Forrás olvashatóságának ellenőrzése</li>
 		<li>Forrás méretének meghatározása</li>
@@ -228,7 +204,7 @@ követelmények és/vagy use case diagramok leírásával.</I></P>
 		<li>Cél objektumon a forrás méretének elegendő hely ellenőrzése</li>
 		<li>Duplikálás megkezdése, amennyiben a fenti ellenőrzések rendben lezajlanak</li>
 	</ol>
-	</p>
+
 	<p><b>Alternatív esetek:</b>
 	<ol>
 		<li>Forrás olvashatóságának ellenőrzése:
@@ -247,6 +223,103 @@ követelmények és/vagy use case diagramok leírásával.</I></P>
 				</li>
 			</ul>
 		</li>
+		<li>Cél objektum írhatóságának ellenőrzése*:
+		<ul>
+			<li><b>Cél objektum nem írható:</b> Felhasználó figyelmeztetése: másik cél objektum bekérése, megszakítás felajánlása.
+			<ul>
+				<li>Felhasználó megszakítást kért: a művelet megszakítása, visszatérés üzemkész állapotba.</li>
+				<li>Felhasználó folytatás kért: Új célobjektum bekérése, folytatás előtt az ellenőrzés (obj. írhatóságának ellenőrzése) 
+				ismétlése.</li>
+			</ul>
+			</li>
+		</ul>
+		</li>
+		<li>Cél objektum nevének ellenőrzése:
+			<ul>
+				<li><b>Fájlnév helytelen:</b> Felhasználó figyelmeztetése:Folytatás, Megszakítás felajánlása
+					<ul>
+						<li>Felhasználó folytatást kért: Új objektumnév bekérése, ellenőrzés (cél objektum nevének ellenőrzése) ismétlése.</li>
+						<li>Felhasználó megszakítást kért: a művelet megszakítása, visszatérés üzemkész állapotba.</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+		<li>Cél objektumon a forrás méretének elegendő hely ellenőrzése
+			<ul>
+				<li><b>Nem áll rendelkezésre a forrás mérete:</b> Ellenőrzés mellőzése, folytatás a következő ponttal</li>
+				<li><b>Nem áll rendelkezésre elegendő hely:</b> Felhasználó figyelmeztetése:Folytatás, Megszakítás felajánlása
+					<ul>
+						<li>Felhasználó folytatást kért: Új objektum bekérése, ellenőrzés (Cél objektumon a forrás méretének elegendő hely ellenőrzése) ismétlése.</li>
+						<li>Felhasználó megszakítást kért: a művelet megszakítása, visszatérés üzemkész állapotba.</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+		<li>Duplikálás megkezdése, amennyiben a fenti ellenőrzések rendben lezajlanak, az esetleges problémák lekezelésre kerültek</li>
+	</ol>
+
+	</li>
+	<li><p><b class="main_functions">Törlés:</b></p>
+	<p>A felhasználó egy adat objektumot (fájl, mappa) eltávolít.</p>
+	<b>Prekondíciók:</b> A szoftver üzemkész állapotban van.<br>
+	<b>Poszt-kondíciók:</b> A forrásként megadott objektum törlődik.<br>
+	<b>Szokásos működés (Main Flow):</b> A felhasználó kijelöli a törölni kívánt objektumot (Forrás objektum megadása).<br>
+	A Törlés parancs kiadása után:
+	<ol>
+		<li>Forrás olvashatóságának ellenőrzése</li>
+		<li>Törlés megkezdése, amennyiben a fenti ellenőrzés rendben lezajlott.</li>
+	</ol>
+	<b>Alternatív esetek:</b>
+	<ol>
+		<li>Forrás olvashatóságának ellenőrzése:
+			<ul>
+				<li><b>Forrás nem olvasható:</b> Felhasználó tájékoztatása, törlés megszakítása</li>
+			</ul>
+		</li>
+		<li>Eltávolítás megkezdése, amennyiben a fenti ellenőrzés rendben lezajlott, az esetleges problémák lekezelésre kerültek</li>
+	</ol>
+	</li>
+	
+	<li><p><b class="main_functions">Áthelyezés:</b><br></p>
+	<p>A felhasználó egy adat objektumot (fájl, mappa) áthelyez.</p>
+	<p><b>Prekondíciók:</b> A szoftver üzemkész állapotban van.</p>
+	<p><b>Poszt-kondíciók:</b> A forrásként megadott objektum duplikációja elkészül a felhasználó által megadott cél helyen (objektumon), a forrásként megadott objektum törlődik.</p>
+	<p><b>Szokásos működés (Main Flow):</b> A felhasználó kijelöli az áthelyezni kívánt objektumot (Forrás objektum megadása), majd megadja a célt 
+	(Cél objektum megadása). 
+	Az Áthelyezés parancs kiadása után:
+	<ol>
+		<li>Forrás olvashatóságának ellenőrzése</li>
+		<li>Forrás méretének meghatározása</li>
+		<li>Forrás törölhetőségének meghatározása</li>
+		<li>Cél objektum írhatóságának ellenőrzése*</li>
+		<li>Cél objektum nevének ellenőrzése</li>
+		<li>Cél objektumon a forrás méretének elegendő hely ellenőrzése</li>
+		<li>Duplikálás megkezdése, amennyiben a fenti ellenőrzések rendben lezajlanak</li>
+	</ol>
+
+	<p><b>Alternatív esetek:</b>
+	<ol>
+		<li>Forrás olvashatóságának ellenőrzése:
+			<ul>
+				<li><b>Forrás nem olvasható:</b> Felhasználó tájékoztatása, áthelyezés megszakítása</li>
+			</ul>
+		</li>
+		<li>Forrás méretének meghatározása:
+			<ul>
+				<li><b>Méret nem áll rendelkezésre</b> (némely HTTP szerveren könnyen előfordulhat!): <br>
+				Felhasználó figyelmeztetése, megszakítás vagy folytatás felajánlása. 
+				<ul>
+					<li>Felhasználó megszakítást kért: a művelet megszakítása, visszatérés üzemkész állapotba.</li>
+					<li>Felhasználó folytatást kért: 5. pont kihagyása, ellenőrzések folytatása</li>
+				</ul>
+				</li>
+			</ul>
+		</li>
+		<li>Forrás törölhetőségének meghatározása:
+			<ul>
+				<li><b>A forrás nem törölhető:</b><br>Felhasználó tájékoztatása, törlés megszakítása.
+			</ul>
+		</li>		
 		<li>Cél objektum írhatóságának ellenőrzése*:
 		<ul>
 			<li><b>Cél objektum nem írható:</b> Felhasználó figyelmeztetése: másik cél objektum bekérése, megszakítás felajánlása.
@@ -279,13 +352,40 @@ követelmények és/vagy use case diagramok leírásával.</I></P>
 				</li>
 			</ul>
 		</li>
-		<li>Duplikálás megkezdése, amennyiben a fenti ellenőrzések rendben lezajlanak, az esetleges problémák lekezelésre kerültek</li>
+		<li>Áthelyezés megkezdése, amennyiben a fenti ellenőrzések rendben lezajlanak, az esetleges problémák lekezelésre kerültek</li>
 	</ol>
-	</p>
 	</li>
-	<li>Törlés</li>
-	<li>Áthelyezés</li>
-	<li>Átnevezés</li>
+	<li><p><b class="main_functions">Átnevezés</b><p>
+	<p>A felhasználó egy adat objektum (fájl, mappa) nevét megváltoztatja.</p>
+	<p><b>Prekondíciók:</b> A szoftver üzemkész állapotban van.</p>
+	<p><b>Poszt-kondíciók:</b> A forrásként megadott objektum neve megváltozik a felhasználó által megadott új névre.</p>
+	<p><b>Szokásos működés (Main Flow):</b> A felhasználó kijelöli az átnevezni kívánt objektumot (Forrás objektum megadása), majd megadja az új nevet. 
+	Az Átnevezés parancs kiadása után:
+	<ol>
+		<li>Forrás módosíthatóságának ellenőrzése</li>
+		<li>A megadott új név ellenőrzése</li>
+		<li>Átnevezés megkezdése, amennyiben a fenti ellenőrzések rendben lezajlanak</li>
+	</ol>
+	<p><b>Alternatív esetek:</b>
+	<ol>
+		<li>Forrás módosíthatóságának ellenőrzése:
+			<ul>
+				<li><b>Forrás nem módosítható:</b> Felhasználó tájékoztatása, átnevezés megszakítása</li>
+			</ul>
+		</li>
+		<li>A megadott új név ellenőrzése:<br>
+			<ul>
+				<li><b>Fájlnév helytelen:</b> Felhasználó figyelmeztetése:Folytatás, Megszakítás felajánlása
+					<ul>
+						<li>Felhasználó folytatást kért: Új objektumnév bekérése, ellenőrzés (cél objektum nevének ellenőrzése) ismétlése.</li>
+						<li>Felhasználó megszakítást kért: a művelet megszakítása, visszatérés üzemkész állapotba.</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+		<li>Átnevezés megkezdése, amennyiben a fenti ellenőrzések rendben lezajlanak, az esetleges problémák lekezelésre kerültek</li>
+	</ol>
+	</li>
 </ul>
 
 
@@ -316,8 +416,35 @@ befolyásolják. Ilyenek lehetnek például:</P>
 	felület szempontjából)?</P>
 </UL>
 </div>
-
-
+<h3>4.1 Betanulási idő, tanulási görbe</h3>
+<p>A felhasználói dokumentáció integrálása szükséges a végleges szoftverbe, módosítások esetén a módosításokkal párhuzamosan a 
+felhasználói dokumentáció is frissitésre kell, hogy kerüljön. Ennek eredményeképp nem dokumentált funkció nem fordulhat elő a rendszerben.
+A felhasználói dokumentáció mellett a helyzetérzékeny súgók kidolgozása is a dokumentációt karban tartó feladata.</p>
+<p>A két felhasználói szerepkör nem válik el élesen, ezáltal a Kezdő felhasználó bizonyos idő elteltével haladóvá lép elő. Ezt megteheti
+önállóan, a rendszerbe épített kétszintű súgó segítségével. Egy kezdő és haladó felhasználót tapasztalataink alapján nem érdemes más
+működésű felhasználói felület elé ültetni, vagy funkciókat elrejteni előle, ugyanis az átjárás a szerepkörök között ezáltal 
+nehézkesebb lesz.</p>
+<p>A rendszer felépítéséből adódóan egy Haladó felhasználónak az alapvető funkciók eléréséhez nem szükséges betanulási idő, ugyanis
+amennyire a szoftver korlátai engedik, a TotalCommander; Krusader és egyéb két paneles fájlkezelők analógiájára építve kell létrehozni.</p>
+<h3>4.2 Betanulás gyorsítása</h3>
+<p>Amennyiben egy Üzleti felhasználó kéri, a támogatási csomag mellé kedvezményesen hívhat a fejlesztők közül egy előadót, aki a 
+kívánalmaknak megfelelően betanítja a felhasználókat.</p>
+<h3>4.3 Analógia más szoftverekkel</h3>
+<p>Mivel a szoftver egy többpaneles fájlkezelő lesz, így az alapvető funkcióbillentyűk és parancsok működését a korábban már sikeres
+szoftverekben használtakat fogjuk átemelni. Ezzel felgyorsíthatjuk egy haladó felhasználó betanulását, illetve szoftver váltás esetén
+csak a speciális funkciókat kell újratanulni, az alapvető parancsok megegyeznek, a használathatóság sebessége, tényleges munkanézésre
+nézve bizonyos tervezési szempontoknak köszönhetően valamivel gyorsabb lesz.</p>
+<h3>4.4 Felhasználói tájékoztatás</h3>
+<p>Mivel a funkciók természetükből adódóan legtöbbször nem képesek végrehajtódni egy adott időpillanatban, így a felhasználót az adott parancs
+állapotáról folyamatosan tájékoztatni kell a Grafikus Felhasználói Felületen (GUI). Ez a tájékoztatás vonatkozik bármely olyan működésre, 
+amely a Normál működés vagy attól eltér.</p>
+<p>Tapasztalataink alapján egy régebbi programozói megszokás, hogy egy esetleges hibáról olyan típusú tájékoztatást kap a felhasználó,
+amely az általa végzett munkafolyamatot megszakítja (felugró ablak pld.). Mivel ez egy ilyen jellegű szoftvernél nem elfogadható,
+így olyan technikai megoldást kell kidolgozni, mely tájékoztatja a felhasználót, de nem szakítja meg kényszerűen az éppen végzett
+munkafolyamatot. (akár az Operációs Rendszer által szolgáltatott értesítéseket használva, akár saját megoldást)</p>
+<p>A tájékoztatás szükségszerű, de a felhasználó által végzett folyamat megszakítása egy-egy normáltól eltérő esemény miatt nem 
+megengedett. Legtöbbször a felhasználó tisztában van azzal, hogy a parancs kiadása után még várható esetleges hibaüzenet,
+de egy adott folyamat közben bekövetkezett hibákról elegendő egy értesítés is.</p>
 
 <H1 CLASS="western">5. Megbízhatóság</H1>
 <div class="ficsor">
@@ -389,12 +516,18 @@ Ilyenek lehetnek például:</P>
 <P><BR><BR>
 </P>
 <H1 CLASS="western">9. On-line dokumentáció és Help rendszer</H1>
+<div class="ficsor">
 <P><FONT FACE="Arial, sans-serif">Online User Documentation and Help
 System Requirements</FONT></P>
 <P>Kellenek-e ilyenek, ha igen, a vonatkozó információk.</P>
 <P><BR><BR>
 </P>
+</div>
+<p>Mivel a felhasználói dokumentációt a szoftveren belül elérhetővé kell tenni, így az Online elérhető felhasználói dokumentáció 
+a szoftver használhatóságát nem befolyásolja.</p>
+
 <H1 CLASS="western">10. Felhasznált kész komponensek</H1>
+<div class="ficsor">
 <P><FONT FACE="Arial, sans-serif">Third-party Components</FONT></P>
 <P>Egy-egy alpontban kell felsorolni az alkalmazásba építendõ
 vásárolt vagy szabad felhasználású elemeket. Vásárlás esetén a
@@ -405,12 +538,20 @@ szabályai, az alkalmazásra ebbõl adódó esetleges következmények,
 kötelezettségek.</P>
 <P><BR><BR>
 </P>
+</div>
+<p>GPLv3 Qt</p>
+
 <H1 CLASS="western">11. Interfészek</H1>
+<div class="ficsor">
 <P><FONT FACE="Arial, sans-serif">Interfaces</FONT></P>
 <P>Ebben a fejezetben kell specifikálni a rendszer valamennyi külsõ
 kapcsolatát, az ezt biztosító interfészeket.</P>
 <P><BR><BR>
 </P>
+</div>
+
+<p>Queue API; Fájlrendszert elérő API; Diszpécser; GUI; Signal-Slot?</p>
+
 <H2 CLASS="western">11.1. Felhasználói interfészek</H2>
 <P><FONT FACE="Arial, sans-serif">User Interfaces</FONT></P>
 <P>Ebben az alpontban kell leírni a felhasználói interfészre
@@ -455,11 +596,13 @@ Standards</FONT></P>
 <P><BR><BR>
 </P>
 <H2 CLASS="western">12.2. Választás alapján alkalmazott szabványok</H2>
+<div class="ficsor">
 <P><FONT FACE="Arial, sans-serif">Optional Standars</FONT></P>
 <P>A fejlesztõk vagy a felhasználók által valamilyen okból önként
 vállalt elõírások.</P>
-<P><BR><BR>
-</P>
+</div>
+<p>Implementálásnál hungarian notation?</p>
+
 <H1 CLASS="western">13. Mellékletek</H1>
 <P><FONT FACE="Arial, sans-serif">Appendix</FONT></P>
 <P>Fõleg hosszabb dokumentumok esetén ide kerülhet minden olyan
