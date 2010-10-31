@@ -4,24 +4,28 @@
 	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
 	<TITLE>SRS</TITLE>
 	<style type="text/css">
+	body {
+		max-width: 1000px;
+		min-width: 800px;
+		margin: auto;
+		padding: 10px;
+	}
 	p {
 		text-align: justify;
 	}
 	p.center {
 		text-align: center;
 	}
-	p.img_bottom {
-		text-align: center;
-		font-size: 12px;
-		margin: 15px;
-		border: 1px solid black;
-	}
-	img {
+	
+	div.img {
 		float: right;
 		border: 1px solid black;
 		padding: 5px;
 		margin: 15px;
 		margin-right: 0px;
+	}
+	div.img p {
+		text-align: center;
 	}
 	
 	div.ficsor {
@@ -108,6 +112,19 @@
 	<td>Használhatósági követelmények kidolgozása</td>
 	<td>Fibinger Ádám</td>
 </tr>
+<tr>
+	<td>2010.10.30.</td>
+	<td>0.3.4</td>
+	<td>Teljesítmény, válaszidő, Tervezési korlátok kidolgozása</td>
+	<td>Fibinger Ádám</td>
+</tr>
+<tr>
+	<td>2010.10.30.</td>
+	<td>0.3.5</td>
+	<td>Funkciók bővítése, további kidolgozások</td>
+	<td>Fibinger Ádám</td>
+</tr>
+
 </table>
 
 <P><B>Tartalomjegyzék</B></P>
@@ -148,8 +165,10 @@ forrás egyszerre kezd el adni (az ütközések miatt).</p>
 
 <H1>2. Áttekintés</H1>
 <h3>2.1 Rendszer Környezetének Áttekintése</h3>
-<p class="img_bottom">Context Diagram</p>
-<img src="context_diagram.png" alt="Környezeti Diagram">
+<div class="img">
+	<img src="context_diagram.png" alt="Környezeti Diagram">
+	<p class="img_bottom">Context Diagram</p>
+</div>
 <p>A rendszer (<b>VDManager</b>) közvetlenül a <b>GUI</b>-n keresztül tartja a <b>Felhasználóval</b> a kapcsolatot. A felhasználó ezen a felületen
 keresztül éri el a rendszer által biztosított funkciókat.</p>
 <p>Az <b>Operációs Rendszer</b> jelen esetben a klasszikus értelemben vett operációs rendszer. (Windows, Linux, OSX)</p>
@@ -184,16 +203,37 @@ segítségnyújtó rendszerek, így saját rendszer megvalósítása indokolt. E
 vonatkozó pontban.</p>
 
 <H1>3. A rendszer funkciói</H1>
-<p class="center"><img src="use_case_main.png" alt="A rendszer fő funkciói"></p>
+<div class="container">
+<div class="img">
+<img src="use_case_main.png" alt="A rendszer fő funkciói">
 <p class="img_bottom">A rendszer fő funkciói</p>
-<p>A rendszer üzemkész állapotban a felhasználó szempontjából négy alapvető funkcióval rendelkezik:</p>
+</div>
+<p>A rendszer üzemkész állapotban a felhasználó szempontjából négy alapvető funkcióval rendelkezik: Másolás, Törlés, Átnevezés, Áthelyezés, és az ezekre
+épülő Várakozási sor vagy Queue.</p>
+
+<p>Ezek közül a Queue, aminek a szerepe a szokványostól kicsit eltér.<p>
+<p>A rendszer az alapvető funkciókra építve, bevezeti a Queue (Várakozási sor) alkalmazását az olyan alapvető funkciók által elérhető szolgáltatások
+időbeni rendezésére, amelynél a végrehajtás előreláthatóan nem tekinthető azonnalinak. Ez minden alapvető funkciót érint az Átnevezés kivételével.<br>
+Az alapvető funkciók végrehajtási idejét becsülni nehéz (a tényleges művelet elkezdéséig), mivel azt befolyásolja a Forrás objektum sávszélessége, 
+a cél objektum sávszélessége és a használt adatátviteli közeg sávszélessége is.<br>
+A Felhasználó által igénybevett (bizonyos) funkciók (műveletek) futhatnak egymástól függetlenül, párhuzamosan. Bizonyos esetekben a párhuzamos futás
+egy-egy Forrás objektum esetén jelentős teljesítmény romlást (sávszélesség csökkenést) eredményezhet. Ez a Forrás típusától függően, 
+40-50%-os csökkenést is okozhat, ami a műveletek átviteli idejét megduplázhatja, ezért vizsgálni kell azokat a Fájlrendszereket, Forrásokat és 
+Átviteli közegeket amelynél jelentős sávszélesség romlást idéz elő egy párhuzamos feladatvégrehajtás (CDFS / ISO9660, UDF), CSMA/CD 
+alapú helyi hálózatok (A legtöbb lokális hálózat ilyen.).</p>
+<p>Azoknál a forrás objektumoknál, ahol a párhuzamos végrehajtás jelentős teljesítményromlást okoz, előre figyelmeztetni kell a felhasználót és felajánlani
+a soros végrehajtás lehetőségét. Ezt a Queue (Várakozási sor) tárolóval kell megoldani, ami biztosítja a soros végrehajtást.</p>
+</div>
+<h3>Alapvető funkciók</h3>
+
 <ul>
-	<li>	
-	<p class="center">
-		<img src="use_case_copy.png" alt="Másolás funkció">
-	</p>
-	<p class="img_bottom">Másolás</p>
+	<li>
+	<div class="container">
 	<b class="main_functions">Másolás</b>:
+	<div class="img">
+		<img src="use_case_copy.png" alt="Másolás funkció">
+		<p class="img_bottom">Másolás</p>
+	</div>
 	<p>A felhasználó egy adat objektumról (fájl, mappa) másolatot készít.</p>
 	<p><b>Prekondíciók:</b> A szoftver üzemkész állapotban van.</p>
 	<p><b>Poszt-kondíciók:</b> A forrásként megadott objektum duplikációja elkészül a felhasználó által megadott cél helyen (objektumon).</p>
@@ -261,9 +301,13 @@ vonatkozó pontban.</p>
 		</li>
 		<li>Duplikálás megkezdése, amennyiben a fenti ellenőrzések rendben lezajlanak, az esetleges problémák lekezelésre kerültek</li>
 	</ol>
-
+	</div>
 	</li>
 	<li><p><b class="main_functions">Törlés:</b></p>
+	<div class="img">
+		<img src="use_case_del.png" alt="Törlés">
+		<p>Törlés</p>
+	</div>
 	<p>A felhasználó egy adat objektumot (fájl, mappa) eltávolít.</p>
 	<b>Prekondíciók:</b> A szoftver üzemkész állapotban van.<br>
 	<b>Poszt-kondíciók:</b> A forrásként megadott objektum törlődik.<br>
@@ -283,8 +327,18 @@ vonatkozó pontban.</p>
 		<li>Eltávolítás megkezdése, amennyiben a fenti ellenőrzés rendben lezajlott, az esetleges problémák lekezelésre kerültek</li>
 	</ol>
 	</li>
-	
+	<p>&nbsp;</p>
+	<p>&nbsp;</p>
+	<p>&nbsp;</p>
+	<p>&nbsp;</p>
+	<p>&nbsp;</p>
+	<p>&nbsp;</p>
+	<p>&nbsp;</p>
 	<li><p><b class="main_functions">Áthelyezés:</b><br></p>
+	<div class="img">
+		<img src="use_case_move.png" alt="Áthelyezés">
+		<p class="img_bottom">Áthelyezés</p>
+	</div>
 	<p>A felhasználó egy adat objektumot (fájl, mappa) áthelyez.</p>
 	<p><b>Prekondíciók:</b> A szoftver üzemkész állapotban van.</p>
 	<p><b>Poszt-kondíciók:</b> A forrásként megadott objektum duplikációja elkészül a felhasználó által megadott cél helyen (objektumon), a forrásként megadott objektum törlődik.</p>
@@ -360,6 +414,11 @@ vonatkozó pontban.</p>
 	</ol>
 	</li>
 	<li><p><b class="main_functions">Átnevezés</b><p>
+
+	<div class="img">
+		<img src="use_case_rename.png" alt="Átnevezés">
+		<p class="img_bottom">Átnevezés</p>
+	</div>
 	<p>A felhasználó egy adat objektum (fájl, mappa) nevét megváltoztatja.</p>
 	<p><b>Prekondíciók:</b> A szoftver üzemkész állapotban van.</p>
 	<p><b>Poszt-kondíciók:</b> A forrásként megadott objektum neve megváltozik a felhasználó által megadott új névre.</p>
@@ -390,20 +449,12 @@ vonatkozó pontban.</p>
 		<li>Átnevezés megkezdése, amennyiben a fenti ellenőrzések rendben lezajlanak, az esetleges problémák lekezelésre kerültek</li>
 	</ol>
 	</li>
-<li><p><b class="main_functions">Queue, várakozási sor</b><p>
-<p>A rendszer az alapvető funkciókra építve, bevezeti a Queue (Várakozási sor) alkalmazását az olyan alapvető funkciók által elérhető szolgáltatások
-időbeni rendezésére, amelynél a végrehajtás előreláthatóan nem tekinthető azonnalinak. Ez minden alapvető funkciót érint az Átnevezés kivételével.<br>
-Az alapvető funkciók végrehajtási idejét becsülni nehéz (a tényleges művelet elkezdéséig), mivel azt befolyásolja a Forrás objektum sávszélessége, 
-a cél objektum sávszélessége és a használt adatátviteli közeg sávszélessége is.<br>
-A Felhasználó által igénybevett (bizonyos) funkciók (műveletek) futhatnak egymástól függetlenül, párhuzamosan. Bizonyos esetekben a párhuzamos futás
-egy-egy Forrás objektum esetén jelentős teljesítmény romlást (sávszélesség csökkenést) eredményezhet. Ez a Forrás típusától függően, 
-40-50%-os csökkenést is okozhat, ami a műveletek átviteli idejét megduplázhatja, ezért vizsgálni kell azokat a Fájlrendszereket, Forrásokat és 
-Átviteli közegeket amelynél jelentős sávszélesség romlást idéz elő egy párhuzamos feladatvégrehajtás (CDFS / ISO9660, UDF), CSMA/CD 
-alapú helyi hálózatok (A legtöbb lokális hálózat ilyen.).</p>
-<p>Azoknál a forrás objektumoknál, ahol a párhuzamos végrehajtás jelentős teljesítményromlást okoz, előre figyelmeztetni kell a felhasználót és felajánlani
-a soros végrehajtás lehetőségét. Ezt a Queue (Várakozási sor) tárolóval kell megoldani, ami biztosítja a soros végrehajtást.</p>
 
 	<p><b class="main_functions">Queue</b></p>
+	<div class="img">
+		<img src="use_case_queue.png" alt="Várakozási sor, Queue">
+		<p>Várakozási sor, Queue</p>
+	</div>
 	<p>A felhasználó az alapvető funkciókat párhuzamos, azonnali végrehajtás helyett a várakozási sorba teheti, biztosítva ezzel a soros végrehajtást. A Queue
 	végrehajtása lehet azonnali (beállítástól függően) vagy a felhasználó által indított folyamat. A Queue-be csak olyan folyamatok kerülhetnek, amelyek
 	az alapvető funkció ellenőrzésen már átestek. (végrehajtás közben ne zavarja a felhasználót egy már előre látható probléma). A Queue-be listaszerűen
@@ -488,24 +539,17 @@ megengedett. Legtöbbször a felhasználó tisztában van azzal, hogy a parancs 
 de egy adott folyamat közben bekövetkezett hibákról elegendő egy értesítés is.</p>
 
 <H1 CLASS="western">5. Megbízhatóság</H1>
-<p></p>
-<div class="ficsor">
-<P><FONT FACE="Arial, sans-serif">Reliability</FONT></P>
-<P>A rendszerrel szemben támasztott megbízhatósági követelmények.
-(Minden követelmény egy alpontban.) Ilyenek lehetnek például:</P>
-<UL>
-	<LI><P>rendelkezésre állás (pl. %-ban): teljes használhatóság,
-	karbantartási idõ, korlátozott használhatóság,</P>
-	<LI><P>MTBF: (Mean Time Between Failures): hibák között eltelt
-	átlagos idõ,</P>
-	<LI><P>MTTR: (Man Time To Repair): egy hiba utáni javítás átlagos
-	ideje,</P>
-	<LI><P>A rendszer eredményeinek pontossága, felbontása (ha
-	értelmezhetõ).</P>
-</UL>
-<P><BR><BR> 
-</P>
-</div>
+<p>A megbízhatóság egy fájlezelő esetében nem értelmezhető úgy, mint egy más felépítésű szoftvernél. Viszont itt is definiálható a hiba/ezer kódsor
+fogalma. Ezt a végleges verziónál 5 hiba per ezer kódsoronként maximalizáljuk. E felett nem lehet. A hiba típusától függően a javítási idő 1 nap és 
+2 hét közé eshet, kritikus hiba esetén 4 nap a fejlesztők számára rendelkezésre álló maximális idő a javításra.</p>
+
+<p>A javításokat két különböző formában kell elérhetővé tenni:</p>
+<ul>
+	<li>Forráskód</li>
+	<li>Újrafordított bináris (a támogatott operációs rendszerekre)</li>
+</ul>
+<p>A forráskódban történt korrekciók minden esetben közzé kell tenni, míg az újrafordított binárisok elegendőek minden 10. hibajavításnál, vagy egy
+kritikus hiba javításánál.</p>
 
 
 <H1 CLASS="western">6. Teljesítmény</H1>
