@@ -121,26 +121,121 @@
 <tr>
 	<td>2010.10.30.</td>
 	<td>0.3.5</td>
-	<td>Funkciók bővítése, további kidolgozások</td>
-	<td>Fibinger Ádám</td>
-</tr>
-<tr>
-	<td>2010.10.31.</td>
-	<td>0.5</td>
-	<td>H3 Leadás előtti áttekintés, formába öntés, bővítés</td>
+	<td>Funkciók bővítése, további kidolgozások, GUI tervek</td>
 	<td>Fibinger Ádám</td>
 </tr>
 
 </table>
 
 <P><B>Tartalomjegyzék</B></P>
-<p>Ha kész a doksi TODO</p>
+<ol class="content">
+	<li>
+		<a href="#bevezetes">Bevezetés</a>
+	</li>
+	<li>
+		<a href="#attekintes">Áttekintés</a>
+		<ul>
+			<li>
+				<a href="#rendszer_kornyezet_attekintes">Rendszer környezetének áttekintése</a>
+			</li>
+			<li>
+				<a href="#felhasznalok_szerepkorok">Felhasználók, szerepkörök</a>
+			</li>
+		</ul>
+	</li>
+	<li>
+		<a href="#rendszer_funkcioi">A rendszer funkciói</a>
+		<ul>
+			<li>
+				<a href="#alapveto_funkciok">Alapvető funkciók</a>
+			</li>
+			<li>
+				<a href="#masolas">Másolás</a>
+			</li>
+			<li>
+				<a href="#torles">Törlés</a>
+			</li>
+			<li>
+				<a href="#athelyezes">Áthelyezés</a>
+			</li>
+			<li>
+				<a href="#atnevezes">Átnevezés</a>
+			</li>
+			<li>
+				<a href="#Queue">Queue, várakozási sor</a>
+			</li>
+		</ul>
+	</li>
+	<li>
+		<a href="#hasznalhatosag">Használhatóság</a>
+			<ul>
+				<li><a href="#betanulasi_ido_tanulasi_gorbe">Betanulási idő, tanulási görbe</a></li>
+				<li><a href="#betanulas_gyorsitasa">Betanulás gyorsítása</a></li>
+				<li><a href="#analogia_mas_szoftverekkel">Analógia más szoftverekkel</a></li>
+				<li><a href="#felhasznaloi_tajekoztatas">Felhasználói tájékoztatás</a></li>
+			</ul>
+	</li>
+	<li>
+		<a href="#teljesitmeny">Teljesítmény</a>
+			<ul>
+				<li><a href="#hardware_kovetelmenyek">Hardware követelmények</a></li>
+				<li><a href="#valaszido">Válaszidő</a></li>
+			</ul>
+	</li>
+	<li>
+		<a href="#tamogatottsag">Támogatottság</a>
+			<ul>
+				<li><a href="#fajlrendszerek_karakterkodolasa">Fájlrendszerek karakterkódolása</a></li>
+				<li><a href="#karakterkodolas">Szoftveren belül használt karakterkódolások, kódolási szabványok</a></li>
+			</ul>
+	</li>
+	<li>
+		<a href="#tervezesi_korlatozasok">Tervezési korlátozások</a>
+			<ul>
+				<li><a href="#programozasi_nyelv">Programozási nyelv, fejlesztőeszközök</a></li>
+			</ul>
+	</li>
+	<li>
+		<a href="#online_doc">Online dokumentáció és Help rendszer</a>
+	</li>
+	<li>
+		<a href="#kesz_komponensek">Felhasznált kész komponensek</a>
+	</li>
+	<li>
+		<a href="#interfeszek">Interfészek</a>
+		<ul>
+			<li>
+				<a href="#gui_altalanos">Felhasználói felület általánosan</a>
+			</li>
+			<li>
+				<a href="#gui_plan">Néhány vázlat a készülő felhasználói felületről</a>
+			</li>
+			<li>
+				<a href="#hw_interface">Hardware interfészek</a>
+			</li>
+			<li>
+				<a href="#sw_interface">Szoftware interfészek</a>
+			</li>
+		</ul>
+	</li>
+	<li><a href="#alkalmazott_szabvanyok">Alkalmazott szabványok</a>
+		<ul>
+			<li><a href="#implementacios_kriteriumok">Impelemntációs kritériumok</a></li>
+			<li><a href="#valtozok_osztalyok">Változók, osztályok elnevezése</a></li>
+		</ul>
+	</li>
+	<li>
+	<a href="#mellekletek">Mellékletek</a>
+	</li>
+</ol>
 
 <p>
     <img src="http://www.w3.org/Icons/valid-html40" alt="Valid HTML 4.0 Transitional" height="31" width="88">
 </p>
 
+<a name="bevezetes"></a>
 <H1>1. Bevezetés</H1>
+
 <P>Jelen dokumentum célja a VDMan szoftverrel szemben támasztott követelmények definiálása. A megközelítés minimalista, 
 nem definiál minden lehetséges funkciót, mindössze a szoftver legelsõ verziójának minimális képességeit határozza meg.</P>
 <p>A szoftver 0.1-es verziószámú bemutatópéldányának, a jelen dokumentumban meghatározott funkciókat képesnek kell 
@@ -158,6 +253,7 @@ elolvasása előtt áttekinteni azt, az eltérő értelmezésből eredő félre�
 </P>
 
 <H1>2. Áttekintés</H1>
+<a name="rendszer_kornyezet_attekintes"></a>
 <h3>2.1 Rendszer Környezetének Áttekintése</h3>
 <div class="img">
 	<img src="context_diagram.png" alt="Környezeti Diagram">
@@ -181,10 +277,11 @@ ezek közötti átjárást a felhasználó fele transzparensen kell biztosítani
 <p>A VDManager a felhasználó utasításainak megfelelően kommunikál a szükséges objektumokkal, műveleteket végez rajtuk, hogy 
 a felhasználó által elvárt eredményt elérje. Ezek elsősorban az alapvető fájlműveletek és azok vonzatai.</p>
 
+<a name="felhasznalok_szerepkorok"></a>
 <h3>2.2 Felhasználók, szerepkörök</h3>
 <p>A felhasználók viselkedhetnek Haladó és Kezdő felhasználóként is, átjárás a szerepek között lehetséges. A két szerepkör
 eltérése egymástól a súgórendszer által nyújtott szolgáltatások használatában jelentkezik.</p>
-
+<a name="operacios_rendszerek_sajatossagai"></a>
 <h3>2.3 Operációs rendszerek sajátosságai</h3>
 <p>Mivel a szoftver eltérő operációs rendszereken fog futni, így figyelembe kell venni az Operációs Rendszerek által nyújtott
 szolgáltatásokat, annak megfelelően implementálni az adott szolgáltatást / funkciót, hogy az lehetőleg mindegyik rendszeren 
@@ -192,10 +289,12 @@ ugyanazt a célt szolgálja, eredményt produkálja. Amennyiben valamely operác
 elhanyagolni, úgy az tervezésnél erre kiemelt figyelmet kell fordítani, hogy az alapvető funkció használatát 
 ez ne befolyásolja más rendszeren.</p>
 <h3>2.4 Felhasználói dokumentáció</h3>
+<a name="felhasznaloi_dokumentacio"></a>
 <p>A Felhasználói dokumentációnak elérhetőnek kell lenni a szoftveren belül. Mivel Operációs Rendszerenként teljesen eltérnek a
 segítségnyújtó rendszerek, így saját rendszer megvalósítása indokolt. Ennek részletes követelményeit lásd az erre 
 vonatkozó pontban.</p>
 
+<a name="rendszer_funkcioi"></a>
 <H1>3. A rendszer funkciói</H1>
 <div class="container">
 <div class="img">
@@ -218,10 +317,12 @@ alapú helyi hálózatok (A legtöbb lokális hálózat ilyen.).</p>
 <p>Azoknál a forrás objektumoknál, ahol a párhuzamos végrehajtás jelentős teljesítményromlást okoz, előre figyelmeztetni kell a felhasználót és felajánlani
 a soros végrehajtás lehetőségét. Ezt a Queue (Várakozási sor) tárolóval kell megoldani, ami biztosítja a soros végrehajtást.</p>
 </div>
+
+<a name="rendszer_funkcioi"></a>
 <h3>Alapvető funkciók</h3>
 
 <ul>
-	<li>
+	<li><a name="masolas"></a>
 	<div class="container">
 	<b class="main_functions">Másolás</b>:
 	<div class="img">
@@ -297,9 +398,11 @@ a soros végrehajtás lehetőségét. Ezt a Queue (Várakozási sor) tárolóval
 	</ol>
 	</div>
 	</li>
-	<li><p><b class="main_functions">Törlés:</b></p>
+	<li><p><a name="torles"></a>
+	<b class="main_functions">Törlés:</b></p>
 	<div class="img">
 		<img src="use_case_del.png" alt="Törlés">
+		<a name="torles"></a>
 		<p>Törlés</p>
 	</div>
 	<p>A felhasználó egy adat objektumot (fájl, mappa) eltávolít.</p>
@@ -328,7 +431,8 @@ a soros végrehajtás lehetőségét. Ezt a Queue (Várakozási sor) tárolóval
 	<p>&nbsp;</p>
 	<p>&nbsp;</p>
 	</li>
-	<li><p><b class="main_functions">Áthelyezés:</b><br></p>
+	<li><p><a name="athelyezes"></a>
+	<b class="main_functions">Áthelyezés:</b><br></p>
 	<div class="img">
 		<img src="use_case_move.png" alt="Áthelyezés">
 		<p class="img_bottom">Áthelyezés</p>
@@ -407,7 +511,8 @@ a soros végrehajtás lehetőségét. Ezt a Queue (Várakozási sor) tárolóval
 		<li>Áthelyezés megkezdése, amennyiben a fenti ellenőrzések rendben lezajlanak, az esetleges problémák lekezelésre kerültek</li>
 	</ol>
 	</li>
-	<li><p><b class="main_functions">Átnevezés</b><p>
+	<li><p><a name="atnevezes"></a>
+	<b class="main_functions">Átnevezés</b><p>
 
 	<div class="img">
 		<img src="use_case_rename.png" alt="Átnevezés">
@@ -444,7 +549,8 @@ a soros végrehajtás lehetőségét. Ezt a Queue (Várakozási sor) tárolóval
 	</ol>
 	</li>
 	<li>
-	<p><b class="main_functions">Queue</b></p>
+	<p><a name="Queue"></a>
+	<b class="main_functions">Queue</b></p>
 	<div class="img">
 		<img src="use_case_queue.png" alt="Várakozási sor, Queue">
 		<p>Várakozási sor, Queue</p>
@@ -499,27 +605,30 @@ a soros végrehajtás lehetőségét. Ezt a Queue (Várakozási sor) tárolóval
 	</ol>
 	</li>
 </ul>
-
+<a name="hasznalhatosag"></a>
 <H1>4. Használhatóság</H1>
-
+<a name="betanulasi_ido_tanulasi_gorbe"></a>
 <h3>4.1 Betanulási idő, tanulási görbe</h3>
 <p>A felhasználói dokumentáció integrálása szükséges a végleges szoftverbe, módosítások esetén a módosításokkal párhuzamosan a 
 felhasználói dokumentáció is frissitésre kell, hogy kerüljön. Ennek eredményeképp nem dokumentált funkció nem fordulhat elő a rendszerben.
 A felhasználói dokumentáció mellett a helyzetérzékeny súgók kidolgozása is a dokumentációt karban tartó feladata.</p>
 <p>A két felhasználói szerepkör nem válik el élesen, ezáltal a Kezdő felhasználó bizonyos idő elteltével haladóvá lép elő. Ezt megteheti
 önállóan, a rendszerbe épített kétszintű súgó segítségével. Egy kezdő és haladó felhasználót tapasztalataink alapján nem érdemes más
-működésű felhasználói felület elé ültetni, vagy funkciókat elrejteni előle, ugyanis az átjárás a szerepkörök között emiatt
-nehezebb lesz.</p>
+működésű felhasználói felület elé ültetni, vagy funkciókat elrejteni előle, ugyanis az átjárás a szerepkörök között ezáltal 
+nehézkesebb lesz.</p>
 <p>A rendszer felépítéséből adódóan egy Haladó felhasználónak az alapvető funkciók eléréséhez nem szükséges betanulási idő, ugyanis
 amennyire a szoftver korlátai engedik, a TotalCommander; Krusader és egyéb két paneles fájlkezelők analógiájára építve kell létrehozni.</p>
+<a name="betanulas_gyorsitasa"></a>
 <h3>4.2 Betanulás gyorsítása</h3>
 <p>Amennyiben egy Üzleti felhasználó kéri, a támogatási csomag mellé kedvezményesen hívhat a fejlesztők közül egy előadót, aki a 
 kívánalmaknak megfelelően betanítja a felhasználókat.</p>
+<a name="analogia_mas_szoftverekkel"></a>
 <h3>4.3 Analógia más szoftverekkel</h3>
 <p>Mivel a szoftver egy többpaneles fájlkezelő lesz, így az alapvető funkcióbillentyűk és parancsok működését a korábban már sikeres
 szoftverekben használtakat fogjuk átemelni. Ezzel felgyorsíthatjuk egy haladó felhasználó betanulását, illetve szoftver váltás esetén
 csak a speciális funkciókat kell újratanulni, az alapvető parancsok megegyeznek, a használathatóság sebessége, tényleges munkanézésre
 nézve bizonyos tervezési szempontoknak köszönhetően valamivel gyorsabb lesz.</p>
+<a name="felhasznaloi_tajekoztatas"></a>
 <h3>4.4 Felhasználói tájékoztatás</h3>
 <p>Mivel a funkciók természetükből adódóan legtöbbször nem képesek végrehajtódni egy adott időpillanatban, így a felhasználót az adott parancs
 állapotáról folyamatosan tájékoztatni kell a Grafikus Felhasználói Felületen (GUI). Ez a tájékoztatás vonatkozik bármely olyan működésre, 
@@ -531,7 +640,7 @@ munkafolyamatot. (akár az Operációs Rendszer által szolgáltatott értesít�
 <p>A tájékoztatás szükségszerű, de a felhasználó által végzett folyamat megszakítása egy-egy normáltól eltérő esemény miatt nem 
 megengedett. Legtöbbször a felhasználó tisztában van azzal, hogy a parancs kiadása után még várható esetleges hibaüzenet,
 de egy adott folyamat közben bekövetkezett hibákról elegendő egy értesítés is.</p>
-
+<a name="megbizhatosag"></a>
 <H1 CLASS="western">5. Megbízhatóság</H1>
 <p>A megbízhatóság egy fájlezelő esetében nem értelmezhető úgy, mint egy más felépítésű szoftvernél. Viszont itt is definiálható a hiba/ezer kódsor
 fogalma. Ezt a végleges verziónál 5 hiba per ezer kódsoronként maximalizáljuk. E felett nem lehet. A hiba típusától függően a javítási idő 1 nap és 
@@ -545,8 +654,9 @@ fogalma. Ezt a végleges verziónál 5 hiba per ezer kódsoronként maximalizál
 <p>A forráskódban történt korrekciók minden esetben közzé kell tenni, míg az újrafordított binárisok elegendőek minden 10. hibajavításnál, vagy egy
 kritikus hiba javításánál.</p>
 
-
+<a name="teljesitmeny"></a>
 <H1 CLASS="western">6. Teljesítmény</H1>
+<a name="teljesitmeny"></a>
 <h3>Hardware követelmények</h3>
 
 <p>A szoftvernek egy 2010-ben kiadott "Irodai számítógép"-en képesnek kell lennie teljesen problémamentesen működni. Ez a konfiguráció jelenleg: 
@@ -586,7 +696,7 @@ szempontjából.</p>
 		<td>Videóvezérlő:</td><td>Legalább 800*600 felbontásra képes, D3D, Direct Draw, OpenGL gyorsítással NEM rendelkezik.</td>
 	</tr>
 </table>
-
+<a name="valaszido"></a>
 <h3>Válaszidő</h3>
 <p>A szoftvernek extrém terhelés kivételével mindig 2 másodpercen belüli válaszidővel kell rendelkeznie. A válaszidő alatt nem a tényleges
 művelet végrehajtási sebességet értjük, hanem a felhasználó tájékoztatását az adott művelet állapotáról. A különféle fájlrendszerek és azok válaszideje
@@ -595,7 +705,7 @@ arról, hogy a szoftver a távoli fájlrendszer válaszára vár.<br>
 Ettől eltekinteni csak extrém leterhelt rendszer esetén lehet, amikor más szoftverek foglalják le a rendszer erőforrásait olyan mértékben, amely
 a válaszidő sebességét nagyban befolyásolja.</p>
 
-
+<a name="tamogatottsag"></a>
 <H1 CLASS="western">7. Támogatottság</H1>
 <h3>Fájlrendszerek karakterkódolása</h3>
 <p>Az eltérő fájlrendszerek eltérő karakterkódolással rendelkeznek, ezért azokat tiszteletben kell tartani, a felhasználó által használt karakterkódolást
@@ -606,7 +716,7 @@ fele transzparensen, úgy, hogy a fájlnév a forrás és a cél fájlrendszeren
 <p>A szoftveren belül minden olyan változónak, dokumentumnak, szöveget tartalmazó objektumnak a karakterkódolását UTF-8 kódolással kell tárolni és kezelni,
 elkerülve ezzel a multikódolásos környezet esetén a "furcsa karaktereket", kiküszöbölve az ebből eredő hibákat.</p>
 
-
+<a name="tervezesi_korlatozasok"></a>
 <H1 CLASS="western">8. Tervezési korlátozások</H1>
 <h3>Programozási nyelv, fejlesztőeszközök</h3>
 <p>A fejlesztés során a programozási nyelv és programozási környezetet a fejlesztők választhatják meg, de az alábbi szempontoknak meg kell felelnie
@@ -618,16 +728,17 @@ a nyelvnek és a környezetnek: </p>
 </ul>
 <p>A fejlesztés során felhasználható bármilyen GPLv3/2 / Lesser GPL liszenszelt kód, a forrás pontos megjelölésével és a GPLv3/2 liszensze alatt meghatározott
 kötelezettségek betartásával.</p>
-
+<a name="online_doc"></a>
 <H1 CLASS="western">9. On-line dokumentáció és Help rendszer</H1>
 
 <p>Mivel a felhasználói dokumentációt a szoftveren belül elérhetővé kell tenni, így az Online elérhető felhasználói dokumentáció 
 a szoftver használhatóságát nem befolyásolja.</p>
-
+<a name="kesz_komponensek"></a>
 <H1 CLASS="western">10. Felhasznált kész komponensek</H1>
 <p>Jelen SRS nem határoz meg egy olyan komponenst sem, melyet a fejlesztés során a végtermékbe kell építeni. Bármely olyan szoftverkomponens felhasználható,
 ami a korábban megadott liszenszek alatt lettek kiadva, természetesen a forrás megjelölésével.</p>
 
+<a name="interfeszek"></a>
 <H1 CLASS="western">11. Interfészek</H1>
 
 <p>A kódolás során a szoftvert három fő csoportra kell osztani:</p>
@@ -646,8 +757,7 @@ a fájlkezelő blokknak a vezérlő felé jeleznie kell az adott fájlrendszer a
 a távoli és helyi fájlrendszerekkel.</p>
 <p>A Felhasználói interfész szintén a vezérlő blokkal kommunikál, az az által szolgáltatott információkat jeleníti meg a felhasználónak, illetve ezen keresztül
 tartja a kapcsolatot a felhasználóval.</p>
-
-
+<a name="gui_altalanos"></a>
 <H2 CLASS="western">11.1. Felhasználói interfész (GUI)</H2>
 <h3>Felhasználói felület általánosan</h3>
 <p>A felhasználói interfésznek az adott operációs rendszer adott grafikus felhasználói felületébe kell illeszkednie. Amennyire lehetséges a három operációs
@@ -658,35 +768,40 @@ bizonyos mértékű testreszabására, figyelembe véve az operációs rendszer 
 a másik a cél. A forrást és a célt az aktív - inaktív ablak határozza meg. Aktív ablak a forrás, a passzív pedig a cél objektum.
 Ezen felül az Átnevezés és Törlés funkciót az aktív ablak aktív elemére vonatkoztatjuk, jól láthatóan tájékoztatva a felhasználót az aktív elemről.</p>
 <h3>Néhány vázlat, a készülő felhasználói felületről</h3>
-<img src="gui_plan_1.png" alt="Rejtett toolbar">
 <img src="gui_plan_2.png" alt="Rejtett toolbar">
 <img src="gui_plan_3.png" alt="Rejtett toolbar">
+<p>Felhasználói felület mozgatható eszköztárral (az eszköztár gombsorát egyszerű gombok reprezentálják).</p>
 <img src="gui_plan_4.png" alt="Rejtett toolbar">
-
+<p>Felhasználói felület bezárt eszköztárral.</p>
+<p>A felhasználói felületen jobb és bal oldalt a felhasználónak szánt, nem felugró üzenetek, állapotjelzők és a Queue kap helyet. Ezek lecsatolhatóak,
+elrejthetőek, de bezárásukkal az általuk megjelenített és végrehajtott folyamatok nem szakadnak meg. A felhasználói felület és a vezérlés egymástól
+függetlenül kell üzemeljen, a grafikus felület hibája ne érintse a vezérlő hibáját és fordítva.</p>
+<p>Az eszköztárakat a felhasználók testreszabhatják, új elemeket vehetnek fel rájuk. (na ezt vajon ki kódolja le...)</p>
+<a name="hw_interface"></a>
 <H2 CLASS="western">11.2. Hardware interfészek</H2>
 <p>A hardveres elemek kezelését az Operációs Rendszeren keresztül valósítjuk meg, így külön hardver interfészre nem lesz szükség. Ennek ellenére a hardverek
 sajátosságait figyelembe kell vennünk, lásd Funkcionális követelmények, Queue. Ezeket az adatokat a fájlkezelő blokknak kell szolgáltatnia 
 a vezérlő blokk felé.</p>
 <p>A felhasználó oldalon használt hardveres elemeket az operációs rendszer fogja kezelni (beviteli és mutatóeszköz). Feltételezzük, hogy billentyűzet és valamilyen
 mutatóeszköz segítségével fogja a felhasználó a szoftvert vezérelni.</p>
-
+<a name="sw_interface"></a>
 <H2 CLASS="western">11.3. Software interfészek</H2>
 <p>Mivel a szoftvernek valószínűleg több külső rendszerrel közre kell működnie, így az azokkal való kommunikációt lehetőség szerint az adott protokollra
 vonatkozó RFC szerint kell végrehajtani. Amennyiben ez az RFC nem létezik, nem elérhető, úgy az azt létrehozó cég vagy szervezet specifikációjára építve
 kell a protokoll implementációját megvalósítani. Ezek a protokollok a fájlkezelő blokkon keresztül kapcsolódnak a szoftverhez.</p>
 
+<a name="alkalmazott_szabvanyok"></a>
 
-<H1 CLASS="western">12. Alkalmazott szabványok</H1>
 <h3>Implementációs kritériumok</h3>
 <p>A szoftver implementációja során az objektum orientált szemléletet, annak irányelveit követni kell. Ezen felül bármilyen olyan szoftverfejlesztési
 irányelv használható, amely a fejlesztők munkáját segítik, fejlesztést gyorsítják, amíg azok az elvek, módszerek nem ütköznek az objektum-orientált fejlesztés
 irányelveivel, illetve jelen SRS által definiált funkciókat nem befolyásolják negatív irányban.</p>
 
-<H2 CLASS="western">12.2. Választás alapján alkalmazott szabványok</H2>
+<a name="valtozok_osztalyok"></a>
 <h3>Változók, osztályok elnevezése</h3>
 <p>A feljesztés során "Hungarian notation" változóelnevezési stílus használata kötelező, megkönnyítve ezzel a hibakeresést. Csak olyan esetben térhetnek
 el a fejlesztők ettől, amikor a fejlesztői környezet (devel. environment) egyértelműen megadja egy változó típusát, segíti a hibakeresést.</p>
-
+<a name="mellekletek"></a>
 <H1 CLASS="western">13. Mellékletek</H1>
 <p>
 	<ul>
