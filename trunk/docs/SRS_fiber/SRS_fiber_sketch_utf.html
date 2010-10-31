@@ -138,9 +138,12 @@ is, dokumentáció alapján képes hatékonyan kezelni a szoftvert.</P>
 <P>Operációs Rendszer - a számítógépen futó operációs rendszer, mely lehet Windows, Linux és OSX (Macintosh) valamely típusa.</P>
 <P>GUI - Graphical User Interface Grafikus felhasználói felület, melyen keresztül a felhasználóval kommunikálunk, tájékoztatjuk 
 azt</P>
-<p>API - </p>
-<p>protokoll</p>
+<p>API - Application Programming Interface, olyan réteg, mely elfedi a programozó számára a rendszer sajátosságait, egységes felületet
+biztosít annak programozására, elérésére</p>
+<p>Protokoll - Kommunikációs szabályrendszer, mely alapján a kommunikáció és adatcsere zajlik.</p>
 <p>Üzemkész állapot - A szoftver a felhasználó parancsaira vár</p>
+<p>Sávszélesség - Egységnyi idő alatt átvihető adatmennyiség.</p>
+<p>CSMA/CD - Üzenetszórásos módszerrel működő kommunikációs séma, melyben a közös átviteli közeg miatt előfordulhatnak ütközések.</p>
 
 <H1>2. Áttekintés</H1>
 <h3>2.1 Rendszer Környezetének Áttekintése</h3>
@@ -386,36 +389,73 @@ vonatkozó pontban.</p>
 		<li>Átnevezés megkezdése, amennyiben a fenti ellenőrzések rendben lezajlanak, az esetleges problémák lekezelésre kerültek</li>
 	</ol>
 	</li>
+<li><p><b class="main_functions">Queue, várakozási sor</b><p>
+<p>A rendszer az alapvető funkciókra építve, bevezeti a Queue (Várakozási sor) alkalmazását az olyan alapvető funkciók által elérhető szolgáltatások
+időbeni rendezésére, amelynél a végrehajtás előreláthatóan nem tekinthető azonnalinak. Ez minden alapvető funkciót érint az Átnevezés kivételével.<br>
+Az alapvető funkciók végrehajtási idejét becsülni nehéz (a tényleges művelet elkezdéséig), mivel azt befolyásolja a Forrás objektum sávszélessége, 
+a cél objektum sávszélessége és a használt adatátviteli közeg sávszélessége is.<br>
+A Felhasználó által igénybevett (bizonyos) funkciók (műveletek) futhatnak egymástól függetlenül, párhuzamosan. Bizonyos esetekben a párhuzamos futás
+egy-egy Forrás objektum esetén jelentős teljesítmény romlást (sávszélesség csökkenést) eredményezhet. Ez a Forrás típusától függően, 
+40-50%-os csökkenést is okozhat, ami a műveletek átviteli idejét megduplázhatja, ezért vizsgálni kell azokat a Fájlrendszereket, Forrásokat és 
+Átviteli közegeket amelynél jelentős sávszélesség romlást idéz elő egy párhuzamos feladatvégrehajtás (CDFS / ISO9660, UDF), CSMA/CD 
+alapú helyi hálózatok (A legtöbb lokális hálózat ilyen.).</p>
+<p>Azoknál a forrás objektumoknál, ahol a párhuzamos végrehajtás jelentős teljesítményromlást okoz, előre figyelmeztetni kell a felhasználót és felajánlani
+a soros végrehajtás lehetőségét. Ezt a Queue (Várakozási sor) tárolóval kell megoldani, ami biztosítja a soros végrehajtást.</p>
+
+	<p><b class="main_functions">Queue</b></p>
+	<p>A felhasználó az alapvető funkciókat párhuzamos, azonnali végrehajtás helyett a várakozási sorba teheti, biztosítva ezzel a soros végrehajtást. A Queue
+	végrehajtása lehet azonnali (beállítástól függően) vagy a felhasználó által indított folyamat. A Queue-be csak olyan folyamatok kerülhetnek, amelyek
+	az alapvető funkció ellenőrzésen már átestek. (végrehajtás közben ne zavarja a felhasználót egy már előre látható probléma). A Queue-be listaszerűen
+	kerülhetnek be a végrehajtandó folyamatok, melyeknek a sorrendjét a felhasználó akár a végrehajtás közben is módosíthatja (az éppen futó folyamat 
+	kivételével).</p>
+	<p><b>Prekondíciók:</b> A szoftver üzemkész állapotban van.</p>
+	<p><b>Poszt-kondíciók:</b> A Queue kiürülése után a benne lévő műveletek végrehajtásra kerültek.</p>
+	<p><b>Szokásos működés (Main Flow):</b> A felhasználó által összegyűjtött műveletek a megadásuknak megfelelő sorrendben végrehajtásra kerülnek.</p>
+	<ol>
+		<li>A Felhasználó meghatároz egy műveletet, amelyet végre kell hajtani, megadja a forrás és / vagy cél objektumokat, azokon a funkciónak megfelelő 
+		ellenőrzést a rendszer végrehajtja, majd a végrehajtandó elem bekerül a várakozási listába.</li>
+		<li>Amennyiben a Queue automatikus indítása van megadva, úgy megkezdődik a várakozási sor végrehajtása, amennyiben nem, úgy a felhasználó
+		parancsára várakozik. Az első lépés újra végrehajtható másik művelettel akár a Queue végrehajtása közben is.</li>
+		<li>A felhasználó végrehajtás közben törölhet egy nem végrehajtás alatt lévő elemet, módosíthatja a pozícióját a végrehajtási sorban.</li>
+		<li>Megkezdődik a művelet(ek) végrehajtása a felhasználó által megadott sorrendben (FIFO), az ellenőrzés(eke)t minden egyes művelet végrehajtása 
+		előtt meg kell ismételni, adott funkcióhoz tartozó operációkat elvégezni.</li>
+	</ol>
+	<p><b>Alternatív esetek:</b>
+	<ol>
+		<li>Adott funkció ellenőrzése során hiba lépett fel, művelet nem végrehajtható
+			<ul>
+				<li><b>Nem végrehajtható:</b> Felhasználó tájékoztatása, az adott funkció által definiált műveletek végrehajtása. Amennyiben a műveletbe 
+				a felhasználó beavatkozott és az végrehajthatóvá vált, úgy a művelet folytatása, egyébként a művelet végrehajthatatlanként jelölése a 
+				várakozási sorban, következő műveletre lépés.</li>
+			</ul>
+		</li>
+		<li>A Queue az utolsó műveletet is végrehajtotta, de a várakozási sor tartalmaz hibás elemeket:<br>
+			<ul>
+				<li><b>Queue végére ért, hibás művelet még van:</b>Felhasználó figyelmeztetése:Funkció ellenőrzései által nyújtott megoldások felajánlása
+					<ul>
+						<li>Felhasználó végrehajthatóvá tette a műveletet: művelet újbóli végrehajtása </li>
+						<li>Felhasználó megszakítást kért: a művelet törlése a sorból.</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+	</ol>
+	</li>
+	<p><b>Kivételes esetek:</b>
+	<ol>
+		<li>Felhasználó kilépést kezdeményezett a szoftverből a Queue végrehajtása közben:<br>
+			Felhasználó figyelmezetetése, Queue mentése / Queue tartalmának törlése (az éppen futó művelet megszakítása és törlése)
+			<ul>
+				<li>Queue mentése: A Queue tartalma mentésre kerül, következő szoftverindításkor a felhasználót figyelmeztetni kell a 
+				végrehajtatlan műveletekről.</li>
+				<li>Queue tartalmának törlése: Aktuálisan futó folyamat megszakítása, Queue végrehajtásának felfüggesztése, majd tartalmának törlése.</li>
+			</ul>
+		</li>
+	</ol>
 </ul>
 
-
 <H1>4. Használhatóság</H1>
-<div class="ficsor">
-<P><FONT FACE="Arial, sans-serif">Usability</FONT></P>
-<P>Itt kell összefoglalni azokat a nem funkcionális követelményeket
-(mindegyiket egy-egy alpontban), amelyek a rendszer használhatóságát
-befolyásolják. Ilyenek lehetnek például:</P>
-<UL>
-	<LI><P>Mennyi betanulási idõre lesz majd szüksége a rendszer
-	hatékony használatához egy kezdõ és egy gyakorlott felhasználónak.</P>
-	<LI><P>Mennyi idõ alatt tud egy adott tevékenységet végrehajtani egy
-	átlagos felhasználó a jelenlegi módszerrel, meglévõ más rendszerek,
-	illetve a fejlesztendõ rendszer segítségével.</P>
-	<LI><P>Melyek azok a rendszer tulajdonságok, amelyek segíthetik a
-	kezdõ felhasználót a gyors betanulásban?</P>
-	<LI><P>Milyen egyéb lehetõségek állnak rendelkezésre (vagy kérhetõk
-	a fejlesztõktõl ingyen vagy külön díjazás fejében) a betanulás
-	elõsegítésére (tréningek, dokumentációk, könyvek, demonstrációs
-	prototípus stb.)</P>
-	<LI><P>Mennyire hasonló vagy eltérõ a felhasználói felület, annak
-	használati módja a felhasználók által már korábban is használt
-	alkalmazásokkal összehasonlítva?</P>
-	<LI><P>Ha a leendõ alkalmazással párhuzamosan más alkalmazásokat is
-	fognak használni a felhasználók a munkájuk során, összhangban
-	vannak-e ezek programok a használat (elsõsorban a felhasználói
-	felület szempontjából)?</P>
-</UL>
-</div>
+
 <h3>4.1 Betanulási idő, tanulási görbe</h3>
 <p>A felhasználói dokumentáció integrálása szükséges a végleges szoftverbe, módosítások esetén a módosításokkal párhuzamosan a 
 felhasználói dokumentáció is frissitésre kell, hogy kerüljön. Ennek eredményeképp nem dokumentált funkció nem fordulhat elő a rendszerben.
@@ -447,6 +487,7 @@ megengedett. Legtöbbször a felhasználó tisztában van azzal, hogy a parancs 
 de egy adott folyamat közben bekövetkezett hibákról elegendő egy értesítés is.</p>
 
 <H1 CLASS="western">5. Megbízhatóság</H1>
+<p></p>
 <div class="ficsor">
 <P><FONT FACE="Arial, sans-serif">Reliability</FONT></P>
 <P>A rendszerrel szemben támasztott megbízhatósági követelmények.
@@ -461,147 +502,145 @@ de egy adott folyamat közben bekövetkezett hibákról elegendő egy értesít�
 	<LI><P>A rendszer eredményeinek pontossága, felbontása (ha
 	értelmezhetõ).</P>
 </UL>
-<P><BR><BR>
+<P><BR><BR> 
 </P>
+</div>
+
+
 <H1 CLASS="western">6. Teljesítmény</H1>
-<P><FONT FACE="Arial, sans-serif">Performance</FONT></P>
-<P>Itt kell leírni a rendszertõl elvárt teljesítmény mutatókat,
-mindegyiket egy külön alpontban. Ilyenek lehetnek például:</P>
-<UL>
-	<LI><P>válaszidõk (legalább a leggyakrabban használt funkciók
-	esetén),</P>
-	<LI><P>áteresztõképesség (például tranzakció/mp),</P>
-	<LI><P>kapacitás (például a kezelt adatbázis max. mérete,
-	feldolgozandó tranzakciók száma, egyidejûleg kiszolgálandó
-	felhasználók száma stb.),</P>
-	<LI><P>a korlátozott használhatóság idején elvárható / teljesítendõ
-	mutatók,</P>
-	<LI><P>erõforrás igények (processzor sebesség, memória igény, diszk
-	kapacitás, sávszélesség stb.).</P>
-</UL>
-</div>
+<h3>Hardware követelmények</h3>
+
+<p>A szoftvernek egy 2010-ben kiadott "Irodai számítógép"-en képesnek kell lennie teljesen problémamentesen működni. Ez a konfiguráció jelenleg: 
+<a href="http://www.aqua.hu/irodaba/aqua-office-basic-szamitogep-6.html/konfigurator/">http://www.aqua.hu/irodaba/aqua-office-basic-szamitogep-6.html/konfigurator/</a>
+</p>
+<table>
+	<tr>
+		<td>Processzor:</td><td>Intel 775 1.8 GHz</td>
+	</tr>
+	<tr>
+		<td>Memória:</td><td>1 Gb 800 MHz</td>
+	</tr>
+	<tr>
+		<td>Merevlemez:</td><td>SATA II.</td>
+	</tr>
+	<tr>
+		<td>Videóvezérlő:</td><td>Alaplapon integrált, D3D, Direct Draw, OpenGL gyorsítással rendelkezik, a minimum 
+		1024*768 felbontásnál lényegesen nagyobbra is képes.</td>
+	</tr>
+</table>
+
+<p>A jelenlegi belépő szintű számítógépek is sokkal nagyobb teljesítménnyel rendelkeznek, mint amire jelen szoftvernek szüksége lehetne. Ennek ellenére
+az implementáció és tervezés további fázisaiban is törekedni kell a legjobb struktúra kialakítására, mind teljesítmény mind felhasználó válaszidő 
+szempontjából.</p>
+<p>A minimális konfiguráció, amin még a szoftvernek üzemelnie kell:</p>
+<table>
+	<tr>
+		<td>Processzor:</td><td>1 GHz</td>
+	</tr>
+	<tr>
+		<td>Memória:</td><td>512 Mb 400 MHz</td>
+	</tr>
+	<tr>
+		<td>Merevlemez:</td><td>IDE szabványú</td>
+	</tr>
+	<tr>
+		<td>Videóvezérlő:</td><td>Legalább 800*600 felbontásra képes, D3D, Direct Draw, OpenGL gyorsítással NEM rendelkezik.</td>
+	</tr>
+</table>
+
+<h3>Válaszidő</h3>
+<p>A szoftvernek extrém terhelés kivételével mindig 2 másodpercen belüli válaszidővel kell rendelkeznie. A válaszidő alatt nem a tényleges
+művelet végrehajtási sebességet értjük, hanem a felhasználó tájékoztatását az adott művelet állapotáról. A különféle fájlrendszerek és azok válaszideje
+miatt előfordulhat olyan esemény, amikor a távoli fájlrendszer nem válaszol a megadott időintervalumon belül, ekkor a felhasználót tájékoztatni kell
+arról, hogy a szoftver a távoli fájlrendszer válaszára vár.<br>
+Ettől eltekinteni csak extrém leterhelt rendszer esetén lehet, amikor más szoftverek foglalják le a rendszer erőforrásait olyan mértékben, amely
+a válaszidő sebességét nagyban befolyásolja.</p>
+
+
 <H1 CLASS="western">7. Támogatottság</H1>
-<P><FONT FACE="Arial, sans-serif">Supportability</FONT></P>
-<P>A rendszer üzembe helyezése után szükséges karbantartási feladatok
-megkönnyítésére szolgáló követelmények, egy-egy alpontban. Ezek a
-követelmények vonatkozhatnak mind a termékre, mind a fejlesztés
-folyamatára. Ilyenek lehetnek például:</P>
-<UL>
-	<LI><P>a használandó kódolási szabványok, elnevezési konvenciók,</P>
-	<LI><P>csak a karbantartóknak, illetve üzemeltetõknek szükséges
-	funkciók,</P>
-	<LI><P>a mûködés során keletkezõ naplók (a késõbbi hibakeresés vagy
-	finomhangolás elõsegítésére),</P>
-	<LI><P>a karbantartók munkáját segítõ segédalkalmazások (például a
-	naplók kiértékelésére).</P>
-</UL>
-<P><BR><BR>
-</P>
+<h3>Fájlrendszerek karakterkódolása</h3>
+<p>Az eltérő fájlrendszerek eltérő karakterkódolással rendelkeznek, ezért azokat tiszteletben kell tartani, a felhasználó által használt karakterkódolást
+kell azokon használni. (átnevezés, másolás, stb).<br>
+Amennyiben a cél és forrás fájlrendszer karakterkódolása eltér, úgy azokon a szabványoknak megfelelően konverziót kell végezni, a felhasználó
+fele transzparensen, úgy, hogy a fájlnév a forrás és a cél fájlrendszeren is (a karakterkódolás szerint) megeggyezzen.</p>
+<h3>Szoftveren belül használt karakterkódolások, kódolási szabványok</h3>
+<p>A szoftveren belül minden olyan változónak, dokumentumnak, szöveget tartalmazó objektumnak a karakterkódolását UTF-8 kódolással kell tárolni és kezelni,
+elkerülve ezzel a multikódolásos környezet esetén a "furcsa karaktereket", kiküszöbölve az ebből eredő hibákat.</p>
+
+
 <H1 CLASS="western">8. Tervezési korlátozások</H1>
-<P><FONT FACE="Arial, sans-serif">Design Constrainst</FONT></P>
-<P>Itt kell felsorolni egy-egy alpontban minden olyan korlátozást,
-amely a tervezési, esetleg az implementációs munkát befolyásolja.
-Ilyenek lehetnek például:</P>
-<UL>
-	<LI><P>a kívánatos architektúrára vonatkozó elõírások (például
-	milyen részekbõl [&bdquo;tier&rdquo;] kell felépíteni az
-	alkalmazást),</P>
-	<LI><P>milyen programozási nyelv(ek)et kell használni,</P>
-	<LI><P>milyen fejlesztõeszközt kell használni,</P>
-	<LI><P>milyen újra felhasználható elemek építhetõk be az
-	alkalmazásba (komponens- és/vagy osztálykönyvtárak, kész kódok
-	stb.),</P>
-	<LI><P>milyen fejlesztési módszertant, hogyan kell használni.</P>
-</UL>
-<P><BR><BR>
-</P>
+<h3>Programozási nyelv, fejlesztőeszközök</h3>
+<p>A fejlesztés során a programozási nyelv és programozási környezetet a fejlesztők választhatják meg, de az alábbi szempontoknak meg kell felelnie
+a nyelvnek és a környezetnek: </p>
+<ul>
+	<li>Objektum-orientált</li>
+	<li>Natív kódot generál fordítása során</li>
+	<li>Mindhárom operációs rendszeren képes a működésre (újrafordítással)</li>
+</ul>
+<p>A fejlesztés során felhasználható bármilyen GPLv3/2 / Lesser GPL liszenszelt kód, a forrás pontos megjelölésével és a GPLv3/2 liszensze alatt meghatározott
+kötelezettségek betartásával.</p>
+
 <H1 CLASS="western">9. On-line dokumentáció és Help rendszer</H1>
-<div class="ficsor">
-<P><FONT FACE="Arial, sans-serif">Online User Documentation and Help
-System Requirements</FONT></P>
-<P>Kellenek-e ilyenek, ha igen, a vonatkozó információk.</P>
-<P><BR><BR>
-</P>
-</div>
+
 <p>Mivel a felhasználói dokumentációt a szoftveren belül elérhetővé kell tenni, így az Online elérhető felhasználói dokumentáció 
 a szoftver használhatóságát nem befolyásolja.</p>
 
 <H1 CLASS="western">10. Felhasznált kész komponensek</H1>
-<div class="ficsor">
-<P><FONT FACE="Arial, sans-serif">Third-party Components</FONT></P>
-<P>Egy-egy alpontban kell felsorolni az alkalmazásba építendõ
-vásárolt vagy szabad felhasználású elemeket. Vásárlás esetén a
-részletezni kell a beszerzés körülményeit, a költségeket, a
-betartandó liceszelési és egyéb szabályokat. Szabad felhasználású
-elem esetén is fontos a forrás pontos megjelölése, a felhasználás
-szabályai, az alkalmazásra ebbõl adódó esetleges következmények,
-kötelezettségek.</P>
-<P><BR><BR>
-</P>
-</div>
-<p>GPLv3 Qt</p>
+<p>Jelen SRS nem határoz meg egy olyan komponenst sem, melyet a fejlesztés során a végtermékbe kell építeni. Bármely olyan szoftverkomponens felhasználható,
+ami a korábban megadott liszenszek alatt lettek kiadva, természetesen a forrás megjelölésével.</p>
 
 <H1 CLASS="western">11. Interfészek</H1>
-<div class="ficsor">
-<P><FONT FACE="Arial, sans-serif">Interfaces</FONT></P>
-<P>Ebben a fejezetben kell specifikálni a rendszer valamennyi külsõ
-kapcsolatát, az ezt biztosító interfészeket.</P>
-<P><BR><BR>
-</P>
-</div>
 
-<p>Queue API; Fájlrendszert elérő API; Diszpécser; GUI; Signal-Slot?</p>
+<p>A kódolás során a szoftvert három fő csoportra kell osztani:</p>
+<ul>
+	<p>Vezérlési blokk</p>
+	<p>Fájlkezelő blokk</p>
+	<p>Felhasználói interfész</p>
+</ul>
 
-<H2 CLASS="western">11.1. Felhasználói interfészek</H2>
-<P><FONT FACE="Arial, sans-serif">User Interfaces</FONT></P>
-<P>Ebben az alpontban kell leírni a felhasználói interfészre
-vonatkozó követelményeket. Ilyenek lehetnek például:</P>
-<UL>
-	<LI><P>használandó szabvány vagy kvázi-szabvány, stílus,</P>
-	<LI><P>a különbözõ felhasználói csoportok (munkakör, gyakorlottság
-	stb. szerint) elvárásai,</P>
-	<LI><P>a leglényegesebb user interface elemek tervei.</P>
-</UL>
-<P><BR><BR>
-</P>
+<p>Ezek között a kommunikációt egységesíteni kell, megkönnyítve a későbbi továbbfejlesztést, hibakeresést. A három külön blokknak legalább három külön
+szálon kell futnia, megakadályozva egyik blokk hibája esetén a rendszer leállását. A fájlkezelő blokknál javasolt műveletenként a további szálakra bontás.</p>
+
+<p>A Vezérlési blokkon keresztül zajlik a kommunikáció, így az a bekövetkezett esemény természetétől függően reagál arra.</p>
+<p>A fájlkezelő blokk jelen esetben az adott fájlrendszert és a vezérlési blokkot köti össze. Az összeköttetésnek tarnszparensnek kell lennie,
+a fájlkezelő blokknak a vezérlő felé jeleznie kell az adott fájlrendszer azon képességeit, amely befolyásolhatja a vezérlést. Ez a blokk tartja a kapcsolatot
+a távoli és helyi fájlrendszerekkel.</p>
+<p>A Felhasználói interfész szintén a vezérlő blokkal kommunikál, az az által szolgáltatott információkat jeleníti meg a felhasználónak, illetve ezen keresztül
+tartja a kapcsolatot a felhasználóval.</p>
+
+
+<H2 CLASS="western">11.1. Felhasználói interfész (GUI)</H2>
+<p>A felhasználói interfésznek az adott operációs rendszer adott grafikus felhasználói felületébe kell illeszkednie. Amennyire lehetséges a három operációs
+rendszer közös pontjait összegezve egy olyan vezérlést kialakítani, mely mindhárom operációs rendszert használó felhasználó számára elfogadható. Ilyen
+közös pont minden operációs rendszerben például a Fogd és húzd módszer (drag and drop). A felhasználónak lehetőséget kell biztosítani az interfész
+bizonyos mértékű testreszabására, figyelembe véve az operációs rendszer megjelenését. (pld: betűtípusok, színek)</p>
+<p>A felhasználói interfész két fájlablaból áll, melyek között definiálhatjuk a két alapvető funkciót: Másolás, Áthelyezés, melynél az egyik ablak a forrás,
+a másik a cél. A forrást és a célt az aktív - inaktív ablak határozza meg. Aktív ablak a forrás, a passzív pedig a cél objektum.
+Ezen felül az Átnevezés és Törlés funkciót az aktív ablak aktív elemére vonatkoztatjuk, jól láthatóan tájékoztatva a felhasználót az aktív elemről.</p>
+
 <H2 CLASS="western">11.2. Hardware interfészek</H2>
-<P><FONT FACE="Arial, sans-serif">Hardware Interfaces</FONT></P>
-<P>Ha vannak a rendszerben speciális kezelendõ hardware elemek.</P>
-<P><BR><BR>
-</P>
+<p>A hardveres elemek kezelését az Operációs Rendszeren keresztül valósítjuk meg, így külön hardver interfészre nem lesz szükség. Ennek ellenére a hardverek
+sajátosságait figyelembe kell vennünk, lásd Funkcionális követelmények, Queue. Ezeket az adatokat a fájlkezelő blokknak kell szolgáltatnia 
+a vezérlő blokk felé.</p>
+<p>A felhasználó oldalon használt hardveres elemeket az operációs rendszer fogja kezelni (beviteli és mutatóeszköz). Feltételezzük, hogy billentyűzet és valamilyen
+mutatóeszköz segítségével fogja a felhasználó a szoftvert vezérelni.</p>
+
 <H2 CLASS="western">11.3. Software interfészek</H2>
-<P><FONT FACE="Arial, sans-serif">Software Interfaces</FONT></P>
-<P>Ha a rendszernek más rendszerekkel az üzembe helyezés után, vagy
-belátható idõn belül majd a kapcsolatot kell tartania más
-rendszerekkel, itt kell megadni a kapcsolat kiépítéséhez szükséges
-részletességû információkat.</P>
-<P><BR><BR>
-</P>
-<H2 CLASS="western">11.3. Kommunikációs interfészek</H2>
-<P><FONT FACE="Arial, sans-serif">Communications Interfaces</FONT></P>
-<P>Ha a rendszernek valamilyen kommunikációs csatorna vagy csatornák
-segítségével kell kapcsolatot tartania a felhasználókkal vagy más
-rendszerekkel. (Például internetes, mobiltelefonos kliens stb.)</P>
-<P><BR><BR>
-</P>
+<p>Mivel a szoftvernek valószínűleg több külső rendszerrel közre kell működnie, így az azokkal való kommunikációt lehetőség szerint az adott protokollra
+vonatkozó RFC szerint kell végrehajtani. Amennyiben ez az RFC nem létezik, nem elérhető, úgy az azt létrehozó cég vagy szervezet specifikációjára építve
+kell a protokoll implementációját megvalósítani. Ezek a protokollok a fájlkezelő blokkon keresztül kapcsolódnak a szoftverhez.</p>
+
+
 <H1 CLASS="western">12. Alkalmazott szabványok</H1>
-<P><FONT FACE="Arial, sans-serif">Applicable Standards</FONT></P>
-<P>A fejlesztés során vagy az alkalmazás készítése és üzemeltetése,
-használata során betartandó elõírások (technikai vagy szakterületi
-szabványok, törvények stb.) Célszerû lehet az alábbi csoportosítás.</P>
-<H2 CLASS="western">12.1. Kötelezõen alkalmazandó szabványok</H2>
-<P><A NAME="DDE_LINK2"></A><FONT FACE="Arial, sans-serif">Mandatory
-Standards</FONT></P>
-<P>Valamilyen szintû elõírás miatt. (Például törvényi elõírás stb.)</P>
-<P><BR><BR>
-</P>
+<h3>Implementációs kritériumok</h3>
+<p>A szoftver implementációja során az objektum orientált szemléletet, annak irányelveit követni kell. Ezen felül bármilyen olyan szoftverfejlesztési
+irányelv használható, amely a fejlesztők munkáját segítik, fejlesztést gyorsítják, amíg azok az elvek, módszerek nem ütköznek az objektum-orientált fejlesztés
+irányelveivel, illetve jelen SRS által definiált funkciókat nem befolyásolják negatív irányban.</p>
+
 <H2 CLASS="western">12.2. Választás alapján alkalmazott szabványok</H2>
-<div class="ficsor">
-<P><FONT FACE="Arial, sans-serif">Optional Standars</FONT></P>
-<P>A fejlesztõk vagy a felhasználók által valamilyen okból önként
-vállalt elõírások.</P>
-</div>
-<p>Implementálásnál hungarian notation?</p>
+<h3>Változók, osztályok elnevezése</h3>
+<p>A feljesztés során "Hungarian notation" változóelnevezési stílus használata kötelező, megkönnyítve ezzel a hibakeresést. Csak olyan esetben térhetnek
+el a fejlesztők ettől, amikor a fejlesztői környezet (devel. environment) egyértelműen megadja egy változó típusát, segíti a hibakeresést.</p>
 
 <H1 CLASS="western">13. Mellékletek</H1>
 <P><FONT FACE="Arial, sans-serif">Appendix</FONT></P>
