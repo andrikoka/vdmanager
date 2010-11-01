@@ -5,9 +5,9 @@
 
 dirlist::dirlist()
 {
-    this->dir.setPath(QDir::currentPath());
+    //this->dir.setPath(QDir::currentPath());
 }
 
 QStringList dirlist::listCurrent() {
-    return dir.entryList();
+    return dir.entryList(QDir::AllEntries,QDir::DirsFirst);
 }
