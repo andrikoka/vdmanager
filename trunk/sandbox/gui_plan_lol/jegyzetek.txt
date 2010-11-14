@@ -1,0 +1,42 @@
+Mielõtt elfelejteném:
+VDFileItemList -> QList<VDFileItem>
+Mikor egy item megváltozik, az egy szignált küld a saját címével a diszpécsernek, aki továbbítja a
+szignált és a megváltozott értéket a megfelelõ hely(ek)re. (GUI)
+Minden Konstruktorban össze kell kapcsolni a fileitemet a diszpécserrel.
+
+Meg kell valahogy oldani a VDFIleItem-ek kezelési jogkörét. Ha nem kell, mehet destroyba, ne foglalja
+a helyet. De hogyan határozzuk meg, hogy már "Nem kell"?
+    1. Lehetséges megoldás:
+	A VDFileControl nyilvántartja melyik elem a VDFileItem gazdája. A gazdának a feladata az elemet
+	"nem kell tovább"-ként megjelölni. Ezt nem feltétlen kell azonnal végrehajtani (elemet eltávolítani), viszont kiemelt figyelemmel kell lennünk a nem használt elemekkel szemben, ugyanis egyszer
+	nem töröljük és kész a memóriafolyás.
+    2. Lehetséges megoldás:
+	A control osztályban "csoportosítani" a listákat úgy, hogy minden "panelhoz" tartozzon egy. Ha a
+	panelen valami változás történik (ami igen sûrûn be fog következni), akkor egész egyszerûen
+	töröljük a panelhoz tartozó VDFileItemList -et, és létrehozzuk benne az új elemeket.
+    "Rajz:"
+
+Lists---|
+	+-->Panel 1 Lista--+--->VDFileItem 1
+	|		   +----VDFileItem 2
+	|		   +----VDFileItem 3
+	|		   |----VDFileItem N
+	|
+	+-->Panel 2 Lista--+--->VDFileItem 1
+	|		   +----VDFileItem 2
+	|		   +----VDFileItem 3
+	|		   |----VDFileItem N
+	|
+	+-->Panel N Lista--+--->VDFileItem 1
+	|		   +----VDFileItem 2
+	|		   +----VDFileItem 3
+	|		   |----VDFileItem N
+
+
+
+
+
+TODO:
+
+    vdfilecontrol : csinálni egy referenciapontot, amiben van az aktuális panel (mappa, tudnunk kell melyik az!)
+    Ugyanezt implementálni a GUI részbe is.

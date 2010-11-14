@@ -2,7 +2,11 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QListWidget>
 #include <ui_gui_1.h>
+
+#include <vdfileitem.h>
+
 namespace Ui {
     class MainWindow;
 }
@@ -14,15 +18,18 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    void addFiles(QStringList,qint8 p=0);
-    void setLeftLocation(QString);
-    void setRightLocation(QString);
+
+public slots:
+    //void panelContentChanged(QWidget *panel);
+    void itemIsReadyToDisplay(VDFileItem * item);
 
 private:
     Ui::mW *ui;
-    QString szLeftLocation,szRightLocation; // panel locations
-    void panelLocationChanged(bool); //left: 0; right: 0;
-    void addItems(QTableWidget*,QStringList);
+    void addItems(QListWidget *,QList<VDFileItem*>);
+    QList<VDFileItem*> leftPanelList;
+    QList<VDFileItem*> rightPanelList;
+    QString leftCurrent,rightCurrent;
+    QWidget * findItemInPanel(VDFileItem * item);
 };
 
 #endif // MAINWINDOW_H
