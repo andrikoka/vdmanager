@@ -1,13 +1,12 @@
 #include <QtGui/QApplication>
 #include "mainwindow.h"
-#include "QStringList"
-#include "dirlist.h"
+#include <vdfilecontrol.h>
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     MainWindow w;
-    dirlist d;
-    w.addFiles(d.listCurrent());
+    VDFileControl vdfc(&w);
     w.show();
     return a.exec();
 }

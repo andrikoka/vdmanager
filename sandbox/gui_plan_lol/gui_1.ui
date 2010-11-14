@@ -59,10 +59,10 @@
          <number>1</number>
         </property>
         <item>
-         <widget class="QTableWidget" name="panel_left"/>
+         <widget class="QListWidget" name="panel_left"/>
         </item>
         <item>
-         <widget class="QTableWidget" name="panel_right"/>
+         <widget class="QListWidget" name="panel_right"/>
         </item>
        </layout>
       </item>
