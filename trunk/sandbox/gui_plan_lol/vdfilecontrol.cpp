@@ -9,13 +9,14 @@ VDFileControl::VDFileControl(MainWindow * GUI,QObject *parent) :
     this->mw = GUI;
 
     // elso elem letrehozasa, kesobb settings alapjan lehet a last used dir es egyeb
-    this->VDFileItemList << new VDFileItem(dir.homePath());
+    this->item = new VDFileItem(dir.homePath());
+    this->list << this->item;
 
-    connect(this->VDFileItemList[0],SIGNAL(readyToDisplay(VDFileItem*)),
+    connect(this->lists[0][0],SIGNAL(readyToDisplay(VDFileItem*)),
     mw,
     SLOT(itemIsReadyToDisplay(VDFileItem*)));
 
-    this->realHandlerList << new VDLocalFile(VDFileItemList[0]->getFileName(),VDFileItemList[0]);
+    this->realHandlerList << new VDLocalFile(lists[0][0]->getFileName(),lists[0][0]);
 
 }
 

@@ -18,6 +18,7 @@ public:
     void setIcon(QIcon);
     void setDirFlag(bool);
     void setStandardURL(QString);
+    void setNecessaryProperties(QStringList);
 
     qint64 getSize();
     QDateTime getCreateDate();

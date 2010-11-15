@@ -11,11 +11,13 @@ class VDLocalFile : public QObject
     Q_OBJECT
 public:
     explicit VDLocalFile(QString filename,VDFileItem * vdfitem,QObject *parent = 0);
+    bool getContentList();
 signals:
 
 public slots:
 
 private:
+    QString filename;
     QFile *file;
     QFileInfo *fileinfo;
     QDir * dir;
