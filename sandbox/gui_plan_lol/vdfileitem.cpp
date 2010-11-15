@@ -51,6 +51,9 @@ void VDFileItem::newPropertySet(QString property){
     if (this->properties.count() == 0) { emit readyToDisplay(this); }
     qDebug() << this->properties;
 }
+void VDFileItem::setNecessaryProperties(QStringList props){
+    this->properties = props;
+}
 
 // getter rész
 qint64 VDFileItem::getSize(){return this->size;};

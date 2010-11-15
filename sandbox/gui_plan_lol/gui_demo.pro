@@ -17,14 +17,14 @@ SOURCES += main.cpp\
     vdfilecontrol.cpp \
     vdlocalfile.cpp \
     vdfileitemlist.cpp \
-    vddispatcher.cpp
+    vddispatcher.cpp \
+    vdfileitem.cpp
 
 HEADERS  += mainwindow.h \
     dirlist.h \
     vdfileitem.h \
     vdfilecontrol.h \
     vdlocalfile.h \
-    vdfileitemlist.h \
     vddispatcher.h
 
 FORMS    += \
