@@ -8,12 +8,6 @@ VDFileItem::VDFileItem(QString filename,QObject *parent) :
     QObject(parent)
 {
     this->fileName = filename;
-
-    this->properties
-	    << "size" << "isDir"
-	    //<< "icon"
-	    << "createDate" << "modDate"
-	    << "standardURL";
 }
 
 // setter rész
@@ -27,7 +21,7 @@ void VDFileItem::setFileName(QString filename){
 }
 void VDFileItem::setDirFlag(bool isDir){
     this->dir = isDir; emit dirFlagChanged(this->dir);
-    this->newPropertySet("isDir");
+    this->newPropertySet("dir");
 }
 void VDFileItem::setIcon(QIcon icon) {
     this->icon = icon; emit iconChanged(this->icon);

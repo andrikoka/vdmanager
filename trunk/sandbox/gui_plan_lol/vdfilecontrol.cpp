@@ -11,6 +11,7 @@ VDFileControl::VDFileControl(MainWindow * GUI,QObject *parent) :
     // elso elem letrehozasa, kesobb settings alapjan lehet a last used dir es egyeb
     this->item = new VDFileItem(dir.homePath());
     this->list << this->item;
+    this->lists << this->list;
 
     connect(this->lists[0][0],SIGNAL(readyToDisplay(VDFileItem*)),
     mw,
