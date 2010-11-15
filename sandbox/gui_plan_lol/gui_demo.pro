@@ -16,9 +16,7 @@ SOURCES += main.cpp\
     vdfileitem.cpp \
     vdfilecontrol.cpp \
     vdlocalfile.cpp \
-    vdfileitemlist.cpp \
-    vddispatcher.cpp \
-    vdfileitem.cpp
+    vddispatcher.cpp
 
 HEADERS  += mainwindow.h \
     dirlist.h \
