@@ -20,8 +20,8 @@ public slots:
 
 private:
     QString filename;
-    QFile *file;
-    QFileInfo *fileinfo;
+    QFile * file;
+    QFileInfo fileinfo;
     QDir * dir;
     VDFileItem * vditem;
 };

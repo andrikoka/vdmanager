@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include <vdfileitem.h>
+#include <qlistwidget.h>
+
 class VDDispatcher : public QObject
 {
     Q_OBJECT
@@ -13,6 +15,7 @@ signals:
 
 public slots:
     void VDFileItemReadyToDisplay(VDFileItem * item);
+    void PanelItemDoubleClicked(QListWidgetItem *item);
 };
 
 #endif // VDDISPATCHER_H
