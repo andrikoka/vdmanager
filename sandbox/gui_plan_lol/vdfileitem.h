@@ -19,6 +19,8 @@ public:
     void setDirFlag(bool);
     void setStandardURL(QString);
     void setNecessaryProperties(QStringList);
+    void setItemIndex(qint64,qint64);
+    void setFullPath(QString);
 
     qint64 getSize();
     QDateTime getCreateDate();
@@ -27,6 +29,11 @@ public:
     QIcon getIcon();
     bool isDir();
     QString getStandardURL();
+    qint64 getPanelIndex();
+    qint64 getElementIndex();
+    QString getProtocol();
+    QString getFullPath();
+
 
 private:
     qint64 size;
@@ -36,6 +43,8 @@ private:
     QIcon icon;
     bool dir;
     QStringList properties;
+    qint64 panel,element;
+    QString fullPath;
 	void newPropertySet(QString);
 signals:
     void sizeChanged(qint64);
@@ -46,6 +55,7 @@ signals:
     void iconChanged(QIcon);
     void standardURLChanged(QString);
     void readyToDisplay(VDFileItem *);
+    void fullPathChanged(VDFileItem *);
 public slots:
 
 };

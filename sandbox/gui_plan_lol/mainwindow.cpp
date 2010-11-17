@@ -12,8 +12,12 @@ MainWindow::MainWindow(QWidget *parent) :
 }
 
 void MainWindow::itemIsReadyToDisplay(VDFileItem *item){
-    ui->panel_left->addItem(item->getFileName());
-    qDebug() << item << "added";
+    switch (item->getPanelIndex()){
+    case 0 : ui->panel_left->addItem(item->getFileName()); break;
+    case 1 : ui->panel_right->addItem(item->getFileName()); break;
+    }
+
+    qDebug() << item->getPanelIndex() << "panelnum";
 }
 
 MainWindow::~MainWindow()

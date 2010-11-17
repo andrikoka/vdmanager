@@ -40,14 +40,23 @@ void VDFileItem::setStandardURL(QString newurl){
     this->newPropertySet("standardURL");
 }
 
+void VDFileItem::setFullPath(QString path){
+    this->fullPath=path; emit fullPathChanged(this);
+    this->newPropertySet("fullPath");
+}
+
 void VDFileItem::newPropertySet(QString property){
     this->properties.removeOne(property);
     if (this->properties.count() == 0) { emit readyToDisplay(this); }
-    qDebug() << this->properties;
+    //qDebug() << this->properties;
 }
 void VDFileItem::setNecessaryProperties(QStringList props){
     this->properties = props;
 }
+void VDFileItem::setItemIndex(qint64 panel, qint64 element){
+    this->panel = panel; this->element = this->element;
+}
+
 
 // getter rész
 qint64 VDFileItem::getSize(){return this->size;};
@@ -58,3 +67,12 @@ QString VDFileItem::getFileName() { return this->fileName; };
 QIcon VDFileItem::getIcon() { return this->icon; };
 bool VDFileItem::isDir() { return this->dir; };
 QString VDFileItem::getStandardURL() { return this->standardURL; }
+qint64 VDFileItem::getPanelIndex(){ return this->panel; };
+
+qint64 VDFileItem::getElementIndex() { return this->element; }
+QString VDFileItem::getProtocol(){
+    return this->standardURL.split("://")[0];
+}
+QString VDFileItem::getFullPath(){
+    return this->fullPath;
+}
