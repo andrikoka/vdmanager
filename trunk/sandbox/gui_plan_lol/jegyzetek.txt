@@ -10,7 +10,8 @@ a helyet. De hogyan határozzuk meg, hogy már "Nem kell"?
 	A VDFileControl nyilvántartja melyik elem a VDFileItem gazdája. A gazdának a feladata az elemet
 	"nem kell tovább"-ként megjelölni. Ezt nem feltétlen kell azonnal végrehajtani (elemet eltávolítani), viszont kiemelt figyelemmel kell lennünk a nem használt elemekkel szemben, ugyanis egyszer
 	nem töröljük és kész a memóriafolyás.
-    2. Lehetséges megoldás:
+
+    2. Lehetséges megoldás: (ez lett a végleges)
 	A control osztályban "csoportosítani" a listákat úgy, hogy minden "panelhoz" tartozzon egy. Ha a
 	panelen valami változás történik (ami igen sûrûn be fog következni), akkor egész egyszerûen
 	töröljük a panelhoz tartozó VDFileItem listát, és létrehozzuk benne az új elemeket.
@@ -41,7 +42,9 @@ QList<QList <VDFileItem* > > lists -- --|
 					+--QList<VDFileItem*> list -----+--VDFileItem *item;
 									+--VDFileItem *item;
 
-
+Ezt viszont a típuskikényszerítések miatt (és nem átjárhatóak a custom és a QObject típusok)
+úgy kell megoldani, hogy a VDFileItem tudja, hogy õt milyen protokollon és url-en lehet elérni.
+(standardURL). Ez alapján már tudunk példányosítani hozzá egy megfelelõ handlert.
 
 TODO:
 

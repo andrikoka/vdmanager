@@ -1,30 +1,49 @@
 #include "vdlocalfile.h"
 #include <QFileIconProvider>
-
+#include <QDebug>
 VDLocalFile::VDLocalFile(QString filename, VDFileItem * vdfitem,QObject * parent) :
 	QObject(parent)
 {
     this->filename = filename;
+    this->vditem = vdfitem;
+    this->fileinfo = new QFileInfo(filename);
+    this->dir = new QDir(this->filename);
+}
+void VDLocalFile::fillVDItem(){
     QStringList props;
     // a VDFileItem ez alapján tudja mikor lesz "kész", adatai megjeleníthetõek
     props << "size"
 	    << "dir"
 	    //<< "icon"
 	    << "createDate" << "modDate"
+	    << "fullPath"
 	    << "standardURL";
-    vdfitem->setNecessaryProperties(props);
+    this->vditem->setNecessaryProperties(props);
+    this->vditem->setFileName(this->fileinfo->fileName());
     QFileIconProvider qfip;
-    this->fileinfo = new QFileInfo(filename);
-
     if (this->fileinfo->isDir()){
-	vdfitem->setDirFlag(true);
-	vdfitem->setSize(this->fileinfo->size());
+	this->vditem->setDirFlag(true);
+	this->vditem->setSize(this->fileinfo->size());
     } else {
-	vdfitem->setDirFlag(false);
-	vdfitem->setSize(this->fileinfo->size());
+	this->vditem->setDirFlag(false);
+	this->vditem->setSize(this->fileinfo->size());
     }
-    vdfitem->setModDate(this->fileinfo->lastModified());
-    vdfitem->setCreateDate(this->fileinfo->created());
-    //vdfitem->setIcon(qfip.icon(fileinfo)); // na erre kíváncsi leszek
-    vdfitem->setStandardURL("local://"+this->fileinfo->path() + this->fileinfo->fileName());
+    this->vditem->setModDate(this->fileinfo->lastModified());
+    this->vditem->setCreateDate(this->fileinfo->created());
+    this->vditem->setFullPath(this->getFullPath());
+    //this->vditem->setIcon(qfip.icon(fileinfo)); // na erre kíváncsi leszek
+    this->vditem->setStandardURL("local://"+this->fileinfo->path() + this->fileinfo->fileName());
+}
+
+QStringList VDLocalFile::getContentList(){
+    qDebug() << "contentlist req for" << this->fileinfo->fileName();
+    if (this->fileinfo->isDir()){
+	qDebug() << "entrylist prepare";
+	return this->dir->entryList(QDir::AllEntries,QDir::DirsFirst);
+    }
+    else return QStringList();
+}
+
+QString VDLocalFile::getFullPath(){
+    return this->fileinfo->absolutePath(); // ezt lehetne szedni a standardurlbol is
 }

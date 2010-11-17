@@ -5,6 +5,7 @@
 #include <vdfileitem.h>
 #include <vddispatcher.h>
 #include <mainwindow.h>
+#include <vdlocalfile.h>
 class VDFileControl : public QObject
 {
     Q_OBJECT
@@ -16,14 +17,13 @@ private:
     QList<QList <VDFileItem* > > lists;
     VDFileItem *item;
     QList<VDFileItem*> list;
-
-    QList< QList<QObject *> > realHandlerLists;
-    QList<QObject *> realHandlerList; // QFTP, QFile, bármi
+    // real handler peldanyok (maskepp nem tudjuk oket tarolni)
+    VDLocalFile *localItem;
 
     VDDispatcher * dispatcher;
     MainWindow * mw;
 public slots:
-    void VDFileItemIsReadyToDisplay(VDFileItem * );
+    void VDRootItemIsReady(VDFileItem * );
 };
 
 #endif // VDFILECONTROL_H
