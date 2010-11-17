@@ -43,16 +43,18 @@ void VDFileControl::VDRootItemIsReady(VDFileItem * rootItem){
     QString root;
     this->localItem = new VDLocalFile(rootItem->getFullPath() +"/"+ rootItem->getFileName(),rootItem);
 
-    // fajlnevekkel ter vissza, rootitem/ nélkül, csak [filenev]!
-    // ha csinalni akarunk ra egy vdfileitem-et, akkor tudnunk kell a root-nak
-    // az eleresi utjat, amit megkaphatjuk tole
+    /* fajlnevekkel ter vissza, rootitem/ nélkül, csak [filenev]!
+    / ha csinalni akarunk ra egy vdfileitem-et, akkor tudnunk kell a root-nak
+    / az eleresi utjat, amit megkaphatjuk tole
+    */
 
     entrylist = this->localItem->getContentList();
-    root = this->localItem->getFullPath();
+    root = rootItem->getFullPath() + "/" + rootItem->getFileName();
 
-    // itt mar nem kapcsoljuk ossze a rootitemet es a kesz szignalt, kulonben kapunk egy
+    /* itt mar nem kapcsoljuk ossze a rootitemet es a kesz szignalt, kulonben kapunk egy
     // vegtelen ciklust. Amúgy is a controlnak a GUI fele kell az infókat szolgáltatni,
     // így oda kell továbbítani a kész elemeket.
+       */
     for (unsigned short int i=0;i< entrylist.count();i++){
 	qint64 rootIndex = rootItem->getPanelIndex();
 	// hozzaadjuk az uj elemet

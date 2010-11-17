@@ -12,12 +12,23 @@ MainWindow::MainWindow(QWidget *parent) :
 }
 
 void MainWindow::itemIsReadyToDisplay(VDFileItem *item){
+    QString StringItem;
+    StringItem = QString("%1	%2 %3")
+		 .arg(item->getFileName())
+		 .arg(item->getSize())
+		 .arg(item->getCreateDate().toString());
+    //qDebug() << StringItem;
+    QListWidgetItem * qlwi;
+    qlwi = new QListWidgetItem(item->getIcon(),StringItem);
     switch (item->getPanelIndex()){
-    case 0 : ui->panel_left->addItem(item->getFileName()); break;
-    case 1 : ui->panel_right->addItem(item->getFileName()); break;
+    case 0 :{
+	ui->panel_left->addItem(qlwi);
+    }
+	break;
+    case 1 : ui->panel_right->addItem(qlwi); break;
     }
 
-    qDebug() << item->getPanelIndex() << "panelnum";
+    //qDebug() << item->getPanelIndex() << "panelnum";
 }
 
 MainWindow::~MainWindow()
