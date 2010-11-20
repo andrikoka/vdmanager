@@ -124,7 +124,12 @@
 	<td>Funkciók bővítése, további kidolgozások, GUI tervek</td>
 	<td>Fibinger Ádám</td>
 </tr>
-
+<tr>
+	<td>2010.11.20.</td>
+	<td>0.3.6</td>
+	<td>Végrehajtás szöveges és Use-Case kidolgozása</td>
+	<td>Komjáthy Gábor</td>
+</tr>
 </table>
 
 <P><B>Tartalomjegyzék</B></P>
@@ -160,6 +165,9 @@
 			</li>
 			<li>
 				<a href="#atnevezes">Átnevezés</a>
+			</li>
+			<li>
+				<a href="#vegrehajtas">Végrehajtás</a>
 			</li>
 			<li>
 				<a href="#Queue">Queue, várakozási sor</a>
@@ -512,7 +520,7 @@ a soros végrehajtás lehetőségét. Ezt a Queue (Várakozási sor) tárolóval
 	</ol>
 	</li>
 	<li><p><a name="atnevezes"></a>
-	<b class="main_functions">Átnevezés</b><p>
+	<b class="main_functions">Átnevezés</b></p>
 
 	<div class="img">
 		<img src="use_case_rename.png" alt="Átnevezés">
@@ -548,6 +556,55 @@ a soros végrehajtás lehetőségét. Ezt a Queue (Várakozási sor) tárolóval
 		<li>Átnevezés megkezdése, amennyiben a fenti ellenőrzések rendben lezajlanak, az esetleges problémák lekezelésre kerültek</li>
 	</ol>
 	</li>
+	
+	<li><p><a name="vegrehajtas"></a>
+	<b class="main_functions">Végrehajtás</b></p>
+	<div class="img">
+		<img src="use_case_execute.png" alt="Végrehajtás">
+		<p class="img_bottom">Végrehajtás</p>
+	</div>
+	<p>A felhasználó egy fájlt futtat.</p>
+	<p><b>Prekondíciók:</b> A szoftver üzemkész állapotban van, és a fájl futtattásához szükséges szoftver is telepítve van.</p>
+	<p><b>Poszt-kondíciók:</b> A megadott fájl futtattása megtörténik.</p>
+	<p><b>Szokásos működés (Main Flow):</b> A felhasználó kijelöli a futtattni kívánt fájlt. 
+	A Végrehajtás parancs kiadása után:</p>
+	<ol>
+		<li>Forrás futtatthatóságának ellenőrzése</li>
+		<li>Forrás helyének meghatározása</li>
+		<li>Felhasználó jogosultságának ellenőrzése</li>
+		<li>Futtattás megkezdése, amennyiben a fenti ellenőrzések rendben lezajlanak</li>
+	</ol>
+
+	<p><b>Alternatív esetek:</b>
+	<ol>
+		<li>Forrás futtatthatóságának ellenőrzése:
+			<ul>
+				<li><b>Forrás nem futtattható:</b> Felhasználó tájékoztatása, végrehajtás megszakítása</li>
+			</ul>
+		</li>
+		<li>Forrás helyének meghatározása:
+			<ul>
+				<li><b>A forrás nem helyi fájl: </b> Felhasználó figyelmeztetése: Fájl letöltése, megszakítás felajánlása
+				<ul>
+				<li> Felhasználó letöltést kért: Fájl letöltése a helyi rendszerre, majd fájl futtattása.</li>
+				<li> Felhasználó megszakítást kért: a művelet megszakítása, visszatérés üzemkész állapotba.</li>
+				</ul>
+				</li>
+				
+			</ul>
+		</li>
+		<li>Felhasználó jogosultságának ellenőrzése:
+		<ul>
+			<li><b>Jogosultság nem megfelelő:</b> Felhasználó figyelmeztetése, végrehajtás megszakítása.
+			</li>
+		</ul>
+		</li>
+		<li>Végrehajtás megkezdése, amennyiben a fenti ellenőrzések rendben lezajlanak.</li>
+	</ol>
+	</div>
+	</li>
+	
+	
 	<li>
 	<p><a name="Queue"></a>
 	<b class="main_functions">Queue</b></p>
