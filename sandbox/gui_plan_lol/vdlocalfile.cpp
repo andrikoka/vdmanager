@@ -1,8 +1,7 @@
 #include "vdlocalfile.h"
 #include <QFileIconProvider>
 #include <QDebug>
-VDLocalFile::VDLocalFile(QString filename, VDFileItem * vdfitem,QObject * parent) :
-	QObject(parent)
+VDLocalFile::VDLocalFile(QString filename, VDFileItem * vdfitem)
 {
     this->filename = filename;
     this->file = new QFile(filename);

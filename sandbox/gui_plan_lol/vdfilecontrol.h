@@ -17,8 +17,8 @@ private:
     QList<QList <VDFileItem* > > lists;
     VDFileItem *item;
     QList<VDFileItem*> list;
-    // real handler peldanyok (maskepp nem tudjuk oket tarolni)
-    VDLocalFile *localItem;
+    // real handler peldanyok
+    VDAbstractFile *localItem;
 
     VDDispatcher * dispatcher;
     MainWindow * mw;

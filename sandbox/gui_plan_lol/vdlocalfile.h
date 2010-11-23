@@ -5,12 +5,14 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QDir>
+#include <vdabstractfile.h>
 #include <vdfileitem.h>
-class VDLocalFile : public QObject
+class VDLocalFile : public VDAbstractFile
 {
     Q_OBJECT
+    Q_INTERFACES(VDAbstractFile);
 public:
-    explicit VDLocalFile(QString filename,VDFileItem * vdfitem,QObject *parent = 0);
+    VDLocalFile(QString filename,VDFileItem * vdfitem);
     QStringList getContentList();
     void fillVDItem();
     QString getFullPath();
