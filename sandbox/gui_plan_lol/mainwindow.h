@@ -22,14 +22,19 @@ public:
 public slots:
     //void panelContentChanged(QWidget *panel);
     void itemIsReadyToDisplay(VDFileItem * item);
+    void clearPanel(int);
 
 private:
     Ui::mW *ui;
     void addItems(QListWidget *,QList<VDFileItem*>);
-    QList<VDFileItem*> leftPanelList;
-    QList<VDFileItem*> rightPanelList;
     QString leftCurrent,rightCurrent;
     QWidget * findItemInPanel(VDFileItem * item);
+
+private slots:
+    void on_panel_left_itemDoubleClicked(QListWidgetItem* item);
+signals:
+    // string: standardurl; int: panelnum
+    void itemDoubleClicked(QString, int);
 };
 
 #endif // MAINWINDOW_H
