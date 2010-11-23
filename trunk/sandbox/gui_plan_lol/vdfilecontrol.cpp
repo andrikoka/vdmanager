@@ -7,7 +7,9 @@ VDFileControl::VDFileControl(MainWindow * GUI,QObject *parent) :
 {
     QDir dir;
     dispatcher = new VDDispatcher(this);
+    connect(dispatcher,SIGNAL(ExecutionRequest(QString,int)),this,SLOT(ExecutionRequest(QString,int)));
     this->mw = GUI;
+    connect(mw,SIGNAL(itemDoubleClicked(QString,int)),dispatcher,SLOT(PanelItemDoubleClicked(QString,int)));
     // elso elem letrehozasa, kesobb settings alapjan lehet a last used dir es egyeb
     // panel 0
     this->item = new VDFileItem(dir.homePath());
@@ -66,4 +68,22 @@ void VDFileControl::VDRootItemIsReady(VDFileItem * rootItem){
 
 	this->localItem->fillVDItem();
     }
+}
+void VDFileControl::ExecutionRequest(QString url, int panel){
+    // VDExecute kellene ide, ami ezt megcsinalja
+    QStringList parts;
+    qDebug() << "Control: ExecutionRequest" << url << panel;
+    mw->clearPanel(0);
+    parts = url.split("://");
+    this->lists[panel].clear();
+    this->item = new VDFileItem(parts[1]);
+    this->item->setItemIndex(panel,0);
+    connect(this->item,SIGNAL(readyToDisplay(VDFileItem*)),
+	    this,SLOT(VDRootItemIsReady(VDFileItem*)));
+    this->list.clear();
+    this->list << this->item;
+    this->lists[panel] << this->list;
+    this->localItem = new VDLocalFile(lists[panel][0]->getFileName(),lists[panel][0]);
+    this->localItem->fillVDItem();
+    // LAAASSSSÚÚÚÚÚ
 }

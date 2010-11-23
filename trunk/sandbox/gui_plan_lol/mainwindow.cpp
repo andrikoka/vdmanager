@@ -20,6 +20,8 @@ void MainWindow::itemIsReadyToDisplay(VDFileItem *item){
     //qDebug() << StringItem;
     QListWidgetItem * qlwi;
     qlwi = new QListWidgetItem(item->getIcon(),StringItem);
+    qlwi->setData(32,item->getStandardURL());
+    //qlwi = new QListWidgetItem(StringItem);
     switch (item->getPanelIndex()){
     case 0 :{
 	ui->panel_left->addItem(qlwi);
@@ -31,7 +33,21 @@ void MainWindow::itemIsReadyToDisplay(VDFileItem *item){
     //qDebug() << item->getPanelIndex() << "panelnum";
 }
 
+void MainWindow::clearPanel(int panel){
+    switch(panel){
+    case 0:{ ui->panel_left->clear(); } break;
+    case 1: { ui->panel_right->clear(); } break;
+    }
+}
+
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::on_panel_left_itemDoubleClicked(QListWidgetItem* item)
+{
+    QVariant stuff;
+    stuff = item->data(32);
+    emit itemDoubleClicked(stuff.toString(),0);
 }

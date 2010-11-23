@@ -24,6 +24,7 @@ private:
     MainWindow * mw;
 public slots:
     void VDRootItemIsReady(VDFileItem * );
+    void ExecutionRequest(QString,int);
 };
 
 #endif // VDFILECONTROL_H

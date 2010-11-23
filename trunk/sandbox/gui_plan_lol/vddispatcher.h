@@ -3,19 +3,19 @@
 
 #include <QObject>
 #include <vdfileitem.h>
-#include <qlistwidget.h>
+
 
 class VDDispatcher : public QObject
 {
     Q_OBJECT
 public:
-    explicit VDDispatcher(QObject *parent = 0);
+    explicit VDDispatcher(QObject *parent);
 
 signals:
-
+    void ExecutionRequest(QString,int);
 public slots:
     void VDFileItemReadyToDisplay(VDFileItem * item);
-    void PanelItemDoubleClicked(QListWidgetItem *item);
+    void PanelItemDoubleClicked(QString,int);
 };
 
 #endif // VDDISPATCHER_H
