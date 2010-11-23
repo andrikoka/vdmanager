@@ -51,3 +51,16 @@ TODO:
     vdfilecontrol : csinálni egy referenciapontot, amiben van az aktuális panel (mappa, tudnunk kell melyik az!)
     Ugyanezt implementálni a GUI részbe is.
 control referenciapont: lists elsõ (nulladik) eleme maga a mappa
+
+
+Notes:
+
+Teljesen felesleges minden elemrõl minden információt tárolni. Definiálni kell azt az adathalmazt, amit egy fájlról feltétlenül, mindig tudnunk kell. Minden egyéb tulajdonság felesleges, ha a
+felhasználónak nincs rá szüksége. (Minek tároljunk 60 fél attribútomot, ha a felhasználó csak 3-at
+jelenít meg? Veszett gyors lesz a duplaklikk ideje, cserébe a memória lábait is lezabálja a progi.)
+
+Mi az, amit mindig tudnunk kell egy adott VDItem-rõl?
+    - Protokoll (url-ben benne van)
+    - Elérési út
+    - Fájlnév
+Az összes többi csak rizsa (amit a felhasználó beállításai szerint betöltünk).

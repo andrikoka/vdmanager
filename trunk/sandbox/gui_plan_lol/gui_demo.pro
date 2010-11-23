@@ -16,14 +16,16 @@ SOURCES += main.cpp\
     vdfileitem.cpp \
     vdfilecontrol.cpp \
     vdlocalfile.cpp \
-    vddispatcher.cpp
+    vddispatcher.cpp \
+    vdabstractfile.cpp
 
 HEADERS  += mainwindow.h \
     dirlist.h \
     vdfileitem.h \
     vdfilecontrol.h \
     vdlocalfile.h \
-    vddispatcher.h
+    vddispatcher.h \
+    vdabstractfile.h
 
 FORMS    += \
     gui_1.ui
