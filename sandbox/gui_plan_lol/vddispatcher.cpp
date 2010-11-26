@@ -16,5 +16,4 @@ void VDDispatcher::VDFileItemReadyToDisplay(VDFileItem *item){
 void VDDispatcher::PanelItemDoubleClicked(QString standardUrl,int panel){
     // ide kerülhet a duplaklikk kiertekelesere keszulo kod
     emit ExecutionRequest(standardUrl,panel);
-
 }

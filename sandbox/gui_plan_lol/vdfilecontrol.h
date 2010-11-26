@@ -6,6 +6,7 @@
 #include <vddispatcher.h>
 #include <mainwindow.h>
 #include <vdlocalfile.h>
+#include <QTime>
 class VDFileControl : public QObject
 {
     Q_OBJECT
@@ -14,16 +15,17 @@ public:
     void setMainWindow (MainWindow * mw) { this->mw = mw; }
 
 private:
-    QList<QList <VDFileItem* > > lists;
     VDFileItem *item;
-    QList<VDFileItem*> list;
+    QList<VDFileItem*> panelRootList;
     // real handler peldanyok
     VDAbstractFile *localItem;
+    QList<VDAbstractFile*> handlerRootList;
 
     VDDispatcher * dispatcher;
     MainWindow * mw;
+    QTime t;
 public slots:
-    void VDRootItemIsReady(VDFileItem * );
+    void VDRootItemIsReady(VDFileItem *);
     void ExecutionRequest(QString,int);
 };
 

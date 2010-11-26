@@ -26,12 +26,10 @@ public slots:
 
 private:
     Ui::mW *ui;
-    void addItems(QListWidget *,QList<VDFileItem*>);
-    QString leftCurrent,rightCurrent;
-    QWidget * findItemInPanel(VDFileItem * item);
 
 private slots:
     void on_panel_left_itemDoubleClicked(QListWidgetItem* item);
+    void on_panel_right_itemDoubleClicked(QListWidgetItem* item);
 signals:
     // string: standardurl; int: panelnum
     void itemDoubleClicked(QString, int);

@@ -33,7 +33,7 @@ public:
     qint64 getElementIndex();
     QString getProtocol();
     QString getFullPath();
-
+	void setPropertyList(qint64 size=0,QDateTime createdate = QDateTime(),QDateTime moddate=QDateTime(),bool isdir=0,QString stdurl = "",QString path="");
 
 private:
     qint64 size;
@@ -46,6 +46,7 @@ private:
     qint64 panel,element;
     QString fullPath;
 	void newPropertySet(QString);
+
 signals:
     void sizeChanged(qint64);
     void createDateChanged(QDateTime);
@@ -57,7 +58,8 @@ signals:
     void readyToDisplay(VDFileItem *);
     void fullPathChanged(VDFileItem *);
 public slots:
-
+    void finishedUpdate();
 };
 
 #endif // VDFILEITEM_H
+

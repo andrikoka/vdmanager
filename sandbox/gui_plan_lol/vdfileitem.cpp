@@ -47,7 +47,7 @@ void VDFileItem::setFullPath(QString path){
 
 void VDFileItem::newPropertySet(QString property){
     this->properties.removeOne(property);
-    if (this->properties.count() == 0) { emit readyToDisplay(this); }
+    //if (this->properties.count() == 0) { emit readyToDisplay(this); }
     //qDebug() << this->properties;
 }
 void VDFileItem::setNecessaryProperties(QStringList props){
@@ -55,6 +55,15 @@ void VDFileItem::setNecessaryProperties(QStringList props){
 }
 void VDFileItem::setItemIndex(qint64 panel, qint64 element){
     this->panel = panel; this->element = this->element;
+}
+void VDFileItem::setPropertyList(qint64 size, QDateTime createdate, QDateTime moddate, bool isdir, QString stdurl, QString path)
+{
+    this->size = size;
+    this->createDate = createdate;
+    this->modDate = moddate;
+    this->dir = isdir;
+    this->standardURL = stdurl;
+    this->fullPath = path;
 }
 
 
@@ -75,4 +84,8 @@ QString VDFileItem::getProtocol(){
 }
 QString VDFileItem::getFullPath(){
     return this->fullPath;
+}
+
+void VDFileItem::finishedUpdate(){
+    emit readyToDisplay(this);
 }
