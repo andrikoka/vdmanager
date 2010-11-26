@@ -1,89 +1,65 @@
 #include "vdfilecontrol.h"
 #include <QDir> // kezdeteknél kell
+#include <QTime>
 #include <vdlocalfile.h>
 #include <qdebug.h>
 VDFileControl::VDFileControl(MainWindow * GUI,QObject *parent) :
     QObject(parent)
 {
+    this->t.start();
     QDir dir;
     dispatcher = new VDDispatcher(this);
-    connect(dispatcher,SIGNAL(ExecutionRequest(QString,int)),this,SLOT(ExecutionRequest(QString,int)));
     this->mw = GUI;
+    connect(dispatcher,SIGNAL(ExecutionRequest(QString,int)),this,SLOT(ExecutionRequest(QString,int)));
     connect(mw,SIGNAL(itemDoubleClicked(QString,int)),dispatcher,SLOT(PanelItemDoubleClicked(QString,int)));
-    // elso elem letrehozasa, kesobb settings alapjan lehet a last used dir es egyeb
-    // panel 0
-    this->item = new VDFileItem(dir.homePath());
-    this->list << this->item;
-    this->lists << this->list;
-    this->lists[0][0]->setItemIndex(0,0);
-    // panel 1
-    this->item = new VDFileItem(dir.homePath());
-    this->list.clear();
-    this->list << this->item;
-    this->lists << this->list;
-    this->lists[1][0]->setItemIndex(1,0);
+    for (unsigned int i=0;i<2;i++){
+	/* magyarazat:
+	1: panelok feltoltese (i most konstans, de a megnyitott panelok szamanak megfelelo is lehet)
+	2: elso elem letrehozasa, kesobb settings alapjan lehet a last used dir es egyeb
+	3: vdfileitem pointereket beallitjuk majd megcsinaljuk a handler-t hozza
+	4: bedrotozzuk a megfelelo helyre
+	5: majd azt mondjuk neki, hogy toltikezhet
+*/
+	this->item = new VDFileItem(dir.homePath());
+	this->panelRootList << this->item;
+	this->panelRootList[i]->setItemIndex(i,0);
+	this->localItem = new VDLocalFile(this->panelRootList[i]->getFileName(),
+					  this->panelRootList[i]);
+	this->handlerRootList << this->localItem;
+	connect(this->panelRootList[i],SIGNAL(readyToDisplay(VDFileItem*)),
+		this,SLOT(VDRootItemIsReady(VDFileItem*)));
+	this->handlerRootList[i]->fillVDItem();
+    }
 
-    // panel 0
-    this->localItem = new VDLocalFile(lists[0][0]->getFileName(),lists[0][0]);
-    connect(this->lists[0][0],SIGNAL(readyToDisplay(VDFileItem*)),
-    this,SLOT(VDRootItemIsReady(VDFileItem*)));
-
-    connect(this->lists[1][0],SIGNAL(readyToDisplay(VDFileItem*)),
-    this,SLOT(VDRootItemIsReady(VDFileItem*)));
-
-    // kapcsolas utan toltjuk fel a dolgokat
-    this->localItem->fillVDItem();
-    //majd a masik panelt is beroffentjuk
-    this->localItem = new VDLocalFile(lists[1][0]->getFileName(),lists[1][0]);
-    this->localItem->fillVDItem();
-    // panel 1
-
+    qDebug("Constructor end: Time elapsed: %d ms", t.elapsed());
 }
 
 void VDFileControl::VDRootItemIsReady(VDFileItem * rootItem){
-    QStringList entrylist;
-    QString root;
-    this->localItem = new VDLocalFile(rootItem->getFullPath() +"/"+ rootItem->getFileName(),rootItem);
-
-    /* fajlnevekkel ter vissza, rootitem/ nélkül, csak [filenev]!
-    / ha csinalni akarunk ra egy vdfileitem-et, akkor tudnunk kell a root-nak
-    / az eleresi utjat, amit megkaphatjuk tole
-    */
-
-    entrylist = this->localItem->getContentList();
-    root = rootItem->getFullPath() + "/" + rootItem->getFileName();
-
-    /* itt mar nem kapcsoljuk ossze a rootitemet es a kesz szignalt, kulonben kapunk egy
-    // vegtelen ciklust. Amúgy is a controlnak a GUI fele kell az infókat szolgáltatni,
-    // így oda kell továbbítani a kész elemeket.
-       */
-    for (unsigned short int i=0;i< entrylist.count();i++){
-	qint64 rootIndex = rootItem->getPanelIndex();
-	// hozzaadjuk az uj elemet
-	this->lists[rootIndex] << new VDFileItem(root +"/"+ entrylist[i]);
-	this->lists[rootIndex][i+1]->setItemIndex(rootIndex,i+1);
-	this->localItem = new VDLocalFile(lists[rootIndex][i+1]->getFileName(),this->lists[rootIndex][i+1]);
-
-	connect(this->lists[rootIndex][i+1],SIGNAL(readyToDisplay(VDFileItem*)),this->mw,SLOT(itemIsReadyToDisplay(VDFileItem*)));
-
-	this->localItem->fillVDItem();
-    }
+    unsigned int panelindex = rootItem->getPanelIndex();
+    this->mw->clearPanel(panelindex);
+    qDebug("RootItemReady: Time elapsed: %d ms, generateList called", t.restart());
+    this->handlerRootList[panelindex]->generateList(QString(),this->mw,panelindex);
+    qDebug("RootItemReadyEnd: Time elapsed: %d ms, generateList finished", t.elapsed());
 }
 void VDFileControl::ExecutionRequest(QString url, int panel){
+    qDebug("Exec: Start: %d ms", t.restart());
     // VDExecute kellene ide, ami ezt megcsinalja
-    QStringList parts;
+    QStringList parts,pieces;
     qDebug() << "Control: ExecutionRequest" << url << panel;
-    mw->clearPanel(0);
+    qDebug("Exec: FillVDItem start: %d ms", t.restart());
     parts = url.split("://");
-    this->lists[panel].clear();
-    this->item = new VDFileItem(parts[1]);
-    this->item->setItemIndex(panel,0);
-    connect(this->item,SIGNAL(readyToDisplay(VDFileItem*)),
-	    this,SLOT(VDRootItemIsReady(VDFileItem*)));
-    this->list.clear();
-    this->list << this->item;
-    this->lists[panel] << this->list;
-    this->localItem = new VDLocalFile(lists[panel][0]->getFileName(),lists[panel][0]);
-    this->localItem->fillVDItem();
-    // LAAASSSSÚÚÚÚÚ
+    pieces = parts[1].split("/");
+    if (pieces.last() == ".."){
+    qDebug() << "Command: .. (cdUp)";
+    this->handlerRootList[panel]->cdUp();
+    this->handlerRootList[panel]->fillVDItem();
+    } else if(this->panelRootList[panel]->isDir()) {
+		this->handlerRootList[panel]->changePath(parts[1]);
+		this->handlerRootList[panel]->fillVDItem();
+	    } else {
+	qDebug() << "File execution request:" << handlerRootList[panel]->getFullPath();
+    }
+
+
+    qDebug("Exec: FillVDItem finished: %d ms", t.restart());
 }

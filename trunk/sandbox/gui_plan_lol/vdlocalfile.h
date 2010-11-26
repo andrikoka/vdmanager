@@ -7,6 +7,7 @@
 #include <QDir>
 #include <vdabstractfile.h>
 #include <vdfileitem.h>
+#include <mainwindow.h>
 class VDLocalFile : public VDAbstractFile
 {
     Q_OBJECT
@@ -14,8 +15,12 @@ class VDLocalFile : public VDAbstractFile
 public:
     VDLocalFile(QString filename,VDFileItem * vdfitem);
     QStringList getContentList();
+    QList<QFileInfo> getContentInfoList();
     void fillVDItem();
     QString getFullPath();
+    void generateList(QString properties,MainWindow *mw,int panel);
+    void changePath(QString newPath);
+    void cdUp();
 signals:
 
 public slots:
