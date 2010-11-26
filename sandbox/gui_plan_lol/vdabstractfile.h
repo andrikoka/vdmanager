@@ -20,6 +20,7 @@ public:
     // fills the panel with vdfileitems according to the properties
     virtual void changePath(QString)=0;
     virtual void cdUp()=0;
+    virtual void cd(QString)=0;
 signals:
 
 public slots:

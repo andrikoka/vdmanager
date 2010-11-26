@@ -8,7 +8,7 @@ VDLocalFile::VDLocalFile(QString filename, VDFileItem * vdfitem)
     this->vditem = vdfitem;
     this->fileinfo = QFileInfo(filename);
     this->dir = new QDir(this->filename);
-    //qDebug() << "Constr. file. ex.:" << this->dir->exists() << "filename:" << filename;
+    qDebug() << "Constr. file. ex.:" << this->dir->exists() << "filename:" << filename << "isDir" <<this->fileinfo.isDir();
 }
 void VDLocalFile::fillVDItem(){
     QStringList props;
@@ -16,7 +16,14 @@ void VDLocalFile::fillVDItem(){
 
     this->vditem->setFileName(this->fileinfo.fileName());
 
-    this->vditem->setPropertyList(this->fileinfo.size(),this->fileinfo.created(),this->fileinfo.lastModified(),this->fileinfo.isDir(),"local://"+this->fileinfo.path() +"/"+ this->fileinfo.fileName(),this->fileinfo.path());
+    this->vditem->setPropertyList(this->fileinfo.size(),
+				  this->fileinfo.created(),
+				  this->fileinfo.lastModified(),
+				  this->fileinfo.isDir(),
+				  this->getStandardUrl(),
+				  this->fileinfo.path());
+    bool root = this->fileinfo.isRoot();
+    if (root) { this->vditem->setRootFlag(root); }
     this->vditem->setIcon(qfip.icon(fileinfo)); // na erre kíváncsi leszek
     //qDebug() << this->filename << "finished update";
     this->vditem->finishedUpdate();
@@ -43,7 +50,6 @@ void VDLocalFile::generateList(QString properties,MainWindow *mw,int panel){
     QFileInfoList qfilist = this->dir->entryInfoList(
 		QDir::AllEntries |QDir::NoDot,QDir::DirsFirst
 		);
-    //QFileIconProvider qfip;
     unsigned int count = qfilist.count();
     for (unsigned int i=0;i<count;i++){
     VDFileItem item(qfilist[i].fileName());
@@ -51,9 +57,9 @@ void VDLocalFile::generateList(QString properties,MainWindow *mw,int panel){
 				qfilist[i].created(),
 				qfilist[i].lastModified(),
 				qfilist[i].isDir(),
-				"local://"+qfilist[i].path() +"/"+ qfilist[i].fileName(),
+				this->getStandardUrl(qfilist[i].fileName()),
 				qfilist[i].path());
-    //item.setIcon(qfip.icon(fileinfo));
+
     item.setItemIndex(panel,0);
     mw->itemIsReadyToDisplay(&item);
     }
@@ -67,4 +73,15 @@ void VDLocalFile::changePath(QString newPath){
 void VDLocalFile::cdUp(){
     this->dir->cdUp();
     this->changePath(this->dir->path());
+}
+void VDLocalFile::cd(QString newDir){
+    this->dir->cd(newDir);
+    this->changePath(this->dir->path());
+}
+QString VDLocalFile::getStandardUrl(QString filename){
+    QString lofasz;
+    if (filename!="") filename = "/"+filename;
+    lofasz = this->fileinfo.path()+"/"+this->fileinfo.fileName()+filename;
+    while (lofasz.contains("//")) lofasz = lofasz.replace(QString("//"),QString("/"));
+    return "file://"+lofasz;
 }

@@ -75,6 +75,7 @@ QDateTime VDFileItem::getModDate(){ return this->modDate; };
 QString VDFileItem::getFileName() { return this->fileName; };
 QIcon VDFileItem::getIcon() { return this->icon; };
 bool VDFileItem::isDir() { return this->dir; };
+bool VDFileItem::isRoot() {return this->root; };
 QString VDFileItem::getStandardURL() { return this->standardURL; }
 qint64 VDFileItem::getPanelIndex(){ return this->panel; };
 
@@ -89,3 +90,4 @@ QString VDFileItem::getFullPath(){
 void VDFileItem::finishedUpdate(){
     emit readyToDisplay(this);
 }
+void VDFileItem::setRootFlag(bool root){ this->root = root; emit rootFlagChanged(this->root); }

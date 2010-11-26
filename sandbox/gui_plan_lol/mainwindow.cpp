@@ -14,20 +14,26 @@ MainWindow::MainWindow(QWidget *parent) :
 void MainWindow::itemIsReadyToDisplay(VDFileItem *item){
     QString StringItem;
     QListWidgetItem * qlwi;
+    QFileIconProvider qfip;
+    QIcon icon = QIcon();
     StringItem = QString("%1	%2 %3")
 		 .arg(item->getFileName())
 		 .arg(item->getSize())
 		 .arg(item->getCreateDate().toString());
-
+    if (item->isDir()){
+	icon = qfip.icon(QFileIconProvider::Folder);
+    } else {
+	icon = qfip.icon(QFileIconProvider::File);
+	    };
     switch (item->getPanelIndex()){
     case 0 :{
-	qlwi = new QListWidgetItem(item->getIcon(),StringItem,ui->panel_left);
+	qlwi = new QListWidgetItem(icon,StringItem,ui->panel_left);
 	qlwi->setData(32,item->getStandardURL());
 	//qDebug() << item->getPanelIndex() << "panelnum" << qlwi->data(32).toString();
     }
 	break;
     case 1 : {
-	    qlwi = new QListWidgetItem(item->getIcon(),StringItem,ui->panel_right);
+	    qlwi = new QListWidgetItem(icon,StringItem,ui->panel_right);
 	    qlwi->setData(32,item->getStandardURL());
 	}
 	;break;

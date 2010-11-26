@@ -46,18 +46,23 @@ void VDFileControl::ExecutionRequest(QString url, int panel){
     // VDExecute kellene ide, ami ezt megcsinalja
     QStringList parts,pieces;
     qDebug() << "Control: ExecutionRequest" << url << panel;
-    qDebug("Exec: FillVDItem start: %d ms", t.restart());
+
     parts = url.split("://");
     pieces = parts[1].split("/");
     if (pieces.last() == ".."){
     qDebug() << "Command: .. (cdUp)";
     this->handlerRootList[panel]->cdUp();
     this->handlerRootList[panel]->fillVDItem();
-    } else if(this->panelRootList[panel]->isDir()) {
-		this->handlerRootList[panel]->changePath(parts[1]);
+    } else {
+	this->item = new VDFileItem(parts[1]);
+	this->localItem = new VDLocalFile(this->item->getFileName(),this->item);
+	this->localItem->fillVDItem();
+	if(this->item->isDir()) {
+		this->handlerRootList[panel]->cd(pieces.last());
 		this->handlerRootList[panel]->fillVDItem();
 	    } else {
-	qDebug() << "File execution request:" << handlerRootList[panel]->getFullPath();
+	qDebug() << "File execution request:" << this->item->getFullPath() << this->item->getFileName() << "isDir:" << this->item->isDir();
+	}
     }
 
 

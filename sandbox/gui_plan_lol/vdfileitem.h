@@ -21,6 +21,7 @@ public:
     void setNecessaryProperties(QStringList);
     void setItemIndex(qint64,qint64);
     void setFullPath(QString);
+    void setRootFlag(bool);
 
     qint64 getSize();
     QDateTime getCreateDate();
@@ -34,6 +35,7 @@ public:
     QString getProtocol();
     QString getFullPath();
 	void setPropertyList(qint64 size=0,QDateTime createdate = QDateTime(),QDateTime moddate=QDateTime(),bool isdir=0,QString stdurl = "",QString path="");
+    bool isRoot();
 
 private:
     qint64 size;
@@ -45,6 +47,7 @@ private:
     QStringList properties;
     qint64 panel,element;
     QString fullPath;
+    bool root;
 	void newPropertySet(QString);
 
 signals:
@@ -57,6 +60,7 @@ signals:
     void standardURLChanged(QString);
     void readyToDisplay(VDFileItem *);
     void fullPathChanged(VDFileItem *);
+    void rootFlagChanged(bool);
 public slots:
     void finishedUpdate();
 };
