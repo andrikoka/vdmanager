@@ -21,6 +21,7 @@ public:
     void generateList(QString properties,MainWindow *mw,int panel);
     void changePath(QString newPath);
     void cdUp();
+    void cd(QString newDir);
 signals:
 
 public slots:
@@ -31,6 +32,7 @@ private:
     QFileInfo fileinfo;
     QDir * dir;
     VDFileItem * vditem;
+    QString getStandardUrl(QString="");
 };
 
 #endif // VDLOCALFILE_H
