@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QListWidget>
 #include <ui_gui_1.h>
+#include <dyn_ui_navigator.h>
 
 #include <vdfileitem.h>
 
@@ -23,16 +24,20 @@ public slots:
     //void panelContentChanged(QWidget *panel);
     void itemIsReadyToDisplay(VDFileItem * item);
     void clearPanel(int);
+    void setDrive(QString drive);
 
 private:
     Ui::mW *ui;
-
+    Ui_Navigator *nav_left,*nav_right;
+protected slots:
+    void driveButtonClicked();
 private slots:
-    void on_panel_left_itemDoubleClicked(QListWidgetItem* item);
-    void on_panel_right_itemDoubleClicked(QListWidgetItem* item);
+    void on_panel_left_itemActivated(QListWidgetItem* item);
+    void on_panel_right_itemActivated(QListWidgetItem* item);
+
 signals:
     // string: standardurl; int: panelnum
-    void itemDoubleClicked(QString, int);
+    void itemActivated(QString,int);
 };
 
 #endif // MAINWINDOW_H

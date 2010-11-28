@@ -25,10 +25,12 @@ HEADERS  += mainwindow.h \
     vdfilecontrol.h \
     vdlocalfile.h \
     vddispatcher.h \
-    vdabstractfile.h
+    vdabstractfile.h \
+    dyn_ui_navigator.h
 
 FORMS    += \
-    gui_1.ui
+    gui_1.ui \
+    navigator.ui
 
 RESOURCES += \
     res.qrc

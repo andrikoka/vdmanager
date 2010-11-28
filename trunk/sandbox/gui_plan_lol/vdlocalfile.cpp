@@ -50,6 +50,7 @@ void VDLocalFile::generateList(QString properties,MainWindow *mw,int panel){
     QFileInfoList qfilist = this->dir->entryInfoList(
 		QDir::AllEntries |QDir::NoDot,QDir::DirsFirst
 		);
+    qDebug() << "Path: "<< this->dir->path();
     unsigned int count = qfilist.count();
     for (unsigned int i=0;i<count;i++){
     VDFileItem item(qfilist[i].fileName());
