@@ -4,12 +4,20 @@
 #include <QTableWidgetItem>
 #include <QDebug>
 #include <vdfileitem.h>
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::mW) // itt kapcsolodik a letrehozott form a koddal
 {
     ui->setupUi(this);
-}
+    this->nav_left = new Ui_Navigator(ui->centralwidget,this);
+    ui->panelLeftLayout->insertLayout(0,nav_left->verticalLayout,0);
+    ui->panelLeftLayout->setStretch(1,1);
+
+    this->nav_right = new Ui_Navigator(ui->centralwidget,this);
+    ui->panelRightLayout->insertLayout(0,nav_right->verticalLayout,0);
+    ui->panelRightLayout->setStretch(1,1);
+ }
 
 void MainWindow::itemIsReadyToDisplay(VDFileItem *item){
     QString StringItem;
@@ -35,8 +43,8 @@ void MainWindow::itemIsReadyToDisplay(VDFileItem *item){
     case 1 : {
 	    qlwi = new QListWidgetItem(icon,StringItem,ui->panel_right);
 	    qlwi->setData(32,item->getStandardURL());
-	}
-	;break;
+	};
+	break;
     }
 
 }
@@ -57,15 +65,27 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_panel_left_itemDoubleClicked(QListWidgetItem* item)
+void MainWindow::on_panel_left_itemActivated(QListWidgetItem* item)
 {
     QVariant stuff;
     stuff = item->data(32);
-    emit itemDoubleClicked(stuff.toString(),0);
+    emit itemActivated(stuff.toString(),0);
 }
-void MainWindow::on_panel_right_itemDoubleClicked(QListWidgetItem* item)
-{
+void MainWindow::on_panel_right_itemActivated(QListWidgetItem* item){
     QVariant stuff;
     stuff = item->data(32);
-    emit itemDoubleClicked(stuff.toString(),1);
+    emit itemActivated(stuff.toString(),1);
+}
+void MainWindow::setDrive(QString drive){
+    nav_left->add_drive_button("left://"+drive);
+    nav_right->add_drive_button("right://"+drive);
+}
+void MainWindow::driveButtonClicked(){
+    QString button_name = QObject::sender()->objectName();
+    QStringList but = button_name.split("://");
+    if (but[0] == "left") {
+        emit itemActivated("file://"+but[1],0);
+    } else {
+        emit itemActivated("file://"+but[1],1);
+    };
 }

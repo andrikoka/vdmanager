@@ -3,15 +3,26 @@
 #include <QTime>
 #include <vdlocalfile.h>
 #include <qdebug.h>
+#include <QProcess>
 VDFileControl::VDFileControl(MainWindow * GUI,QObject *parent) :
     QObject(parent)
 {
     this->t.start();
+
     QDir dir;
+    dir = QDir();
+
     dispatcher = new VDDispatcher(this);
     this->mw = GUI;
+
+    QList<QFileInfo> drive = dir.drives();
+    qDebug() << "drives:";
+    for (short int i=0;i < drive.count();i++){
+        mw->setDrive(drive[i].path());
+    }
+
     connect(dispatcher,SIGNAL(ExecutionRequest(QString,int)),this,SLOT(ExecutionRequest(QString,int)));
-    connect(mw,SIGNAL(itemDoubleClicked(QString,int)),dispatcher,SLOT(PanelItemDoubleClicked(QString,int)));
+    connect(mw,SIGNAL(itemActivated(QString,int)),dispatcher,SLOT(PanelItemDoubleClicked(QString,int)));
     for (unsigned int i=0;i<2;i++){
 	/* magyarazat:
 	1: panelok feltoltese (i most konstans, de a megnyitott panelok szamanak megfelelo is lehet)
@@ -57,14 +68,18 @@ void VDFileControl::ExecutionRequest(QString url, int panel){
 	this->item = new VDFileItem(parts[1]);
 	this->localItem = new VDLocalFile(this->item->getFileName(),this->item);
 	this->localItem->fillVDItem();
-	if(this->item->isDir()) {
+        if(this->item->isDir() and !this->item->isRoot()) {
 		this->handlerRootList[panel]->cd(pieces.last());
 		this->handlerRootList[panel]->fillVDItem();
-	    } else {
+            } else if (this->item->isRoot()){
+                                this->handlerRootList[panel]->changePath(this->item->getFullPath());
+                                this->handlerRootList[panel]->fillVDItem();
+        } else {
 	qDebug() << "File execution request:" << this->item->getFullPath() << this->item->getFileName() << "isDir:" << this->item->isDir();
+	qDebug() << QProcess::startDetached("cmd.exe /C \""+parts[1]+"\"");
+
 	}
     }
-
-
     qDebug("Exec: FillVDItem finished: %d ms", t.restart());
 }
+
