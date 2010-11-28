@@ -60,14 +60,15 @@ public:
         sizePolicy.setHorizontalStretch(1);
         sizePolicy.setVerticalStretch(0);
 	sizePolicy.setHeightForWidth(backButton->sizePolicy().hasHeightForWidth());
-	backButton->setSizePolicy(sizePolicy);
+        backButton->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
 
 	horizontalLayout->addWidget(backButton);
 
 	addressBar = new QComboBox(Navigator);
 	addressBar->setObjectName(QString::fromUtf8("addressBar"));
+        //this->addressBar->setEditable(1);
 	sizePolicy.setHeightForWidth(addressBar->sizePolicy().hasHeightForWidth());
-	addressBar->setSizePolicy(sizePolicy);
+        addressBar->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
 	addressBar->setInsertPolicy(QComboBox::InsertAtTop);
 
 	horizontalLayout->addWidget(addressBar);
@@ -75,7 +76,7 @@ public:
 	goButton = new QToolButton(Navigator);
 	goButton->setObjectName(QString::fromUtf8("goButton"));
 	sizePolicy.setHeightForWidth(goButton->sizePolicy().hasHeightForWidth());
-	goButton->setSizePolicy(sizePolicy);
+        goButton->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
 
 	horizontalLayout->addWidget(goButton);
 
@@ -128,6 +129,10 @@ public:
             // signalokat itt kene letrehozni a buttonhoz
             connect(drive,SIGNAL(clicked()),mw,SLOT(driveButtonClicked()));
     } //adddrivebutton
+    void addAddressBarItem(QString url){
+        this->addressBar->insertItem(0,url,url);
+        this->addressBar->setCurrentIndex(0);
+    }
 };
 
 namespace Ui {
