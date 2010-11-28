@@ -48,6 +48,7 @@ VDFileControl::VDFileControl(MainWindow * GUI,QObject *parent) :
 void VDFileControl::VDRootItemIsReady(VDFileItem * rootItem){
     unsigned int panelindex = rootItem->getPanelIndex();
     this->mw->clearPanel(panelindex);
+    this->mw->addItemToAddressbar(rootItem->getStandardURL(),panelindex);
     qDebug("RootItemReady: Time elapsed: %d ms, generateList called", t.restart());
     this->handlerRootList[panelindex]->generateList(QString(),this->mw,panelindex);
     qDebug("RootItemReadyEnd: Time elapsed: %d ms, generateList finished", t.elapsed());
@@ -68,12 +69,14 @@ void VDFileControl::ExecutionRequest(QString url, int panel){
 	this->item = new VDFileItem(parts[1]);
 	this->localItem = new VDLocalFile(this->item->getFileName(),this->item);
 	this->localItem->fillVDItem();
+
         if(this->item->isDir() and !this->item->isRoot()) {
 		this->handlerRootList[panel]->cd(pieces.last());
 		this->handlerRootList[panel]->fillVDItem();
-            } else if (this->item->isRoot()){
-                                this->handlerRootList[panel]->changePath(this->item->getFullPath());
-                                this->handlerRootList[panel]->fillVDItem();
+            }
+        else if (this->item->isRoot()){
+                this->handlerRootList[panel]->changePath(this->item->getFullPath());
+                this->handlerRootList[panel]->fillVDItem();
         } else {
 	qDebug() << "File execution request:" << this->item->getFullPath() << this->item->getFileName() << "isDir:" << this->item->isDir();
 	qDebug() << QProcess::startDetached("cmd.exe /C \""+parts[1]+"\"");

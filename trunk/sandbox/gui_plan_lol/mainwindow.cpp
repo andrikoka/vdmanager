@@ -13,10 +13,12 @@ MainWindow::MainWindow(QWidget *parent) :
     this->nav_left = new Ui_Navigator(ui->centralwidget,this);
     ui->panelLeftLayout->insertLayout(0,nav_left->verticalLayout,0);
     ui->panelLeftLayout->setStretch(1,1);
+    connect(nav_left->addressBar,SIGNAL(activated(QString)),this,SLOT(left_addressbarItemChanged(QString)));
 
     this->nav_right = new Ui_Navigator(ui->centralwidget,this);
     ui->panelRightLayout->insertLayout(0,nav_right->verticalLayout,0);
     ui->panelRightLayout->setStretch(1,1);
+    connect(nav_right->addressBar,SIGNAL(activated(QString)),this,SLOT(left_addressbarItemChanged(QString)));
  }
 
 void MainWindow::itemIsReadyToDisplay(VDFileItem *item){
@@ -89,3 +91,12 @@ void MainWindow::driveButtonClicked(){
         emit itemActivated("file://"+but[1],1);
     };
 }
+void MainWindow::addItemToAddressbar(QString url, int panel){
+    if(panel == 0){
+        this->nav_left->addAddressBarItem(url);
+    } else {
+        this->nav_right->addAddressBarItem(url);
+    }
+}
+void MainWindow::left_addressbarItemChanged(QString url){ emit itemActivated(url,0); }
+void MainWindow::right_addressbarItemChanged(QString url) { emit itemActivated(url,1); }

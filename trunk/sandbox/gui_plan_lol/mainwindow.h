@@ -25,6 +25,7 @@ public slots:
     void itemIsReadyToDisplay(VDFileItem * item);
     void clearPanel(int);
     void setDrive(QString drive);
+    void addItemToAddressbar(QString,int);
 
 private:
     Ui::mW *ui;
@@ -34,6 +35,8 @@ protected slots:
 private slots:
     void on_panel_left_itemActivated(QListWidgetItem* item);
     void on_panel_right_itemActivated(QListWidgetItem* item);
+    void left_addressbarItemChanged(QString);
+    void right_addressbarItemChanged(QString);
 
 signals:
     // string: standardurl; int: panelnum
