@@ -12,7 +12,6 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    dirlist.cpp \
     vdfileitem.cpp \
     vdfilecontrol.cpp \
     vdlocalfile.cpp \
@@ -20,7 +19,6 @@ SOURCES += main.cpp\
     vdabstractfile.cpp
 
 HEADERS  += mainwindow.h \
-    dirlist.h \
     vdfileitem.h \
     vdfilecontrol.h \
     vdlocalfile.h \
