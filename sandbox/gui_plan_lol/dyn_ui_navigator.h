@@ -118,7 +118,6 @@ public:
     void add_drive_button(QString button){
             QStringList letter = button.split("://");
             QToolButton *drive = new QToolButton(drives);
-
             tabHLayout->addWidget(drive);
             QSizePolicy sizePolicy = QSizePolicy(QSizePolicy::Preferred,QSizePolicy::Preferred);
             sizePolicy.setHorizontalStretch(1);
@@ -132,6 +131,9 @@ public:
     void addAddressBarItem(QString url){
         this->addressBar->insertItem(0,url,url);
         this->addressBar->setCurrentIndex(0);
+    }
+   void setPreviousAddress(){
+        this->addressBar->setCurrentIndex(this->addressBar->currentIndex()+1);
     }
 };
 

@@ -71,7 +71,7 @@ void VDFileControl::ExecutionRequest(QString url, int panel){
 	this->localItem->fillVDItem();
 
         if(this->item->isDir() and !this->item->isRoot()) {
-		this->handlerRootList[panel]->cd(pieces.last());
+                this->handlerRootList[panel]->cd(parts[1]);
 		this->handlerRootList[panel]->fillVDItem();
             }
         else if (this->item->isRoot()){

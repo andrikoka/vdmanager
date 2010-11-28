@@ -37,6 +37,10 @@ private slots:
     void on_panel_right_itemActivated(QListWidgetItem* item);
     void left_addressbarItemChanged(QString);
     void right_addressbarItemChanged(QString);
+    void left_previousAddressRequested();
+    void right_previousAddressRequested();
+    void left_goButtonClicked();
+    void right_goButtonClicked();
 
 signals:
     // string: standardurl; int: panelnum
