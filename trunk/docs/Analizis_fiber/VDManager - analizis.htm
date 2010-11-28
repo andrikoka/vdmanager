@@ -1,0 +1,440 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+	<TITLE>VDManager - Analízis modell</TITLE>
+	<style type="text/css">
+	body {
+		max-width: 1000px;
+		min-width: 800px;
+		margin: auto;
+		padding: 10px;
+	}
+	p {
+		text-align: justify;
+	}
+	p.center {
+		text-align: center;
+	}
+
+	img {
+		padding: 5px;
+		margin: 15px;
+	}
+	
+	div.img {
+		float: right;
+		margin: 10px;
+		margin-right: 0px;
+		border: 1px solid black;
+	}
+	
+	div.img p {
+		text-align: center;
+	}
+	div.img img {
+		margin: 0px;
+	}
+	
+	
+	b.main_functions {
+		font-size: 20px;
+		font-weight: bolder;
+		color: #038;
+	}
+	
+	ul {
+		list-style-type: square;
+	}
+
+	ul ul {
+		list-style-type: disc;
+	}
+	ul ul ul {
+		list-style-type: circle;
+	}
+	</style>
+</HEAD>
+<BODY>
+<p><B>Történet</B></p>
+<table border="1">
+<tr>
+	<td>Dátum</td>
+	<td>Verzió</td>
+	<td>Leírás</td>
+	<td>Szerző</td>
+</tr>
+<tr>
+	<td>2010.11.20.</td>
+	<td>0.1</td>
+	<td>Dokumentum alapjai</td>
+	<td>Fibinger Ádám</td>
+</tr>
+
+</table>
+
+
+<p>&nbsp;</p>
+
+<h4>Tartalomjegyzék</h4>
+
+<ul>
+	<li><a href="#1">Bevezetés</a></li>
+</ul>
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+<a name="1"></a>
+<h1>1. Bevezetés</h1>
+<p>A projekt célkitűzése egy keresztplatformos fájlkezelő alkalmazás megvalósítása, mely a rendszerek által nyújtott 
+fájlkezelési szolgáltatásokat egységesíti, esetleges operációs rendszer migrációnál megkímélve a felhasználót egy 
+újabb fájlkezelő alkalmazás betanulásától.</p>
+
+<P>Jelen dokumentum célja a VDManager szoftver strukturális felépítésének defininálása. A megközelítés minimalista, 
+a rendelkezésre álló idő alatt felvázolt Vízió, SRS mintájára nem definiál minden lehetséges és szükséges funkciót,
+mindössze a szoftver strukturális felépítésének leírását tartalmazza. A dokumentum egy vázat tartalmaz, mely 
+továbbfejlesztéséhez iránymutatásokat ad. A dokumentum nem végleges, hatékony szoftver implementálására alkalmatlan
+a hiányosságok miatt. A végleges verzió előreláthatólag nem lesz elérhető az egyetemi félév végére, de egy tökéletes
+kiindulópont egy keresztplatformos fájlkezelő elkészítéséhez. (a szükséges finomítások elvégzése után)</P>
+
+<p>A dokumentum elsősorban grafikai leírásokkal próbálja segíteni a megértést, szövegesen kiegészítve.</p>
+
+<p>A szoftver 0.1-es verziószámú bemutatópéldányának, a jelen dokumentumban meghatározott funkciók felét képesnek kell 
+lennie kielégíteni. (GUI, Vezérlő logika alapjai, egy fájlkezelő réteg, mely a helyi fájlkezelésért felelős)</p>
+
+<p>A részletes célokért lásd a vízió dokumentáció "A végtermék áttekintése" pontot, funkcióanalízisért az SRS dokumentum
+vonatkozó pontjait.</p>
+
+<p>Jelen dokumentum olvasóközönsége széles, így az alkalmazott szakkifejezések pontos definíciójáért lásd a mellékelt Szótár
+dokumentumot. Mivel az alkalmazott kifejezések esetén, a szótár szerinti definíciót értelmezzük így javasolt a dokumentum
+elolvasása előtt áttekinteni azt, az eltérő értelmezésből eredő félreértések elkerülése végett.</p>
+
+<h1>2. Kezdeti osztálydiagram</h1>
+<a name="2"></a>
+<p>Az SRS dokumentáció alapján az alábbi funkciókat kell implementálnunk:</p>
+<ul>
+	<li>Fájl Másolása</li>
+	<li>Fájl Törlése</li>
+	<li>Fájl Áthelyezése</li>
+	<li>Fájl Átnevezése</li>
+	<li>A fenti műveletek soros végrehajtását biztosító Queue (várakozási sor)</li>
+	<li>Fájl Megnyitása</li>
+</ul>
+<p>Ezen műveletek végzéséhez feltétlen szükséges egy fájl objektum, amely segítségével egyértelműen azonosítható az a fájl,
+amelyen a műveletet a felhasználó definiálja.</p>
+<p>Ezek alapján a feltétlenül szükséges osztályok:</p>
+<ul>
+	<li>Fájl objektum</li>
+	<li>Várakozási sor</li>
+	<li>Műveleteket tartalmazó osztályok</li>
+</ul>
+<p>Ezen felül, ezeket az objektumokat kezelő (adminisztráló) osztály a Vezérlő.</p>
+<h2>2.1 Oszt&aacute;lydiagram, kezdeti osztályok felsorolása</h2>
+<a name="3"></a>
+	<h3>Vezérlés</h3>
+<div class="img">
+	<img src="control_1.png" alt="Osztálydiagram kiindulópont">
+	<p class="img_bottom">Vezérlést megvalósító osztályok kiindulópontja</p>
+</div>
+<ul>
+	<li>Fájl Objektum:
+	<p>Egy konrkét fájlról tartalmaz információkat, amely segítségével egyértelműen azonosítható a konrkét fájl. Ezen felül a felhasználó
+	számára (beállítások szerint) és a rendszer számára szükséges információkat tartalmazza a fájlról. (pld: protokoll, amin keresztül
+	elérhető, elérési út, stb. Ezen osztály függvényeit használva jeleníti meg a felhasználói felület (az ábrán nincs feltüntetve) az
+	adott fájl információit a felhasználó számára.</p>
+	</li>
+	<li>Törlés:
+		<p>Tartalmazza a Törlendő Fájl Objektumot. A műveletet a Vezérlő végzi, jelen osztály csak a műveletben érintett objektumokat
+		tárolja.</p>
+	</li>
+	<li>Másolás
+		<p>Két objektumot tartalmaz: Cél és Forrás Fájlobjektum. A műveletet a Vezérlő végzi, jelen osztály csak a műveletben érintett 
+		objektumokat tárolja.</p>
+	</li>
+	<li>Átnevezés
+		<p>Két objektumot tartalmaz: Cél és Forrás Fájlobjektum. A műveletet a Vezérlő végzi, jelen osztály csak a műveletben érintett 
+		objektumokat tárolja.</p>
+	</li>
+	<li>Áthelyezés
+		<p>Két objektumot tartalmaz: Cél és Forrás Fájlobjektum. A műveletet a Vezérlő végzi, jelen osztály csak a műveletben érintett 
+		objektumokat tárolja.</p>
+	</li>
+	<li>Végrehajtás
+		<p>Tartalmazza a végrehajtandó fájl objektumot, illetve végrehajtáshoz szükséges információkat az Operációs Rendszertől amennyiben
+		az operációs rendszer támogatja a fájltársításokat, úgy a fájl típusa alapján átadja a fájlobjektumot végrehajtásra (amennyiben
+		a fájl a helyi fájlrendszeren található, vagy futtatható hálózaton keresztül is).
+		</p>
+	</li>
+	<li>Queue, Várakozási sor
+		<p>Azon műveleteket tartalmazza (Törlés, Másolás, Áthelyezés, stb.), melyeket sorosan (FIFO) kell végrehajtani.</p>
+	</li>
+	<li>Vezérlő
+	<p>A Grafikus felületet és a tényleges fájlrendszert összekötő modul, mely a vezérlési logikáért felelős. Fogadja a grafikus felület
+	felől érkező parancsokat, feldolgozza azokat, létrehozza a parancs alapján a művelet végrehajtásához szükséges objektumokat, azokon
+	műveleteket végez. Létrehozza és összeköti a Fájl Objektumot a tényleges fájlkezelő objektummal.</p>
+	</li>
+</ul>
+<h3>Felhasználói felület</h3>
+<a name="4"></a>
+<div class="img">
+	<img src="gui_1.png" alt="Felhasználói felület kezdeti osztályai">
+	<p class="img_bottom">Felhasználói felület kezdeti osztályai</a>
+</div>
+<ul>
+	<li>GUI vezérlő:
+	<p>Tartja a kapcsolatot a Vezérlővel, és a Főablakban történő eseményeket kezeli, értelmezi (továbbítja ha szükséges), elemekkel
+	tölti fel a panelokat, stb.</p>
+	</li>
+	<li>Főablak:
+	<p>Azon vezérlő elemeket tartalmazza, mely a felhasználóval való kapcsolatartását biztosítja. Ezen helyezkednek el a vezérlőelemek, mint
+	a Panelok és egyéb objektumok. Az általa kapott eseményeket továbbítja a GUI vezérlőnek.
+	</p>
+		<ul>
+			<li>Panel:
+			<p>A felhasználó által meghatározott elrendezésben jeleníti meg azokat az elemeket, melyeket a GUI vezérlő biztosított számára.
+			</p>
+			</li>
+				<ul>
+					<li>Panel elem:
+					<p>Tartalmazza és megjeleníti azokat az információkat, melyeket az adott elemről (fájl objektum) a felhasználó látni kíván.</p>
+					</li>
+				</ul>
+				<ul>
+					<li>Panel vezérlő:
+						<p>Tartalmazza az aktuális pontot, ahol a felhasználó "van" (URL formában megjelenítve), a felhasználó számára
+						ugrási pontokat biztosít a partíciókhoz (meghajtó betűjelek vagy felcsatolási pontok), illetve tárolja az utolsó
+						x pontot, ahol a felhasználó járt a beállításoknak megfelelően.
+						</p>
+					</li>
+				</ul>
+		</ul>
+	</li>
+</ul>
+
+
+
+<h2><a name="_Toc101688616"></a><a name="_Toc101704477"></a><a name="_Toc130801949"></a>
+2.3. Alrendszerek</h2>
+<a name="5"></a>
+<div class="img">
+<img src="vdpackage.jpg" alt="Alrendszerek és kapcsolataik">
+<p class="img_bottom">Alrendszerek és kapcsolataik</p>
+</div>
+<p>A szoftvernek három élesen elkülönülő része van:</p>
+	<ol>
+		<li>Vezérlés (VDControl)</li>
+		<li>Felhasználói felület (VDGUI)</li>
+		<li>Fájlkezelő (VDFileHandler)</li>
+	</ol>
+
+	<ul>
+		<li>Vezérlés:</li>
+		<p>A vezérlő rész felelős a felhasználó és a fájlrendszer által generált események kiértékeléséért és az eseményekhez
+		tartozó funkciók implementálásáért. Ez a rendszer tartja nyilván a kezelendő objektumokat, adatokat, melyek
+		a Fájl interfész segítségével egyértelműen azonosítható a Felhasználói felületen megjelenített fájl elem.</p>
+		<li>Felhasználói felület:</li>
+		<p>A felhasználóval való kapcsolattartásra szolgáló objektumcsoport. A felhasználó felé megjeleníti a vezérlőelemeket,
+		értelmezi a felhasználó által végzett műveleteket, azokat továbbítja a vezérlő résznek további feldolgozásra, a vezérlő
+		felől érkező eseményeket megjeleníti a felhasználónak. (folyamatjelző csíkok, Hiba üzenetek, stb.)
+		</p>
+		<li>"Fájl interfész"</li>
+		<p>Realizálja a Vezérlő felől érkező parancsokat. Egy interfészen keresztül tartja a kapcsolatot a vezérlővel, a 
+		fájlrendszeren bekövetkezett eseményeket továbbítja a vezérlő logika felé.</p>
+	</ul>
+<h3>Alrendszerek és távoli rendszerek kapcsolata</h3>
+<a name="6"></a>
+<div class="img">
+<img src="system_overview.jpg" alt="Rendszer áttekintése">
+<p>Alrendszerek kapcsolatainak áttekintése</p>
+</div>
+<p>A VDManager a távoli fájlszerverekkel az operációs rendszer által biztosított hálózati komponensek felhasználásával tartja a 
+kapcsolatot. A VDAbstractFile interfész delegálja a VDFileControl felé a lehetséges műveleteket, egy felületet nyújtva a fájlok
+tényleges kezeléséhez. Ezeknél figyelembe kell venni, hogy bizonyos kapcsolattípusoknak maradandónak kell lenniük (a műveletek
+lezárásáig, vagy a felhasználó parancsáig).</p>
+<p>A VDFileHandler komponens (csomag) feladata az Operációs rendszeren keresztüli kapcsolattartás a távoli fájlrendszerekkel is.
+Minden kapcsolatnál a VDFileHandler-ben lévő osztály felelőssége a rajta keresztül elért fájlrendszer tulajdonságainak, 
+sajátosságainak ismerete, annak megfelelő kezelése. </p>
+<p>A VDGUI felelős a felhasználó felé megjelenített információk kezeléséért, kapcsolattartásért az Operációs rendszer által 
+biztosított ablakkezelővel, a felhasználó által kezdeményezett műveletek értelmezéséért és a vezérlő (VDControl) felé történő
+információszolgáltatásért.</p>
+<p>A VDControl (Vezérlő) a felhasználó által a VDGUI-n kezdeményezett műveletek megvalósításáért felelős valamit kapcsolatot
+tart a VDAbstractFile interfészen keresztül a tényleges műveletvégző osztályokkal, "felügyeli azok munkáját", szükség esetén
+beavatkozik.</p>
+<h3>Alrendszerek és csomagok osztályai</h3>
+<ul>
+	<li><b>VDControl:</b>
+	<ul>
+		<li>VDQueue</li>
+		<li>VDQueueItem</li>
+		<li>VDFileItem</li>
+		<li>VDCopy</li>
+		<li>VDMove</li>
+		<li>VDRemove</li>
+		<li>VDRename</li>
+		<li>VDExecute</li>
+	</ul>
+	</li>
+	<li><b>VDGUI:</b>
+	<ul>
+		<li>GUIControl</li>
+		<li>MainWindow</li>
+		<li>Panel</li>
+		<li>PanelNavigator</li>
+		<li>PanelItem</li>
+	</ul>
+	</li>
+	<li><b>VDFileHandler</b>
+		<ul>
+			<li><i>VDAbstractFile</i></li>
+			<li>VDLocalFileHandler</li>
+			<li>VDFtpFileHandler</li>
+		</ul>
+	</li>
+	<li>VDSettings</li>
+</ul>
+<p>Megjegyzés: A VDFileItem osztályt lehet érdemes lenne kivenni ebből a csomagból (VDControl), ugyanis leginkább ennek
+az osztálynak az objektumain végez szinte minden osztály műveleteket. Ezen felül, a VDFileHandler csomagból esetlegesen
+alrendszert formálni a VDControl csomag részeként.</p>
+
+<h1>3. Az első alrendszer modellje</h1>
+<a name="1"></a>
+<h2>3.1 Statikus modell</h2>
+<div class="img">
+	<a href="vdcontrol_1.jpg" target="_blank">
+		<img src="vdcontrol_1.jpg" alt="VDControl csomag osztályai" width="400px">
+	</a>
+	<p>VDControl csomag osztályai (klikk, új ablakban nyílik)</p>
+</div>
+<h3>VDControl</h3>
+	<ul>
+		<li>VDFileItem: Tároló osztály, egy adattároló objektum. A megjelenítendő / kezelendő fájlokról tárolja a szükséges
+		információkat.</li>
+		<li>VDQueue: 
+				VDQueueItem-eket tartalmaz, a VDFileControl osztály egy "támogató osztálya", amiben tárolja a még
+				fel nem dolgozott elemeket.
+		</li>
+		<li>VDQueueItem: A műveletek tárolója.</li>
+		<li>VDCopy: Tárolja a forrást (VDFileItem), és a célt (VDFileItem) a másolás számára.</li>
+		<li>VDMove: Tárolja a forrást (VDFileItem), és a célt (VDFileItem) az áthelyezés számára.</li>
+		<li>VDRemove: Tárolja a törlendő objektum referenciáját (VDFileItem).</li>
+		<li>VDRename: Tárolja a forrást (VDFileItem), és a célt (String) az átnevezés számára.</li>
+		<li>VDExecute: Na ezt még nem látom át..</li>
+	</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<div class="img">
+	<a href="vdfilhandler.jpg" target="_blank">
+		<img src="vdfilehandler.jpg" alt="Fájlkezelő réteg" width="400px">
+	</a>
+	<p>VDFileHandler csomag (klikk)</p>
+</div>
+<h3>VDFileHandler</h3>
+	<ul>
+		<li>VDAbstractFile: interfészt biztosít a vezérlő elemek felé, amin keresztül a fájlokon tényleges műveletvégzés
+		valósítható meg.</li>
+		<li>VDLocalFileHandler: Egy példa egy lehetséges implementáló osztályra, ami a helyi fájlkezelésért felelős.</li>
+		<li>VDFtpFileHandler: Egy példa távoli fájlkezelésre.</li>
+	</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h3>VDGUI</h3>
+<div class="img">
+	<a href="vdgui.jpg" target="_blank">
+		<img src="vdgui.jpg" width="400px">
+	</a>
+	<p>VDGUI (klikk)</p>
+</div>
+<ul>
+	<li>GUIControl: kapcsolattartás a többi osztállyal (VDFileControl) és a felhasználó által kezdeményezett
+	parancsok értelmezése, továbbadása a vezérlőnek.</li>
+	<li>MainWindow: A főablak, ez tartalmazza a megjelenítendő panelokat, felelős azok grafikai megjelenítéséért.</li>
+	<li>Panel: Vezérlőelem, mely elemei maguk a fájlok a felhasználó szemszögéből. Ezeken definiáljuk a műveleteket,
+	mint másolás, áthelyezés, átnevezés, stb.</li>
+	<li>PanelItem: Fájlelem a felhasználó szemszögéből. Ez az egység tartalmazza és jeleníti meg a beállításoknak 
+	megfelelően egy fájl objektum tulajdonságait.</li>
+	<li>PanelNavigator: Grafikai vezérlőegység. Hasonló a TotalCommander lemezegység-gombsorához, bizonyos kivételekkel.
+	Tárolja a felhasználó által látogatott címek elérhetőségét, "Kedvenceket".
+	</li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h3>VDSettings</h3>
+<div class="img">
+	<img src="vdsettings.jpg" alt="Beállításokhoz tartozó osztály">
+	<p>Beállításokhoz tartozó osztály</p>
+</div>
+<ul>
+	<li>VDSettings: Tárolja a különböző felhasználó által beállított tulajdonságokat és az osztályok
+	számára elérhetővé teszi azokat. Mivel az osztályt minden csomag használja, így globálisan elérhető
+	bármely alrendszer, csomag, osztály számára.</li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h3>3.1.1 Kapcsolatok</h3>
+<div class="img">
+	<img src="kapcsolatok.jpg" alt="Kapcsolatok">
+	<p>Kapcsolatok</p>
+</div>
+<p>A rendszer fő adattároló eleme a VDFileItem osztály. Ennek segítségével definiálható a VDAbstractFile-on keresztül
+egy fájl, ez tárolja a fájl tulajdonságait, ezen osztály metódusai segítségével jelenik meg a felhasználói interfészen
+egy-egy elem.</p>
+<p>A VDCopy, VDRemove, VDExecute, VDMove és VDRename osztályok művelet-tároló osztályok, melyek a Queue alapján
+sorba kerülnek végrehajtásra. Mindegyik tartalmaz legalább egy VDFileItem objektumot, amin a művelet értelmezhető.</p>
+<p>A VDFileControl osztály kapcsolja össze a fizikai fájlokat a VDFileItem objektumban tárolt információkkal,
+ténylegesen ez az osztály adja ki a műveletek végzésére a parancsot.</p>
+<p>A VDAbstractFile osztály egy interfész, mely egy API-t nyújt az implementáció során más, itt fel nem sorolt
+lehetőségek, távoli vagy helyi fájlkezelésre alkalmas elemek implementálására.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+
+<div class="img">
+<img src="add_item.jpg" alt="elem hozzáadása a grafikus felülethez">
+<p>Elem hozzáadása a grafikus felülethez</p>
+</div>
+
+<p>&nbsp;</p>
+
+<h2>3.2. Dinamikus modell</h2>
+<p>A jobb oldali ábrán egy mappa tartalmának hozzáadását láthatjuk a Felhasználói interfészhez (GUI) 
+szekvenciadiagramként.</p>
+<p>Részletesen: Már létező objektumok: Vezérlő, Guicontrol, panel1.</p>
+
+<ul>
+	<li>1: VDFileItem() konstruktor meghívása fájlnévvel.</li>
+	<li>2: A Fileitem-el meghívjuk a VDAbstractFile() konstruktorát (VDAbstractFile alatt vagy FTP vagy Helyi
+	fájlkezelőt értünk!), létrehozva egy objektumot, mely a "fizikai" fájlkezelést végzi.</li>
+	<li>3: A Vezérlő összekapcsolja a VDFileItem megfelelő függvényét a saját függvényét, lehetővé téve az aszinkron
+	működést. (UML-ben nincs a C++ signal és slot koncepciójú connect() parancs.)</li>
+	<li>4:
+	<li>4.1 - 4.3: VDFileItem megfelelő attribútumainak feltöltése.</li>
+	<li>4.3.1: A VDFileItem küld egy "jelet" (signal vagy exception) amivel jelzi a vezérlőnek (jelen esetben
+	ez a VDFileControl), hogy a VDFileItem készen áll további feldolgozásra. A Vezélő lekérdezi a Mappa tartalmát
+	majd a megkapott eredményt szummázva továbbítja a felhasználói felületért felelős panelnak, ami megjeleníti
+	az eredményt a grafikus felületen.</li>
+</ul>
+<p>&nbsp;</p>
+<h2>Az első iteráció végi osztálydiargam</h2>
+<a href="class_diagram_25_percent.jpg" target="_blank">
+	<img src="class_diagram_25_percent.jpg" alt="Osztálydiagram" width="500px">
+</a>
+<p>A dokumentum az időkorlát miatt közel sem teljes és elég valószínű, hogy tökéletesen kész soha nem lesz. 
+Kérném ezt figyelembe venni.</p>
+</body>
+</html>
