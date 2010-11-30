@@ -1,8 +1,4 @@
-#include "vdfileitem.h"
-#include <QString>
-#include <QIcon>
-#include <vddispatcher.h>
-#include <QDebug>
+#include <Control/vdfileitem.h>
 
 VDFileItem::VDFileItem(QString filename,QObject *parent) :
     QObject(parent)

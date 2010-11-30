@@ -1,9 +1,5 @@
-#include "vdfilecontrol.h"
-#include <QDir> // kezdeteknél kell
-#include <QTime>
-#include <vdlocalfile.h>
-#include <qdebug.h>
-#include <QProcess>
+#include <Control/vdfilecontrol.h>
+
 VDFileControl::VDFileControl(MainWindow * GUI,QObject *parent) :
     QObject(parent)
 {
@@ -16,9 +12,10 @@ VDFileControl::VDFileControl(MainWindow * GUI,QObject *parent) :
     this->mw = GUI;
 
     QList<QFileInfo> drive = dir.drives();
+    QFileIconProvider qficp;
     qDebug() << "drives:";
     for (short int i=0;i < drive.count();i++){
-        mw->setDrive(drive[i].path());
+	mw->setDrive(drive[i].path(),qficp.icon(drive[i]));
     }
 
     connect(dispatcher,SIGNAL(ExecutionRequest(QString,int)),this,SLOT(ExecutionRequest(QString,int)));

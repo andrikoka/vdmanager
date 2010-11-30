@@ -3,10 +3,14 @@
 
 #include <QMainWindow>
 #include <QListWidget>
-#include <ui_gui_1.h>
-#include <dyn_ui_navigator.h>
+#include <QFileIconProvider>
+#include <QTableWidgetItem>
+#include <QDebug>
 
-#include <vdfileitem.h>
+#include <Control/vdfileitem.h>
+#include <ui_gui_1.h>
+#include <Gui/dyn_ui_navigator.h>
+#include <ui_gui_1.h>
 
 namespace Ui {
     class MainWindow;
@@ -24,7 +28,7 @@ public slots:
     //void panelContentChanged(QWidget *panel);
     void itemIsReadyToDisplay(VDFileItem * item);
     void clearPanel(int);
-    void setDrive(QString drive);
+    void setDrive(QString drive,QIcon icon);
     void addItemToAddressbar(QString,int);
 
 private:

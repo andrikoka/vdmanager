@@ -4,6 +4,10 @@
 #include <QObject>
 #include <QDateTime>
 #include <QIcon>
+#include <QString>
+#include <QDebug>
+
+//#include <vdfileitem.cpp>
 
 class VDFileItem : public QObject
 {

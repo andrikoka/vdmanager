@@ -1,9 +1,5 @@
-#include "mainwindow.h"
-#include "ui_gui_1.h"
-#include <QFileIconProvider>
-#include <QTableWidgetItem>
-#include <QDebug>
-#include <vdfileitem.h>
+#include <Gui/mainwindow.h>
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -83,10 +79,10 @@ void MainWindow::on_panel_right_itemActivated(QListWidgetItem* item){
     stuff = item->data(32);
     emit itemActivated(stuff.toString(),1);
 }
-void MainWindow::setDrive(QString drive){
+void MainWindow::setDrive(QString drive,QIcon icon){
 
-    nav_left->add_drive_button("left://"+drive);
-    nav_right->add_drive_button("right://"+drive);
+    nav_left->add_drive_button("left://"+drive,icon);
+    nav_right->add_drive_button("right://"+drive,icon);
 }
 void MainWindow::driveButtonClicked(){
     QString button_name = QObject::sender()->objectName();

@@ -2,8 +2,8 @@
 #define VDABSTRACTFILE_H
 
 #include <QObject>
-#include <vdfileitem.h>
-#include <mainwindow.h>
+#include <Control/vdfileitem.h>
+#include <Gui/mainwindow.h>
 
 class VDAbstractFile : public QObject
 {

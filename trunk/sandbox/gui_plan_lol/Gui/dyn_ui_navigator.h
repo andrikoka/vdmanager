@@ -115,7 +115,7 @@ public:
 	tabWidget->setTabText(tabWidget->indexOf(drives), QApplication::translate("Navigator", "Meghajt\303\263", 0, QApplication::UnicodeUTF8));
 	tabWidget->setTabText(tabWidget->indexOf(fav), QApplication::translate("Navigator", "Kedvencek", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
-    void add_drive_button(QString button){
+    void add_drive_button(QString button, QIcon icon){
             QStringList letter = button.split("://");
             QToolButton *drive = new QToolButton(drives);
             tabHLayout->addWidget(drive);
@@ -124,6 +124,8 @@ public:
             sizePolicy.setVerticalStretch(0);
             drive->setObjectName(button);
             drive->setText(letter[1]);
+	    drive->setIcon(icon);
+	    drive->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
             drive->setSizePolicy(sizePolicy);
             // signalokat itt kene letrehozni a buttonhoz
             connect(drive,SIGNAL(clicked()),mw,SLOT(driveButtonClicked()));
