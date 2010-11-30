@@ -1,6 +1,6 @@
 #include <QtGui/QApplication>
-#include "mainwindow.h"
-#include <vdfilecontrol.h>
+#include <Gui/mainwindow.h>
+#include <Control/vdfilecontrol.h>
 
 int main(int argc, char *argv[])
 {

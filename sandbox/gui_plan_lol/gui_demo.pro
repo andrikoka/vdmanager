@@ -6,32 +6,31 @@
 
 QT       += core gui
 
-TARGET = gui_demo
+TARGET = VDManager
 TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
-    vdfileitem.cpp \
-    vdfilecontrol.cpp \
-    vdlocalfile.cpp \
-    vddispatcher.cpp \
-    vdabstractfile.cpp
+    ProtocolManagers/vdlocalfile.cpp \
+    ProtocolManagers/vdabstractfile.cpp \
+    Control/vdfileitem.cpp \
+    Control/vdfilecontrol.cpp \
+    Control/vddispatcher.cpp \
+    Gui/mainwindow.cpp
 
-HEADERS  += mainwindow.h \
-    vdfileitem.h \
-    vdfilecontrol.h \
-    vdlocalfile.h \
-    vddispatcher.h \
-    vdabstractfile.h \
-    dyn_ui_navigator.h
+HEADERS  += ProtocolManagers/vdlocalfile.h \
+    ProtocolManagers/vdabstractfile.h \
+    Control/vdfileitem.h \
+    Control/vdfilecontrol.h \
+    Control/vddispatcher.h \
+    Gui/mainwindow.h \
+    Gui/dyn_ui_navigator.h
 
 FORMS    += \
-    gui_1.ui \
-    navigator.ui
+    Gui/Forms/navigator.ui \
+    Gui/Forms/gui_1.ui
 
-RESOURCES += \
-    res.qrc
+RESOURCES +=
 
 OTHER_FILES += \
     jegyzetek.txt

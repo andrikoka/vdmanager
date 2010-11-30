@@ -1,5 +1,5 @@
-#include "vddispatcher.h"
-#include <qdebug.h>
+#include <Control/vddispatcher.h>
+
 VDDispatcher::VDDispatcher(QObject *parent) : QObject(parent)
 {
  /* ide jon majd a settings osztaly peldanya, amely alapjan a vdcontrol es a gui funkcioit

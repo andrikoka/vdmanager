@@ -2,8 +2,8 @@
 #define VDDISPATCHER_H
 
 #include <QObject>
-#include <vdfileitem.h>
-
+#include <Control/vdfileitem.h>
+#include <QDebug>
 
 class VDDispatcher : public QObject
 {

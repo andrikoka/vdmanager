@@ -1,12 +1,19 @@
 #ifndef VDFILECONTROL_H
 #define VDFILECONTROL_H
-
+//Qt stuffs
 #include <QObject>
-#include <vdfileitem.h>
-#include <vddispatcher.h>
-#include <mainwindow.h>
-#include <vdlocalfile.h>
+#include <QDir>
 #include <QTime>
+#include <QProcess>
+#include <QTime>
+#include <QDebug>
+
+// Own stuffs
+#include <ProtocolManagers/vdlocalfile.h>
+#include <Control/vdfileitem.h>
+#include <Control/vddispatcher.h>
+#include <Gui/mainwindow.h>
+
 class VDFileControl : public QObject
 {
     Q_OBJECT

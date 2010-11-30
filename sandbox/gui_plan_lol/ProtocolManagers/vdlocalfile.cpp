@@ -1,6 +1,5 @@
-#include "vdlocalfile.h"
-#include <QFileIconProvider>
-#include <QDebug>
+#include <ProtocolManagers/vdlocalfile.h>
+
 VDLocalFile::VDLocalFile(QString filename, VDFileItem * vdfitem)
 {
     this->filename = filename;

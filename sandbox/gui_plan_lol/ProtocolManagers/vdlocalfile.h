@@ -5,9 +5,14 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QDir>
-#include <vdabstractfile.h>
-#include <vdfileitem.h>
-#include <mainwindow.h>
+#include <QFileIconProvider>
+#include <QDebug>
+
+#include <ProtocolManagers/vdabstractfile.h>
+#include <Control/vdfileitem.h>
+#include <Gui/mainwindow.h>
+
+
 class VDLocalFile : public VDAbstractFile
 {
     Q_OBJECT
