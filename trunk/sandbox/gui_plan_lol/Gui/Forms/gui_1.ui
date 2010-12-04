@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>636</width>
-    <height>462</height>
+    <width>765</width>
+    <height>569</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -167,29 +167,41 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>636</width>
+     <width>765</width>
      <height>18</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuMen">
+   <widget class="QMenu" name="fileMenu">
     <property name="title">
-     <string>Menü</string>
+     <string>Fájl</string>
     </property>
+    <addaction name="actionQuit"/>
    </widget>
    <widget class="QMenu" name="menuMen_2">
     <property name="title">
      <string>Menü 2</string>
     </property>
    </widget>
-   <widget class="QMenu" name="menuMen_3">
+   <widget class="QMenu" name="helpMenu">
     <property name="title">
-     <string>Menü 3</string>
+     <string>Súgó</string>
     </property>
+    <addaction name="actionShowHelp"/>
    </widget>
-   <addaction name="menuMen"/>
+   <addaction name="fileMenu"/>
    <addaction name="menuMen_2"/>
-   <addaction name="menuMen_3"/>
+   <addaction name="helpMenu"/>
   </widget>
+  <action name="actionShowHelp">
+   <property name="text">
+    <string>Súgó megjelenítése</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="text">
+    <string>Kilépés</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>
