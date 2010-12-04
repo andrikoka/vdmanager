@@ -130,6 +130,12 @@
 	<td>Végrehajtás szöveges és Use-Case kidolgozása</td>
 	<td>Komjáthy Gábor</td>
 </tr>
+<tr>
+	<td>2010.11.28.</td>
+	<td>0.3.6</td>
+	<td>Végrehajtás Use-Case bővítése, szoftver interfészek átdolgozása</td>
+	<td>Fibinger Ádám</td>
+</tr>
 </table>
 
 <P><B>Tartalomjegyzék</B></P>
@@ -560,7 +566,7 @@ a soros végrehajtás lehetőségét. Ezt a Queue (Várakozási sor) tárolóval
 	<li><p><a name="vegrehajtas"></a>
 	<b class="main_functions">Végrehajtás</b></p>
 	<div class="img">
-		<img src="use_case_execute.png" alt="Végrehajtás">
+		<img src="use_case_execute_v2.jpg" alt="Végrehajtás">
 		<p class="img_bottom">Végrehajtás</p>
 	</div>
 	<p>A felhasználó egy fájlt futtat.</p>
@@ -569,7 +575,17 @@ a soros végrehajtás lehetőségét. Ezt a Queue (Várakozási sor) tárolóval
 	<p><b>Szokásos működés (Main Flow):</b> A felhasználó kijelöli a futtattni kívánt fájlt. 
 	A Végrehajtás parancs kiadása után:</p>
 	<ol>
-		<li>Forrás futtatthatóságának ellenőrzése</li>
+		<li>Forrás futtatthatóságának, olvashatóságának ellenőrzése</li>
+			<ul>
+				<li>Ha nem futtatható, hozzárendelt szoftver lekérdezése az Operációs Rendszertől (vagy valamely moduljától, mely a fájltársításokért 
+				felel), majd a futtatás helyett a hozzárendelt szoftver futtatása paraméterként megadva a futtatandó elérhetőségeit</li>
+					<ul>
+						<li>Ha nincs megfelelő szoftver, az Operációs Rendszer fájltársításokért felelős modul indítása, mellyel
+						a felhasználó hozzárendelhet egy szoftvert a fájlhoz</li>
+						<li>Ha a hozzárendelés rendben lezajlott, folytatás a következő lépéssel</li>
+						<li>Ha a hozzárendelés alatt a a felhasználó nem adott meg új hozzárendelést, megszakítás, visszatérés üzemkész állapotba</li>
+					</ul>
+			</ul>
 		<li>Forrás helyének meghatározása</li>
 		<li>Felhasználó jogosultságának ellenőrzése</li>
 		<li>Futtattás megkezdése, amennyiben a fenti ellenőrzések rendben lezajlanak</li>
@@ -579,14 +595,14 @@ a soros végrehajtás lehetőségét. Ezt a Queue (Várakozási sor) tárolóval
 	<ol>
 		<li>Forrás futtatthatóságának ellenőrzése:
 			<ul>
-				<li><b>Forrás nem futtattható:</b> Felhasználó tájékoztatása, végrehajtás megszakítása</li>
+				<li><b>Forrás nem futtattható:</b></li>
 			</ul>
 		</li>
 		<li>Forrás helyének meghatározása:
 			<ul>
-				<li><b>A forrás nem helyi fájl: </b> Felhasználó figyelmeztetése: Fájl letöltése, megszakítás felajánlása
+				<li><b>A forrás nem helyi fájl: </b> Felhasználó figyelmeztetése: Fájl másolása, megszakítás felajánlása
 				<ul>
-				<li> Felhasználó letöltést kért: Fájl letöltése a helyi rendszerre, majd fájl futtattása.</li>
+				<li> Felhasználó másolást kért: Fájl másolása a helyi rendszerre, majd fájl futtattása.</li>
 				<li> Felhasználó megszakítást kért: a művelet megszakítása, visszatérés üzemkész állapotba.</li>
 				</ul>
 				</li>
@@ -814,6 +830,7 @@ a fájlkezelő blokknak a vezérlő felé jeleznie kell az adott fájlrendszer a
 a távoli és helyi fájlrendszerekkel.</p>
 <p>A Felhasználói interfész szintén a vezérlő blokkal kommunikál, az az által szolgáltatott információkat jeleníti meg a felhasználónak, illetve ezen keresztül
 tartja a kapcsolatot a felhasználóval.</p>
+
 <a name="gui_altalanos"></a>
 <H2 CLASS="western">11.1. Felhasználói interfész (GUI)</H2>
 <h3>Felhasználói felület általánosan</h3>
@@ -842,12 +859,26 @@ a vezérlő blokk felé.</p>
 <p>A felhasználó oldalon használt hardveres elemeket az operációs rendszer fogja kezelni (beviteli és mutatóeszköz). Feltételezzük, hogy billentyűzet és valamilyen
 mutatóeszköz segítségével fogja a felhasználó a szoftvert vezérelni.</p>
 <a name="sw_interface"></a>
-<H2 CLASS="western">11.3. Software interfészek</H2>
+<H2 CLASS="western">11.3. Szoftver interfészek</H2>
+<p>A szoftver interfészeket az alábbi csoportokban tárgyaljuk:</p>
+<ul>
+	<li>Protokollok, melyeken keresztül távoli rendszerekkel tartja a szoftver a kapcsolatot</li>
+	<li>Operációs Rendszer függő interfészek</li>
+</ul>
+<h3>Protokollok</h3>
 <p>Mivel a szoftvernek valószínűleg több külső rendszerrel közre kell működnie, így az azokkal való kommunikációt lehetőség szerint az adott protokollra
 vonatkozó RFC szerint kell végrehajtani. Amennyiben ez az RFC nem létezik, nem elérhető, úgy az azt létrehozó cég vagy szervezet specifikációjára építve
 kell a protokoll implementációját megvalósítani. Ezek a protokollok a fájlkezelő blokkon keresztül kapcsolódnak a szoftverhez.</p>
+<h3>Operációs rendszer függő interfészek</h3>
 
-<a name="alkalmazott_szabvanyok"></a>
+<p>Implementáció során figyelembe kell venni, hogy az operációs rendszerek funkciói bár a felhasználó számára ugyanazokat a lehetőségeket nyújtják,
+de a szoftveres megoldások gyökeresen eltérően implementálják a funkciókat, mint például a fájltársítás, "meghajtók".</p>
+<p>A fájltársításhoz szükséges egy interfész, mely az Operációs Rendszer vagy az Ablakkezelő által nyújtott szolgáltatások használatával hajt végre 
+bizonyos műveleteket. (lásd: Végrehajtás funkció)<br>
+KDE: <a href="http://techbase.kde.org/Development/Architecture/KDE4/Starting_Other_Programs">http://techbase.kde.org/Development/Architecture/KDE4/Starting_Other_Programs</a><br>
+GNOME: ?<br>
+Windows: <a href="http://msdn.microsoft.com/en-us/library/cc144154(VS.85).aspx">http://msdn.microsoft.com/en-us/library/cc144154(VS.85).aspx</a>
+</p>
 
 <h3>Implementációs kritériumok</h3>
 <p>A szoftver implementációja során az objektum orientált szemléletet, annak irányelveit követni kell. Ezen felül bármilyen olyan szoftverfejlesztési
