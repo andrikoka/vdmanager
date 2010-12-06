@@ -76,6 +76,13 @@
 	<td>Sok-sok kidolgozás, amit elfelejtettem dokumentálni (éljen az SVN, le a munkanaplóval! :D ) :(</td>
 	<td>Fibinger Ádám</td>
 </tr>
+<tr>
+	<td>2010.12.05.</td>
+	<td>0.2</td>
+	<td>Problémák és megoldásaik, VDOSSpecific::VDOSLayer létrehozása, kidolgozása</td>
+	<td>Fibinger Ádám</td>
+</tr>
+
 </table>
 
 
@@ -94,7 +101,8 @@
 	<li><a href="#8">Statikus modell</a></li>
 	<li><a href="#9">Kapcsolatok</a></li>
 	<li><a href="#10">Dinamikus modell</a></li>
-	<li><a href="#11">Mellékletek</li>
+	<li><a href="#11">Mellékletek</a></li>
+	<li><a href="#12">Kezdeti implementációs tesztek alatt felmerült problémák és megoldásaik</a></li>
 </ul>
 <p>&nbsp;</p>
 
@@ -309,6 +317,14 @@ beavatkozik.</p>
 		</ul>
 	</li>
 	<li>VDSettings</li>
+	<li><b>VDOSSpecific*</b>:
+	<ul>
+		<li>VDOSLayer</li>
+		<li>VDLinuxNavigator</li>
+		<li>VDWindowsNavigator</li>
+	</ul>
+	</li>
+	
 </ul>
 <p>Megjegyzés: A VDFileItem osztályt lehet érdemes lenne kivenni ebből a csomagból (VDControl), ugyanis leginkább ennek
 az osztálynak az objektumain végez szinte minden osztály műveleteket. Ezen felül, a VDFileHandler csomagból esetlegesen
@@ -336,7 +352,7 @@ alrendszert formálni a VDControl csomag részeként.</p>
 		<li>VDMove: Tárolja a forrást (VDFileItem), és a célt (VDFileItem) az áthelyezés számára.</li>
 		<li>VDRemove: Tárolja a törlendő objektum referenciáját (VDFileItem).</li>
 		<li>VDRename: Tárolja a forrást (VDFileItem), és a célt (String) az átnevezés számára.</li>
-		<li>VDExecute: Na ezt még nem látom át..</li>
+		<li>VDExecute: Na ezt még nem látom át.. Lásd a <a href="#12">Felmerült problémák témakört</a></li>
 	</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
@@ -350,7 +366,7 @@ alrendszert formálni a VDControl csomag részeként.</p>
 </div>
 <h3>VDFileHandler</h3>
 	<ul>
-		<li>VDAbstractFile: interfészt biztosít a vezérlő elemek felé, amin keresztül a fájlokon tényleges műveletvégzés
+		<li><i>VDAbstractFile</i>: interfészt biztosít a vezérlő elemek felé, amin keresztül a fájlokon tényleges műveletvégzés
 		valósítható meg.</li>
 		<li>VDLocalFileHandler: Egy példa egy lehetséges implementáló osztályra, ami a helyi fájlkezelésért felelős.</li>
 		<li>VDFtpFileHandler: Egy példa távoli fájlkezelésre.</li>
@@ -376,8 +392,10 @@ alrendszert formálni a VDControl csomag részeként.</p>
 	megfelelően egy fájl objektum tulajdonságait.</li>
 	<li>PanelNavigator: Grafikai vezérlőegység. Hasonló a TotalCommander lemezegység-gombsorához, bizonyos kivételekkel.
 	Tárolja a felhasználó által látogatott címek elérhetőségét, "Kedvenceket".
+	Közvetetten a VDOSSpecific::VDOSLayer interfész adatait használja fel a "Navigációs Pontok" megjelenítéséhez.
 	</li>
 </ul>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
@@ -396,7 +414,43 @@ alrendszert formálni a VDControl csomag részeként.</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
-<h3>3.1.1 Kapcsolatok</h3>
+<h3><i>VDOSSpecific::VDOSLayer*</i> interfész</h3>
+<div class="img">
+	<img src="vdosspecific.jpg" alt="Az operációs rendszerek specifikus osztályai">
+	<p>Az operációs rendszerek specifikus osztályai</p>
+</div>
+<ul>
+	<li><b>VDLinuxNavigator:</b>
+		<ul>
+			<li>Csatolási pontok és új meghajtók észlelése:<br>
+			Linux esetén javasolt az /etc/mtab használata, ugyanis annak használata a legtöbb Linux alapú rendszeren 
+			megeggyezik. A fájl változásait figyelhetjük, mely az új meghajtók csatlakoztatását és lecsatlakoztatását
+			jelzi.</li>
+			<li>Fájltársítások detektálása:<br>
+			KDE: <a href="http://techbase.kde.org/Development/Architecture/KDE4/Starting_Other_Programs">http://techbase.kde.org/Development/Architecture/KDE4/Starting_Other_Programs</a><br>
+			GNOME: ?<br>
+			Ezen felül szükségszerűen a DBus használható.
+			</li>
+		</ul>
+</li>
+	<li>VDWindowsNavigator:<br>
+		<ul>
+			<li>Csatolási pontok és új meghajtók észlelése:<br>
+			Windows alatt az MFC nyújthat ebben segítséget, mely információkat nyújt a külső szoftvereknek a rendszer
+			eseményeiről.</li>
+			<li>Fájltársítások detektálása:<br>
+			<a href="http://msdn.microsoft.com/en-us/library/cc144154(VS.85).aspx">http://msdn.microsoft.com/en-us/library/cc144154(VS.85).aspx</a>
+			</li>
+		</ul>	
+	</li>
+</ul>
+<p>*A fenti osztály korábbi neve a VDOSNavigator volt, így némely dokumentáció említheti úgy is! A csomag és az osztályai az implementáció során <a href="#12">
+felmerült problémák megoldására </a>születtek, a legfrissebb osztálydiagrammért lásd a <a href="#11">mellékletet</a>!</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+<h3>3.1.1 Kapcsolatok*</h3>
 <a name="9"></a>
 <div class="img">
 	<img src="kapcsolatok.jpg" alt="Kapcsolatok">
@@ -411,7 +465,7 @@ sorba kerülnek végrehajtásra. Mindegyik tartalmaz legalább egy VDFileItem ob
 ténylegesen ez az osztály adja ki a műveletek végzésére a parancsot.</p>
 <p>A VDAbstractFile osztály egy interfész, mely egy API-t nyújt az implementáció során más, itt fel nem sorolt
 lehetőségek, távoli vagy helyi fájlkezelésre alkalmas elemek implementálására.</p>
-<p>&nbsp;</p>
+<p>*A kapcsolatok a VDOSSpecific csomag bevezetésével módosultak, az ábrát <a href="kapcsolatok_v0.2.jpg">lásd itt.</a></p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
@@ -457,6 +511,32 @@ szekvenciadiagramként.</p>
 <ul>
 <li><a href="VDManager.vpp">A VDManager Visual Paradigm UML ábrái</a></li>
 <li>(Csatolva a dokumentációhoz) Első implementációs eredmények</li>
+<li>V 0.2: <a href="VDManager_v0.2.jpg">V0.2 osztálydiagram</a></li>
 </ul>
+<a name="12"></a>
+<h2>Kezdeti implementációs tesztek alatt felmerült problémák és megoldásaik</h2>
+<p>A kezdeti implementációs tesztek alapján az osztálydiagram bővítésre szorul az előre nem látott problémák miatt.</p>
+<p>A felmerült problémák:</p>
+<ul>
+	<li>A meghajtóbetűjelek és csatolási pontok kezeléséhez szükséges egy API, mely szolgáltatja a szükséges 
+	információkat, mint például a C:;D:; stb meghajtók méret és egyéb információkat az operációs rendszertől kérdezi le. 
+	(ez mind teljes mértékben operációs rendszer függő) Ezen felül amennyiben új meghajtót csatlakoztat a felhasználó (pendrive,
+	külső winchester) ezt a szoftvernek érzékelnie kell, de ezen szignálok kezelése minden operációs rendszeren eltér.</li>
+	<li>Alapértelmezetten a szoftverek futtatása könnyen megoldható, viszont a nem futtatható fájlok esetén ismerni
+	kell a fájltársításokat, fájltípusokhoz rendelt szoftvereket. Ez szintén minden operációs rendszeren és ablakkezelő 
+	rendszeren másképp érhető el, így ezeket is figyelembe kell venni. Ez szintén egy Operációs rendszer függő API
+	réteg implementálásával érhető el.</li>
+	<li>A 3.2 pontban megadott szekvencia-diagram szerinti implementáció optimalizálásra szorul, ugyanis a VDFileItem
+	attribútumainak külön-külön beállítása túlságosan "költséges", a felhasználó szempontjából elfogadhatatlanul lassú
+	gyengébb rendszeren.</li>
+</ul>
+
+<p>A felmerült problémák orvoslásához célszerű egy egy operációs rendszer függő interfész, mely implementálja ezeket
+a problémákat. Mivel mind a futtatás, mind a meghajtók / csatolási pontok elérése teljesen eltérő, így egy új
+interfészt vezetünk be, mely kezeli és jelzi az operációs rendszeren zajló eseményeket, illetve a fájltársításokhoz
+szükséges adatokat is szolgáltatja.</p>
+
+
+
 </body>
 </html>
