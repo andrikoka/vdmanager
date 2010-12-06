@@ -70,7 +70,12 @@
 	<td>Dokumentum alapjai</td>
 	<td>Fibinger Ádám</td>
 </tr>
-
+<tr>
+	<td>2010.11.27.</td>
+	<td>0.1</td>
+	<td>Sok-sok kidolgozás, amit elfelejtettem dokumentálni (éljen az SVN, le a munkanaplóval! :D ) :(</td>
+	<td>Fibinger Ádám</td>
+</tr>
 </table>
 
 
@@ -80,6 +85,16 @@
 
 <ul>
 	<li><a href="#1">Bevezetés</a></li>
+	<li><a href="#2">Kezdeti osztálydiagram</a></li>
+	<li><a href="#3">Vezérlés</a></li>
+	<li><a href="#4">Felhasználói felület</a></li>
+	<li><a href="#5">Alrendszerek</a></li>
+	<li><a href="#6">Alrendszerek kapcsolatai</a></li>
+	<li><a href="#7">Alrendszerek és csomagok osztályai</a></li>
+	<li><a href="#8">Statikus modell</a></li>
+	<li><a href="#9">Kapcsolatok</a></li>
+	<li><a href="#10">Dinamikus modell</a></li>
+	<li><a href="#11">Mellékletek</li>
 </ul>
 <p>&nbsp;</p>
 
@@ -263,6 +278,7 @@ információszolgáltatásért.</p>
 tart a VDAbstractFile interfészen keresztül a tényleges műveletvégző osztályokkal, "felügyeli azok munkáját", szükség esetén
 beavatkozik.</p>
 <h3>Alrendszerek és csomagok osztályai</h3>
+<a name="7"></a>
 <ul>
 	<li><b>VDControl:</b>
 	<ul>
@@ -299,7 +315,7 @@ az osztálynak az objektumain végez szinte minden osztály műveleteket. Ezen f
 alrendszert formálni a VDControl csomag részeként.</p>
 
 <h1>3. Az első alrendszer modellje</h1>
-<a name="1"></a>
+<a name="8"></a>
 <h2>3.1 Statikus modell</h2>
 <div class="img">
 	<a href="vdcontrol_1.jpg" target="_blank">
@@ -381,6 +397,7 @@ alrendszert formálni a VDControl csomag részeként.</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <h3>3.1.1 Kapcsolatok</h3>
+<a name="9"></a>
 <div class="img">
 	<img src="kapcsolatok.jpg" alt="Kapcsolatok">
 	<p>Kapcsolatok</p>
@@ -412,6 +429,7 @@ lehetőségek, távoli vagy helyi fájlkezelésre alkalmas elemek implementálá
 <p>&nbsp;</p>
 
 <h2>3.2. Dinamikus modell</h2>
+<a name="10"></a>
 <p>A jobb oldali ábrán egy mappa tartalmának hozzáadását láthatjuk a Felhasználói interfészhez (GUI) 
 szekvenciadiagramként.</p>
 <p>Részletesen: Már létező objektumok: Vezérlő, Guicontrol, panel1.</p>
@@ -434,7 +452,11 @@ szekvenciadiagramként.</p>
 <a href="class_diagram_25_percent.jpg" target="_blank">
 	<img src="class_diagram_25_percent.jpg" alt="Osztálydiagram" width="500px">
 </a>
-<p>A dokumentum az időkorlát miatt közel sem teljes és elég valószínű, hogy tökéletesen kész soha nem lesz. 
-Kérném ezt figyelembe venni.</p>
+<h2>Melléklet</h2>
+<a name="11"></a>
+<ul>
+<li><a href="VDManager.vpp">A VDManager Visual Paradigm UML ábrái</a></li>
+<li>(Csatolva a dokumentációhoz) Első implementációs eredmények</li>
+</ul>
 </body>
 </html>
